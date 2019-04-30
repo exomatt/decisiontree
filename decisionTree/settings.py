@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'decisionTreeCore',
     'rest_framework',
+    'frontend',
 ]
 
 MIDDLEWARE = [
