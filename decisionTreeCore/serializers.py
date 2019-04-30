@@ -3,7 +3,7 @@ from rest_framework import serializers
 from decisionTreeCore.models import Experiment
 
 
-# Experiment Serializer
+# Experiments Serializer
 class ExperimentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experiment

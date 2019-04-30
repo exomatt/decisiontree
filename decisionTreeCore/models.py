@@ -7,9 +7,11 @@ from django.db import models
 
 
 class Experiment(models.Model):
-    status_choice = (('P', 'Pending'), ('E', 'Error'), ('R', 'Running'), ('F', 'Finished'), ('C', 'Created'),)
+    status_choice = (('Pending', 'Pending'), ('Error', 'Error'), ('Running', 'Running'), ('Finished', 'Finished'),
+                     ('Created', 'Created'),)
 
     name = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
     status = models.CharField(max_length=15, choices=status_choice, default='C')
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

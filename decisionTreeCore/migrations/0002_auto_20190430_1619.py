@@ -11,12 +11,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name='experiment',
+            model_name='experiments',
             old_name='config_file',
             new_name='config_file_name',
         ),
         migrations.AddField(
-            model_name='experiment',
+            model_name='experiments',
             name='result_file_name',
             field=models.CharField(default=django.utils.timezone.now, max_length=50),
             preserve_default=False,

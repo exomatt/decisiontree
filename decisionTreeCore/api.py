@@ -4,7 +4,7 @@ from decisionTreeCore.models import Experiment
 from .serializers import ExperimentSerializer
 
 
-# Experiment Viewset
+# Experiments Viewset
 
 class ExperimentViewSet(viewsets.ModelViewSet):
     queryset = Experiment.objects.all()
