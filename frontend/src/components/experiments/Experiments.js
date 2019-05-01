@@ -6,7 +6,9 @@ import {deleteExperiment, getExperiments} from "../../actions/experiments";
 
 class Experiments extends Component {
     static propTypes = {
-        experiments: PropTypes.array.isRequired
+        experiments: PropTypes.array.isRequired,
+        getExperiments: PropTypes.func.isRequired,
+        deleteExperiment: PropTypes.func.isRequired
     };
 
     componentDidMount() {

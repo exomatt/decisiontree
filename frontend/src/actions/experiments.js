@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "./types";
+import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "./types";
 
 // GET EXPERIMENTS
 export const getExperiments = () => dispatch => {
@@ -24,4 +24,16 @@ export const deleteExperiment = id => dispatch => {
             });
         })
         .catch(err => console.log(err))
+};
+
+// ADD EXPERIMENT
+export const addExperiment = (experiment) => dispatch => {
+    axios.post(`/api/experiment/`, experiment)
+        .then(res => {
+            dispatch({
+                type: ADD_EXPERIMENTS,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log(experiment))
 };

@@ -1,5 +1,4 @@
-import {GET_EXPERIMENTS} from "../actions/types.js";
-import {DELETE_EXPERIMENTS} from "../actions/types";
+import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "../actions/types";
 
 const initialState = {
     experiments: []
@@ -16,6 +15,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 experiments: state.experiments.filter(experiment => experiment.id !== action.payload)
+            };
+        case ADD_EXPERIMENTS:
+            return {
+                ...state,
+                experiments: [...state.experiments, action.payload]
             };
         default:
             return state;
