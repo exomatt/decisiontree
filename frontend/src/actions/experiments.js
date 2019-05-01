@@ -32,6 +32,7 @@ export const deleteExperiment = id => dispatch => {
 export const addExperiment = (experiment) => dispatch => {
     axios.post(`/api/experiment/`, experiment)
         .then(res => {
+            dispatch(createMessage({createExperiment: "Experiment Created"}));
             dispatch({
                 type: ADD_EXPERIMENTS,
                 payload: res.data

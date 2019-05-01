@@ -20,10 +20,17 @@ class FormExperiment extends Component {
         const {name, description, config_file_name, data_file_name} = this.state;
         const experiment = {name, description, config_file_name, data_file_name};
         this.props.addExperiment(experiment);
+        this.setState({
+            name: "",
+            description: "",
+            config_file_name: "",
+            data_file_name: ""
+        })
     };
 
 
     render() {
+        const {name, description, config_file_name, data_file_name} = this.state;
         return (
             <div className="card border-light mb-3">
                 <form onSubmit={this.onSubmit}>
@@ -33,6 +40,7 @@ class FormExperiment extends Component {
                             <input type="text"
                                    className="form-control"
                                    name="name"
+                                   value={name}
                                    placeholder="Enter name"
                                    onChange={this.onChange}/>
 
@@ -41,6 +49,7 @@ class FormExperiment extends Component {
                             <label>Description</label>
                             <textarea className="form-control"
                                       name="description"
+                                      value={description}
                                       rows="3" cols="3"
                                       id="textAreaFormExperiment"
                                       onChange={this.onChange}/>
@@ -49,6 +58,7 @@ class FormExperiment extends Component {
                             <label>Config file</label>
                             <select className="form-control"
                                     name="config_file_name"
+                                    value={config_file_name}
                                     onChange={this.onChange}>
                                 <option value="select">Select an Option</option>
                                 <option>test1</option>
@@ -62,6 +72,7 @@ class FormExperiment extends Component {
                             <label>Data fiels</label>
                             <select className="form-control"
                                     name="data_file_name"
+                                    value={data_file_name}
                                     onChange={this.onChange}>
                                 <option value="select">Select an Option</option>
                                 <option>test1</option>

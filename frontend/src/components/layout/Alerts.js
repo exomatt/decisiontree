@@ -26,6 +26,8 @@ class Alerts extends Component {
         if (message !== prevProps.message) {
             if (message.deleteExperiment)
                 alert.success(message.deleteExperiment);
+            if (message.createExperiment)
+                alert.success(message.createExperiment);
         }
     }
 
