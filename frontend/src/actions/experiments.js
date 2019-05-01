@@ -1,4 +1,5 @@
 import axios from "axios";
+import {createMessage} from "./messages";
 
 import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_ERRORS, GET_EXPERIMENTS} from "./types";
 
@@ -18,6 +19,7 @@ export const getExperiments = () => dispatch => {
 export const deleteExperiment = id => dispatch => {
     axios.delete(`/api/experiment/${id}`)
         .then(res => {
+            dispatch(createMessage({deleteExperiment: "Experiment Deleted"}));
             dispatch({
                 type: DELETE_EXPERIMENTS,
                 payload: id
