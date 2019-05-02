@@ -39,4 +39,14 @@ class LoginAPI(generics.GenericAPIView):
             "token": Token.objects.get_or_create(user=user)[0].key
         })
 
+
 # Get User API
+class UserApi(generics.GenericAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
