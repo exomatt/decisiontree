@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
@@ -50,3 +50,10 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class LogoutAPI(generics.GenericAPIView):
+    @staticmethod
+    def post(request):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
