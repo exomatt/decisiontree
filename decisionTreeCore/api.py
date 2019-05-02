@@ -16,6 +16,4 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         return self.request.user.experiments.all()
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-
+        serializer.save(user=self.request.user)
