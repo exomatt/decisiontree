@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
+import {HashRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 
 
 import Header from "./layout/Header";
@@ -12,6 +13,9 @@ import {Provider} from "react-redux";
 import store from "../store";
 import FormExperiment from "./experiments/FormExperiment";
 import Alerts from "./layout/Alerts";
+import Login from "./accounts/Login";
+import Register from "./accounts/Register";
+
 
 const alertOptions = {
     timeout: 3000,
@@ -23,14 +27,21 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <AlertProvider template={AlertTemplate} {...alertOptions}>
-                    <Fragment>
-                        <Header/>
-                        <Alerts/>
-                        <div className="container">
-                            <Experiments/>
-                            <FormExperiment/>
-                        </div>
-                    </Fragment>
+                    <Router>
+                        <Fragment>
+                            <Header/>
+                            <Alerts/>
+                            <div className="container">
+                                <Switch>
+                                    <Route exact path="/" component={Experiments}/>
+                                    <Route exact path="/register" component={Register}/>
+                                    <Route exact path="/login" component={Login}/>
+                                </Switch>
+                                {/*<Experiments/>*/}
+                                {/*<FormExperiment/>*/}
+                            </div>
+                        </Fragment>
+                    </Router>
                 </AlertProvider>
             </Provider>
         )
