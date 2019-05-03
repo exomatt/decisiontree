@@ -15,7 +15,8 @@ import FormExperiment from "./experiments/FormExperiment";
 import Alerts from "./layout/Alerts";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
-
+import PrivateRoute from "./common/PrivateRoute";
+import {loadUser} from "../actions/auth";
 
 const alertOptions = {
     timeout: 3000,
@@ -23,6 +24,10 @@ const alertOptions = {
 };
 
 class App extends Component {
+    componentDidMount() {
+        store.dispatch(loadUser());
+    }
+
     render() {
         return (
             <Provider store={store}>
@@ -33,7 +38,7 @@ class App extends Component {
                             <Alerts/>
                             <div className="container">
                                 <Switch>
-                                    <Route exact path="/" component={Experiments}/>
+                                    <PrivateRoute exact path="/" component={Experiments}/>
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
                                 </Switch>
