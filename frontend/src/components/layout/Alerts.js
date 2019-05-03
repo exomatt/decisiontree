@@ -18,9 +18,13 @@ class Alerts extends Component {
             if (error.msg.description)
                 alert.error(`Description: ${error.msg.description.join()}`);
             if (error.msg.config_file_name)
-                alert.error(`Description: ${error.msg.config_file_name.join()}`);
+                alert.error(`Config file: ${error.msg.config_file_name.join()}`);
             if (error.msg.data_file_name)
-                alert.error(`Description: ${error.msg.data_file_name.join()}`);
+                alert.error(`Data file: ${error.msg.data_file_name.join()}`);
+            if (error.msg.non_field_errors)
+                alert.error(`${error.msg.non_field_errors.join()}`);
+            if (error.msg.username)
+                alert.error(`${error.msg.username.join()}`);
         }
 
         if (message !== prevProps.message) {
@@ -28,6 +32,8 @@ class Alerts extends Component {
                 alert.success(message.deleteExperiment);
             if (message.createExperiment)
                 alert.success(message.createExperiment);
+            if (message.passwordNotMatch)
+                alert.error(message.passwordNotMatch);
         }
     }
 

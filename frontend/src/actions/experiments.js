@@ -1,11 +1,11 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
-
+import {tokenConfig} from "./auth";
 import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "./types";
 
 // GET EXPERIMENTS
-export const getExperiments = () => dispatch => {
-    axios.get('/api/experiment')
+export const getExperiments = () => (dispatch, getState) => {
+    axios.get('/api/experiment', tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: GET_EXPERIMENTS,
@@ -16,8 +16,8 @@ export const getExperiments = () => dispatch => {
 };
 
 // DELETE EXPERIMENT
-export const deleteExperiment = id => dispatch => {
-    axios.delete(`/api/experiment/${id}`)
+export const deleteExperiment = id => (dispatch, getState) => {
+    axios.delete(`/api/experiment/${id}`, tokenConfig(getState))
         .then(res => {
             dispatch(createMessage({deleteExperiment: "Experiment Deleted"}));
             dispatch({
@@ -29,8 +29,8 @@ export const deleteExperiment = id => dispatch => {
 };
 
 // ADD EXPERIMENT
-export const addExperiment = (experiment) => dispatch => {
-    axios.post(`/api/experiment/`, experiment)
+export const addExperiment = (experiment) => (dispatch, getState) => {
+    axios.post(`/api/experiment/`, experiment, tokenConfig(getState))
         .then(res => {
             dispatch(createMessage({createExperiment: "Experiment Created"}));
             dispatch({

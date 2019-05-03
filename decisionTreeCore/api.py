@@ -13,7 +13,7 @@ class ExperimentViewSet(viewsets.ModelViewSet):
     serializer_class = ExperimentSerializer
 
     def get_queryset(self):
-        return self.request.user.experiments.all()
+        return self.request.user.experiment.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

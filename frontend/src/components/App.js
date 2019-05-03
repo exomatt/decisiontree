@@ -39,11 +39,11 @@ class App extends Component {
                             <div className="container">
                                 <Switch>
                                     <PrivateRoute exact path="/" component={Experiments}/>
+                                    <PrivateRoute exact path="/newExperiment" component={FormExperiment}/>
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
                                 </Switch>
                                 {/*<Experiments/>*/}
-                                {/*<FormExperiment/>*/}
                             </div>
                         </Fragment>
                     </Router>
