@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 
@@ -56,4 +57,22 @@ class LogoutAPI(generics.GenericAPIView):
     @staticmethod
     def post(request):
         request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+class FilesUpload(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def put(self, request, format=None):
+        user = request.user
+        username = user.username
+        file_list = request.FILES.getlist('file')
+        for file in file_list:
+            name = file._name
+            path = "users/" + username + "/" + name
+            with open(path, 'wb') as f:
+                for chunk in file.chunks():
+                    f.write(chunk)
         return Response(status=status.HTTP_200_OK)
