@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 
+from os import listdir, remove
+from os.path import isfile, join
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -53,6 +56,7 @@ class UserAPI(generics.RetrieveAPIView):
         return self.request.user
 
 
+# Get Logout  API
 class LogoutAPI(generics.GenericAPIView):
     @staticmethod
     def post(request):
@@ -60,12 +64,22 @@ class LogoutAPI(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class FilesUpload(APIView):
+# User Files API
+class UserFiles(APIView):
     permission_classes = [
         permissions.IsAuthenticated
     ]
 
-    def put(self, request, format=None):
+    @staticmethod
+    def get(request):
+        user = request.user
+        username = user.username
+        path = "users/" + username + "/"
+        files = [f for f in listdir(path) if isfile(join(path, f))]
+        return Response(status=status.HTTP_200_OK, data=files)
+
+    @staticmethod
+    def put(request, format=None):
         user = request.user
         username = user.username
         file_list = request.FILES.getlist('file')
@@ -76,3 +90,16 @@ class FilesUpload(APIView):
                 for chunk in file.chunks():
                     f.write(chunk)
         return Response(status=status.HTTP_200_OK)
+
+    @staticmethod
+    def delete(request):
+        user = request.user
+        username = user.username
+        name = request.data['name']
+        path = "users/" + username + "/" + name
+
+        if isfile(path):
+            remove(path)
+            return Response(status=status.HTTP_200_OK, data="Successfully delete file ")
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Can't delete file")
