@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import {HashRouter as Router, Route, Switch} from "react-router-dom";
 
 
 import Header from "./layout/Header";
@@ -17,7 +17,7 @@ import Login from "./accounts/Login";
 import Register from "./accounts/Register";
 import PrivateRoute from "./common/PrivateRoute";
 import {loadUser} from "../actions/auth";
-import Files from "./files/Files";
+import UserFiles from "./files/UserFiles";
 
 const alertOptions = {
     timeout: 3000,
@@ -41,7 +41,7 @@ class App extends Component {
                                 <Switch>
                                     <PrivateRoute exact path="/" component={Experiments}/>
                                     <PrivateRoute exact path="/newExperiment" component={FormExperiment}/>
-                                    <PrivateRoute exact path="/files" component={Files}/>
+                                    <PrivateRoute exact path="/files" component={UserFiles}/>
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
                                 </Switch>

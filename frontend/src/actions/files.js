@@ -49,7 +49,25 @@ export const deleteFiles = name => (dispatch, getState) => {
 
 // ADD EXPERIMENT
 export const addFiles = (file) => (dispatch, getState) => {
-    axios.put(`api/auth/userFiles`, file, tokenConfig(getState))
+    //Get token from state
+    const token = getState().auth.token;
+
+    // Headers
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+
+    // If token, add to headers config
+    if (token) {
+        config.headers['Authorization'] = `Token ${token}`;
+    }
+    var formData = new FormData();
+    file.map((file) => {
+        formData.append(`file`, file);
+    });
+    axios.put(`api/auth/userFiles`, formData, config)
         .then(res => {
             dispatch(createMessage({createExperiment: "File/Files added"}));
             dispatch({
