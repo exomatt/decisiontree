@@ -17,6 +17,7 @@ import Login from "./accounts/Login";
 import Register from "./accounts/Register";
 import PrivateRoute from "./common/PrivateRoute";
 import {loadUser} from "../actions/auth";
+import Files from "./files/Files";
 
 const alertOptions = {
     timeout: 3000,
@@ -40,6 +41,7 @@ class App extends Component {
                                 <Switch>
                                     <PrivateRoute exact path="/" component={Experiments}/>
                                     <PrivateRoute exact path="/newExperiment" component={FormExperiment}/>
+                                    <PrivateRoute exact path="/files" component={Files}/>
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
                                 </Switch>

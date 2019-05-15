@@ -95,7 +95,7 @@ class UserFiles(APIView):
     def delete(request):
         user = request.user
         username = user.username
-        name = request.data['name']
+        name = request.query_params['name']
         path = "users/" + username + "/" + name
 
         if isfile(path):
