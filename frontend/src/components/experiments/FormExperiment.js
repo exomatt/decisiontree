@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {addExperiment} from "../../actions/experiments";
+import {getFiles} from "../../actions/files";
 
 class FormExperiment extends Component {
     static propTypes = {
+        files: PropTypes.array.isRequired,
+        getFiles: PropTypes.func.isRequired,
         addExperiment: PropTypes.func.isRequired
     };
     state = {
@@ -28,9 +31,22 @@ class FormExperiment extends Component {
         })
     };
 
+    componentDidMount() {
+        this.props.getFiles();
+    };
 
     render() {
         const {name, description, config_file_name, data_file_name} = this.state;
+        let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
+        let data_files = this.props.files.filter(file => file.endsWith(".data"));
+        let optionItemsXml = xml_files.map((file) =>
+            <option key={file}>{file}</option>
+        );
+        let optionItemsData = data_files.map((file) =>
+            <option key={file}>{file.substring(0, file.length - 5)}</option>
+        );
+        console.log(xml_files);
+        console.log(data_files);
         return (
             <div className="card border-light mb-3">
                 <form onSubmit={this.onSubmit}>
@@ -60,26 +76,16 @@ class FormExperiment extends Component {
                                     name="config_file_name"
                                     value={config_file_name}
                                     onChange={this.onChange}>
-                                <option value="select">Select an Option</option>
-                                <option>test1</option>
-                                <option>test2</option>
-                                <option>test3</option>
-                                <option>test4</option>
-                                <option>test5</option>
+                                {optionItemsXml}
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>Data fiels</label>
+                            <label>Data file</label>
                             <select className="form-control"
                                     name="data_file_name"
                                     value={data_file_name}
                                     onChange={this.onChange}>
-                                <option value="select">Select an Option</option>
-                                <option>test1</option>
-                                <option>test2</option>
-                                <option>test3</option>
-                                <option>test4</option>
-                                <option>test5</option>
+                                {optionItemsData}
                             </select>
                         </div>
 
@@ -91,4 +97,8 @@ class FormExperiment extends Component {
     }
 }
 
-export default connect(null, {addExperiment})(FormExperiment);
+const mapStateToProps = state => ({
+    files: state.files.files
+});
+
+export default connect(mapStateToProps, {getFiles, addExperiment})(FormExperiment);

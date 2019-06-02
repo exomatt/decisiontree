@@ -26,7 +26,7 @@ export class Header extends Component {
                       </strong>
             </span>
                 <li className="nav-item active">
-                    <button onClick={this.props.logout} type="button" className="btn btn-secondary">Logout</button>
+                    <button onClick={this.props.logout} type="button" className="btn btn-primary">Logout</button>
                 </li>
             </ul>
         );
