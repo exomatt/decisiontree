@@ -1,12 +1,12 @@
 from os import listdir, remove
 from os.path import isfile, join
 
+from django.conf import settings
 from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from decisionTreeCore.task import test
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 
 
@@ -74,9 +74,8 @@ class UserFiles(APIView):
     @staticmethod
     def get(request):
         user = request.user
-        test.delay()
         username = user.username
-        path = "users/" + username + "/"
+        path = settings.BASE_USERS_DIR + username + "/"
         files = [f for f in listdir(path) if isfile(join(path, f))]
         return Response(status=status.HTTP_200_OK, data=files)
 

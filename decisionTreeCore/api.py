@@ -1,5 +1,7 @@
+from django.conf import settings
 from rest_framework import permissions, viewsets
 
+from decisionTreeCore.task import gdt_run
 from .serializers import ExperimentSerializer
 
 
@@ -16,4 +18,8 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         return self.request.user.experiment.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        experiment = serializer.save(user=self.request.user, status="Running")
+        user = self.request.user
+        username = user.username
+        path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
+        gdt_run.delay(path, experiment.id)

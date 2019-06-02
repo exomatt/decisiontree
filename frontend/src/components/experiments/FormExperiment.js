@@ -76,6 +76,7 @@ class FormExperiment extends Component {
                                     name="config_file_name"
                                     value={config_file_name}
                                     onChange={this.onChange}>
+                                <option value="select">Select an Option</option>
                                 {optionItemsXml}
                             </select>
                         </div>
@@ -85,6 +86,7 @@ class FormExperiment extends Component {
                                     name="data_file_name"
                                     value={data_file_name}
                                     onChange={this.onChange}>
+                                <option value="select">Select an Option</option>
                                 {optionItemsData}
                             </select>
                         </div>

@@ -7,7 +7,7 @@ from django.db import models
 
 
 class Experiment(models.Model):
-    status_choice = (('Pending', 'Pending'), ('Error', 'Error'), ('Running', 'Running'), ('Finished', 'Finished'),
+    status_choice = (('Error', 'Error'), ('Running', 'Running'), ('Finished', 'Finished'),
                      ('Created', 'Created'),)
 
     name = models.CharField(max_length=50)
