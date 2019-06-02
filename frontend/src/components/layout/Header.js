@@ -15,12 +15,18 @@ export class Header extends Component {
         const {isAuthenticated, user} = this.props.auth;
         const authLinks = (
             <ul className="navbar-nav mr-auto">
+                <li className="nav-item active">
+                    <Link to={"/newExperiment"} className={"nav-link"}>New Experiment</Link>
+                </li>
+                <li className="nav-item active">
+                    <Link to={"/files"} className={"nav-link"}>Files</Link>
+                </li>
                  <span className="navbar-text mr-3">
                                  <strong>{user ? `Welcome ${user.username}` : ""}
                       </strong>
             </span>
                 <li className="nav-item active">
-                    <button onClick={this.props.logout} type="button" className="btn btn-secondary">Logout</button>
+                    <button onClick={this.props.logout} type="button" className="btn btn-primary">Logout</button>
                 </li>
             </ul>
         );
