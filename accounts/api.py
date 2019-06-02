@@ -1,12 +1,13 @@
+from os import listdir, remove
+from os.path import isfile, join
+
 from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from decisionTreeCore.task import test
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-
-from os import listdir, remove
-from os.path import isfile, join
 
 
 # Register API
@@ -73,6 +74,7 @@ class UserFiles(APIView):
     @staticmethod
     def get(request):
         user = request.user
+        test.delay()
         username = user.username
         path = "users/" + username + "/"
         files = [f for f in listdir(path) if isfile(join(path, f))]
