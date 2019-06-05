@@ -21,13 +21,18 @@ def test():
 def gdt_run(filename, experiment_id):
     filename = os.path.abspath(filename)
     command = settings.PROGRAM_PATH + " -f %s" % filename
-    process = Popen(command, shell=True, stdout=PIPE)
+    process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
     while True:
         output = process.stdout.readline().decode('utf-8')
         if process.poll() is not None:
             break
         print(output.strip())
+    print(process.stderr)
+    set_finished(experiment_id)
+    return process.stdout
+
+
+def set_finished(experiment_id):
     experiment = Experiment.objects.all().get(id=experiment_id)
     experiment.status = "Finished"
     experiment.save()
-    return process.stdout

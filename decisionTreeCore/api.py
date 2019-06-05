@@ -1,3 +1,4 @@
+import xmltodict
 from django.conf import settings
 from rest_framework import permissions, viewsets
 
@@ -22,4 +23,21 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         user = self.request.user
         username = user.username
         path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
+        parse()
         gdt_run.delay(path, experiment.id)
+
+
+# todo dokonczyc parsownie i okreslenie sciezek
+def parse(filename, username, change):
+    path = settings.BASE_USERS_DIR + username + "/" + filename
+    with open(path, "r") as file:
+        readlines = file.read().replace('\n', '')
+    parse = xmltodict.parse(readlines)
+    print(parse)
+
+    unparse = xmltodict.unparse(parse, pretty=True)
+
+    print(unparse)
+
+    with open(path, "w") as file:
+        file.write(unparse)

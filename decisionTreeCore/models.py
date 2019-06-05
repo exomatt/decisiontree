@@ -17,4 +17,4 @@ class Experiment(models.Model):
     user = models.ForeignKey(get_user_model(), related_name="experiment", on_delete=models.CASCADE, default=1)
     config_file_name = models.CharField(max_length=50)
     data_file_name = models.CharField(max_length=50)
-    result_file_name = models.CharField(max_length=50, blank=True)
+    result_file_path = models.CharField(max_length=50, blank=True)
