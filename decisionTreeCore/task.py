@@ -19,6 +19,7 @@ def test():
 
 @shared_task
 def gdt_run(filename, experiment_id):
+    set_status(experiment_id, "Created")
     filename = os.path.abspath(filename)
     command = settings.PROGRAM_PATH + " -f %s" % filename
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
@@ -28,11 +29,11 @@ def gdt_run(filename, experiment_id):
             break
         print(output.strip())
     print(process.stderr)
-    set_finished(experiment_id)
+    set_status(experiment_id, "Finished")
     return process.stdout
 
 
-def set_finished(experiment_id):
+def set_status(experiment_id, status: str):
     experiment = Experiment.objects.all().get(id=experiment_id)
-    experiment.status = "Finished"
+    experiment.status = status
     experiment.save()
