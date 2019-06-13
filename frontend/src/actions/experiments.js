@@ -1,7 +1,7 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
-import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "./types";
+import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENT_ID, GET_EXPERIMENTS} from "./types";
 
 // GET EXPERIMENTS
 export const getExperiments = () => (dispatch, getState) => {
@@ -9,6 +9,18 @@ export const getExperiments = () => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: GET_EXPERIMENTS,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
+// GET EXPERIMENT WITH ID
+export const getExperimentById = id => (dispatch, getState) => {
+    axios.get(`/api/experiment/${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: GET_EXPERIMENT_ID,
                 payload: res.data
             });
         })

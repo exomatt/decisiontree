@@ -1,8 +1,9 @@
-import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "../actions/types";
+import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENT_ID, GET_EXPERIMENTS} from "../actions/types";
 
 const initialState = {
-    experiments: []
-}
+    experiments: [],
+    experiment: {}
+};
 
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -10,6 +11,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 experiments: action.payload
+            };
+        case GET_EXPERIMENT_ID:
+            return {
+                ...state,
+                experiment: action.payload
             };
         case DELETE_EXPERIMENTS:
             return {

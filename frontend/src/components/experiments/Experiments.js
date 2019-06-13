@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {deleteExperiment, getExperiments} from "../../actions/experiments";
+import {deleteExperiment, getExperiments, getExperimentById} from "../../actions/experiments";
+import {Link} from "react-router-dom";
 
 
 class Experiments extends Component {
     static propTypes = {
         experiments: PropTypes.array.isRequired,
         getExperiments: PropTypes.func.isRequired,
+        getExperimentById: PropTypes.func.isRequired,
         deleteExperiment: PropTypes.func.isRequired
     };
 
@@ -38,7 +40,11 @@ class Experiments extends Component {
                             <td>{experiment.status}</td>
                             <td>{experiment.date}</td>
                             <td>
-                                <button type="button" className="btn btn-primary">Show</button>
+                                <Link to={"/showExperiment"} className={"btn btn-primary"}
+                                      onClick={this.props.getExperimentById.bind(this, experiment.id)}>Show</Link>
+                                {/*<button onClick={this.props.getExperimentById.bind(this, experiment.id)}*/}
+                                {/*        type="button" className="btn btn-primary">Show*/}
+                                {/*</button>*/}
                             </td>
                             <td>
                                 <button onClick={this.props.deleteExperiment.bind(this, experiment.id)} type="button"
@@ -59,4 +65,4 @@ const mapStateToProps = state => ({
     experiments: state.experiments.experiments
 });
 
-export default connect(mapStateToProps, {getExperiments, deleteExperiment})(Experiments);
+export default connect(mapStateToProps, {getExperiments, getExperimentById, deleteExperiment})(Experiments);
