@@ -7,6 +7,7 @@ from decisionTreeCore.models import Experiment
 from decisionTreeCore.task import gdt_run
 from .serializers import ExperimentSerializer
 from shutil import copyfile
+from os.path import abspath
 
 
 # Experiments Viewset
@@ -27,14 +28,15 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         username = user.username
         config_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
         data_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.data_file_name
-        # parse()
-        new_experiment = prepare_files(experiment, username, config_file_path, data_file_path)
-        # gdt_run.delay(config_file_path, new_experiment.id)
+        prepare_files(experiment, username, config_file_path, data_file_path)
+        change_xml_params(experiment)
+        gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
 
-def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str) -> Experiment:
+def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str):
     path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
     mkdir(path)
+    mkdir(path + '/out')
     new_config_path = path + "/" + experiment.config_file_name
     new_data_path = path + "/" + experiment.data_file_name
     copyfile(config_file_path, new_config_path)
@@ -42,23 +44,22 @@ def prepare_files(experiment: Experiment, username: str, config_file_path: str, 
     copyfile(data_file_path + ".data", new_data_path + ".data")
     copyfile(data_file_path + ".test", new_data_path + ".test")
     experiment.result_directory_path = path
-    experiment.config_file_name = new_config_path
-    experiment.data_file_name = new_data_path
-    experiment_save = experiment.save()
-    return experiment_save
+    experiment.save()
+    experiment.refresh_from_db()
 
 
 # todo dokonczyc parsownie i okreslenie sciezek
-def parse(filename, username, change):
-    path = settings.BASE_USERS_DIR + username + "/" + filename
-    with open(path, "r") as file:
-        readlines = file.read().replace('\n', '')
-    parse = xmltodict.parse(readlines)
-    print(parse)
+def change_xml_params(experiment: Experiment):
+    config_file_name = experiment.result_directory_path + "/" + experiment.config_file_name
+    with open(config_file_name, "r") as file:
+        read_lines = file.read().replace('\n', '')
+    config = xmltodict.parse(read_lines)
+    config['MLPExperiment']['MLPClassification']['@OutputFolder'] = abspath(experiment.result_directory_path) + '/out'
+    config['MLPExperiment']['MLPClassification']['MLPDatasets']['MLPDataset']['@Name'] = experiment.data_file_name
+    config['MLPExperiment']['MLPClassification']['MLPDatasets']['MLPDataset'][
+        '@Path2Stem'] = abspath(experiment.result_directory_path) + '/' + experiment.data_file_name
 
-    unparse = xmltodict.unparse(parse, pretty=True)
+    unparsed = xmltodict.unparse(config, pretty=True)
 
-    print(unparse)
-
-    with open(path, "w") as file:
-        file.write(unparse)
+    with open(config_file_name, "w") as file:
+        file.write(unparsed)
