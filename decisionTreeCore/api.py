@@ -1,3 +1,4 @@
+import os
 from os import mkdir
 from os.path import abspath
 from shutil import copyfile, make_archive
@@ -5,6 +6,7 @@ from shutil import copyfile, make_archive
 import xmltodict
 from django.conf import settings
 from django.http import HttpResponse
+from django.utils.encoding import smart_str
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -85,6 +87,9 @@ class ExperimentResult(APIView):
     #     return Response(status=status.HTTP_200_OK)
 
 
+from django.views.static import serve
+
+
 class ExperimentFiles(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -92,18 +97,19 @@ class ExperimentFiles(APIView):
 
     @staticmethod
     def get(request):
-        print(request)
         experiment_id = request.query_params['id']
         experiment = Experiment.objects.get(pk=experiment_id)
+        if (Experiment.status != 'Finished'):
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Experiment is not finished yet")
         result_directory_path = experiment.result_directory_path
         zip_file_path = result_directory_path + '/' + experiment_id + '_' + experiment.name
         make_archive(zip_file_path, 'zip',
                      result_directory_path + "/")
+        # zip_file = open(zip_file_path + '.zip', 'rb')
 
-        zip_file = open(zip_file_path + '.zip', 'rb')
-
-        response = HttpResponse(zip_file, content_type='application/zip')
-        response['Content-Disposition'] = 'attachment; filename=name.zip'
-
-        return response
+        # response = HttpResponse(zip_file, content_type='application/force-download')
+        # response['Content-Disposition'] = 'attachment; filename=%s' %  smart_str(zip_file)
+        # response['X-Sendfile'] = smart_str(zip_file)
+        # return response
         # return Response(status=status.HTTP_200_OK, content_type='application/zip', data=zip_file)
+        return serve(request, os.path.basename(zip_file_path + '.zip'), os.path.dirname(zip_file_path + '.zip'))
