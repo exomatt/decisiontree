@@ -21,7 +21,7 @@ class Experiments extends Component {
         return (
             <div>
                 <h1>Experiments:</h1>
-                <table className="table table-striped">
+                <table className="table table-striped" datapagesize={5}>
                     <thead>
                     <tr>
                         <th>ID</th>

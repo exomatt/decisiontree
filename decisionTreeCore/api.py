@@ -1,13 +1,17 @@
-import xmltodict
-from datetime import datetime
-from django.conf import settings
-from rest_framework import permissions, viewsets
 from os import mkdir
+from os.path import abspath
+from shutil import copyfile, make_archive
+
+import xmltodict
+from django.conf import settings
+from django.http import HttpResponse
+from rest_framework import permissions, viewsets, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from decisionTreeCore.models import Experiment
 from decisionTreeCore.task import gdt_run
 from .serializers import ExperimentSerializer
-from shutil import copyfile
-from os.path import abspath
 
 
 # Experiments Viewset
@@ -31,6 +35,8 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         prepare_files(experiment, username, config_file_path, data_file_path)
         change_xml_params(experiment)
         gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
+
+    # def perform_destroy(self, instance):
 
 
 def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str):
@@ -63,3 +69,41 @@ def change_xml_params(experiment: Experiment):
 
     with open(config_file_name, "w") as file:
         file.write(unparsed)
+
+
+# EXPERIMENT RESULT API
+class ExperimentResult(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    # @staticmethod
+    # def get(request, number=None):
+    #     print(request)
+    #     experiment = Experiment.objects.get(pk=experiment_id)
+    #     print(experiment.result.id)
+    #     return Response(status=status.HTTP_200_OK)
+
+
+class ExperimentFiles(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    @staticmethod
+    def get(request):
+        print(request)
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        result_directory_path = experiment.result_directory_path
+        zip_file_path = result_directory_path + '/' + experiment_id + '_' + experiment.name
+        make_archive(zip_file_path, 'zip',
+                     result_directory_path + "/")
+
+        zip_file = open(zip_file_path + '.zip', 'rb')
+
+        response = HttpResponse(zip_file, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=name.zip'
+
+        return response
+        # return Response(status=status.HTTP_200_OK, content_type='application/zip', data=zip_file)

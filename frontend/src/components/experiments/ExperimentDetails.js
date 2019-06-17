@@ -32,6 +32,9 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
                         <p className="card-text">{this.error()}</p><br/>
+                        <a className="card-text"
+                           href={"/home/exomat/Pulpit/decisionTree/users/test11/116_asdasd/116_asdasd.zip"}>download
+                            file </a>
                     </div>
                 </div>
             )
@@ -47,6 +50,7 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                        <a className="card-text" href={"localhost:8000/api/files?id=116dddd"}>download file </a>
                         {/*<Link to={"/showTree"} className={"btn btn-primary"}*/}
                         {/*             onClick={this.props.getExperimentById.bind(this, experiment.id)}>Tree</Link>*/}
                     </div>
