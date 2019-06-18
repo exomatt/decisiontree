@@ -1,8 +1,14 @@
-import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENT_ID, GET_EXPERIMENTS} from "../actions/types";
+import {
+    ADD_EXPERIMENTS,
+    DELETE_EXPERIMENTS,
+    GET_EXPERIMENT_ID,
+    GET_EXPERIMENTS
+} from "../actions/types";
 
 const initialState = {
     experiments: [],
-    experiment: {}
+    experiment: {},
+    file: {}
 };
 
 export default function (state = initialState, action) {

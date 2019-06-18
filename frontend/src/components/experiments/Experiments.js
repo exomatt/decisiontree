@@ -42,9 +42,6 @@ class Experiments extends Component {
                             <td>
                                 <Link to={"/showExperiment"} className={"btn btn-primary"}
                                       onClick={this.props.getExperimentById.bind(this, experiment.id)}>Show</Link>
-                                {/*<button onClick={this.props.getExperimentById.bind(this, experiment.id)}*/}
-                                {/*        type="button" className="btn btn-primary">Show*/}
-                                {/*</button>*/}
                             </td>
                             <td>
                                 <button onClick={this.props.deleteExperiment.bind(this, experiment.id)} type="button"
@@ -65,4 +62,8 @@ const mapStateToProps = state => ({
     experiments: state.experiments.experiments
 });
 
-export default connect(mapStateToProps, {getExperiments, getExperimentById, deleteExperiment})(Experiments);
+export default connect(mapStateToProps, {
+    getExperiments,
+    getExperimentById,
+    deleteExperiment
+})(Experiments);

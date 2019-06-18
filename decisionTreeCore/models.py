@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -18,6 +19,7 @@ class Experiment(models.Model):
     config_file_name = models.CharField(max_length=50)
     data_file_name = models.CharField(max_length=50)
     result_directory_path = models.CharField(max_length=50, blank=True)
+
 
 class Result(models.Model):
     experiment = models.OneToOneField(Experiment, on_delete=models.CASCADE)

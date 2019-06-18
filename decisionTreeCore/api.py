@@ -99,7 +99,8 @@ class ExperimentFiles(APIView):
     def get(request):
         experiment_id = request.query_params['id']
         experiment = Experiment.objects.get(pk=experiment_id)
-        if (Experiment.status != 'Finished'):
+        error = ('Finished', 'Error')
+        if experiment.status not in error:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Experiment is not finished yet")
         result_directory_path = experiment.result_directory_path
         zip_file_path = result_directory_path + '/' + experiment_id + '_' + experiment.name
