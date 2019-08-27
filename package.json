@@ -36,6 +36,7 @@
     "react": "^16.8.6",
     "react-alert": "^5.4.0",
     "react-alert-template-basic": "^1.0.0",
+    "react-d3-tree": "^1.14.2",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.4",
     "react-transition-group": "^4.0.0"

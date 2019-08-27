@@ -31,7 +31,7 @@ def read_from_file(file_path) -> List[str]:
         return only_tree
 
 
-def read_tree(tree: List[str]) -> List[Node]:
+def read_tree(tree: List[str]) -> Node:
     nodes: List[Node] = list()
     stack: List[Node] = list()
     for row in tree:
@@ -54,8 +54,22 @@ def read_tree(tree: List[str]) -> List[Node]:
             stack[-1].add_child(child)
             stack.append(child)
             continue
-    return nodes
+    if len(nodes) > 1:
+        root = Node(name="root")
+        for node in nodes:
+            root.add_child(node)
+        nodes.clear()
+        nodes.append(root)
+
+    return nodes[0]
 
 
 def get_json_tree(tree: List[Node]) -> str:
     return dumper(tree)
+
+
+def get_tree(file_path: str) -> str:
+    tree_from_file = read_from_file(file_path)
+    tree_structure = read_tree(tree_from_file)
+    json_tree = get_json_tree(tree_structure)
+    return json_tree

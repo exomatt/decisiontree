@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {Redirect} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import axios from "axios";
+import {getTreeByNumber} from "../../actions/experiments";
 
 
 class ExperimentDetails extends Component {
     static propTypes = {
         experiment: PropTypes.object.isRequired,
-        token: PropTypes.string.isRequired
+        token: PropTypes.string.isRequired,
+        getTreeByNumber: PropTypes.func.isRequired,
     };
 
     error() {
@@ -77,7 +79,13 @@ class ExperimentDetails extends Component {
         }
     }
 
+    renderRuns() {
+
+
+    }
+
     render() {
+        const runsNumber = this.props.experiment.runs_number;
         if (!this.props.experiment.hasOwnProperty('id'))
             return (<Redirect to='/'/>);
         if (this.props.experiment.error_message) {
@@ -112,6 +120,9 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                        <Link to={"/showTree"} className={"btn btn-link"}
+                              onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, 1)}>Tree from run
+                            number 1 </Link><br/>
                         {this.renderButton()}
                         {/*<a className="card-text" href={"localhost:8000/api/files?id=116dddd"}>download file </a>*/}
                         {/*<Link to={"/showTree"} className={"btn btn-primary"}*/}
@@ -135,9 +146,4 @@ const
         token: state.auth.token
     });
 
-export default connect(mapStateToProps)
-
-(
-    ExperimentDetails
-)
-;
+export default connect(mapStateToProps, {getTreeByNumber})(ExperimentDetails);

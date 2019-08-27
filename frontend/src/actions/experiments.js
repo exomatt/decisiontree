@@ -1,7 +1,7 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
-import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENT_ID, GET_EXPERIMENTS} from "./types";
+import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENT_ID, GET_EXPERIMENTS, GET_TREE_BY_NUMBER} from "./types";
 
 // GET EXPERIMENTS
 export const getExperiments = () => (dispatch, getState) => {
@@ -51,4 +51,16 @@ export const addExperiment = (experiment) => (dispatch, getState) => {
             });
         })
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+// GET TREE BY RUN NUMBER
+export const getTreeByNumber = (id, runNumber) => (dispatch, getState) => {
+    axios.get(`/api/results?id=${id}&runNumber=${runNumber}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: GET_TREE_BY_NUMBER,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
 };

@@ -19,7 +19,7 @@ class Experiment(models.Model):
     config_file_name = models.CharField(max_length=50)
     data_file_name = models.CharField(max_length=50)
     result_directory_path = models.CharField(max_length=50, blank=True)
-
+    runs_number = models.SmallIntegerField(blank=True, default=1)
 
 class Result(models.Model):
     experiment = models.OneToOneField(Experiment, on_delete=models.CASCADE)

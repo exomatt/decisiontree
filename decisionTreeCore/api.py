@@ -1,18 +1,16 @@
 import os
-from os import mkdir
-from os.path import abspath
+from os import mkdir, listdir
+from os.path import abspath, isfile, join
 from shutil import copyfile, make_archive
-
 import xmltodict
 from django.conf import settings
-from django.http import HttpResponse
-from django.utils.encoding import smart_str
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from decisionTreeCore.models import Experiment
 from decisionTreeCore.task import gdt_run
+from decisionTreeCore.utils import ExperimentUtils
 from .serializers import ExperimentSerializer
 
 
@@ -66,7 +64,7 @@ def change_xml_params(experiment: Experiment):
     config['MLPExperiment']['MLPClassification']['MLPDatasets']['MLPDataset']['@Name'] = experiment.data_file_name
     config['MLPExperiment']['MLPClassification']['MLPDatasets']['MLPDataset'][
         '@Path2Stem'] = abspath(experiment.result_directory_path) + '/' + experiment.data_file_name
-
+    config['MLPExperiment']['MLPClassification']['@Runs'] = experiment.runs_number
     unparsed = xmltodict.unparse(config, pretty=True)
 
     with open(config_file_name, "w") as file:
@@ -79,12 +77,27 @@ class ExperimentResult(APIView):
         permissions.IsAuthenticated
     ]
 
-    # @staticmethod
-    # def get(request, number=None):
-    #     print(request)
-    #     experiment = Experiment.objects.get(pk=experiment_id)
-    #     print(experiment.result.id)
-    #     return Response(status=status.HTTP_200_OK)
+    @staticmethod
+    def get(request):
+        experiment_id = request.query_params['id']
+        run_number: int = int(request.query_params['runNumber']) - 1
+        error = ('Finished', 'Error')
+        experiment = Experiment.objects.get(pk=experiment_id)
+        if experiment.status not in error:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Experiment is not finished yet")
+        path = experiment.result_directory_path + "/out/"
+        only_files = [f for f in listdir(path) if isfile(join(path, f))]
+        filename: str = ""
+        for name in only_files:
+            number_ = "RUN" + str(run_number)
+            if number_ in name:
+                filename = name
+                break
+        tree = ExperimentUtils.get_tree(path + filename)
+        import json
+        obj = json.loads(tree)
+
+        return Response(status=status.HTTP_200_OK, data=obj)
 
 
 from django.views.static import serve

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework.authtoken',
     'accounts',
+    'reset_migrations',
 ]
 
 REST_FRAMEWORK = {

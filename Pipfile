@@ -12,6 +12,7 @@ django-rest-knox = "*"
 xmltodict = "*"
 flower = "*"
 jsonweb = "*"
+django-reset-migrations = "*"
 
 [requires]
 python_version = "3.7"

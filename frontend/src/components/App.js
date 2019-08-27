@@ -19,6 +19,7 @@ import PrivateRoute from "./common/PrivateRoute";
 import {loadUser} from "../actions/auth";
 import UserFiles from "./files/UserFiles";
 import ExperimentDetails from "./experiments/ExperimentDetails";
+import ShowTree from "./experiments/ShowTree";
 
 const alertOptions = {
     timeout: 3000,
@@ -45,7 +46,8 @@ class App extends Component {
                                     <PrivateRoute exact path="/files" component={UserFiles}/>
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
-                                    <Route exact path="/showExperiment" component={ExperimentDetails}/>
+                                    <PrivateRoute exact path="/showExperiment" component={ExperimentDetails}/>
+                                    <PrivateRoute exact path="/showTree" component={ShowTree}/>
                                 </Switch>
                                 {/*<Experiments/>*/}
                             </div>
