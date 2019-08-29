@@ -39,6 +39,7 @@
     "react-d3-tree": "^1.14.2",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.4",
+    "react-google-recaptcha": "^2.0.0-rc.1",
     "react-transition-group": "^4.0.0"
   }
 }

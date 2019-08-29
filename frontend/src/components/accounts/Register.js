@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {login, register} from "../../actions/auth";
 import {createMessage} from "../../actions/messages";
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 class Register extends Component {
@@ -20,6 +21,10 @@ class Register extends Component {
     onSubmit = e => {
         e.preventDefault();
         const {username, email, password, password2} = this.state;
+        if (this.captcha === false) {
+            this.props.createMessage({passwordNotMatch: 'Please fill captcha input'});
+            return;
+        }
         if (password !== password2) {
             this.props.createMessage({passwordNotMatch: 'Password do not match'});
         } else {
@@ -27,11 +32,17 @@ class Register extends Component {
                 username,
                 password,
                 email
-            }
+            };
             this.props.register(newUser);
         }
     };
     onChange = e => this.setState({[e.target.name]: e.target.value});
+
+    captcha = false;
+
+    onChange2 = value => {
+        this.captcha = true;
+    };
 
     render() {
         if (this.props.isAuthenticated) {
@@ -83,6 +94,12 @@ class Register extends Component {
                                 value={password2}
                             />
                         </div>
+
+                        <div className="form-group">
+                            <ReCAPTCHA
+                                sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                onChange={this.onChange2}
+                            /></div>
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary">
                                 Register
