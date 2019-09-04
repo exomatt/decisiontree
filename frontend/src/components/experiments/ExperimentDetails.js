@@ -79,11 +79,6 @@ class ExperimentDetails extends Component {
         }
     }
 
-    renderRuns() {
-
-
-    }
-
     render() {
         let i;
         let lis = [];
