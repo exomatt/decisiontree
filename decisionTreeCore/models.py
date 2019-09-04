@@ -7,7 +7,7 @@ from django.db import models
 
 
 class Experiment(models.Model):
-    status_choice = (('Error', 'Error'), ('Running', 'Running'), ('Finished', 'Finished'),
+    status_choice = (('Error', 'Error'), ('Running', 'Running'), ('Canceled', 'Canceled'), ('Finished', 'Finished'),
                      ('Created', 'Created'),)
     DATE_INPUT_FORMATS = '%Y-%m-%d %H:%M:%S'
     name = models.CharField(max_length=50)
