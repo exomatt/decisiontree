@@ -104,10 +104,6 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
                         <p className="card-text">{this.error()}</p><br/>
-                        {/*{this.download()}*/}
-                        {/*<a className="card-text"*/}
-                        {/*   href={"/home/exomat/Pulpit/decisionTree/users/test11/116_asdasd/116_asdasd.zip"}>download*/}
-                        {/*    file </a>*/}
                         {this.renderButton()}
                     </div>
                 </div>
@@ -125,19 +121,7 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
                         {lis}
-                        {/*<Link to={"/showTree"} className={"btn btn-link"}*/}
-                        {/*      onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, 1)}>Tree from run*/}
-                        {/*    number 1 </Link><br/>*/}
                         {this.renderButton()}
-                        {/*<a className="card-text" href={"localhost:8000/api/files?id=116dddd"}>download file </a>*/}
-                        {/*<Link to={"/showTree"} className={"btn btn-primary"}*/}
-                        {/*             onClick={this.props.getExperimentById.bind(this, experiment.id)}>Tree</Link>*/}
-                        {/*{this.download()}*/}
-                        {/*<button onClick={this.download2()}>tag</button>*/}
-                        {/*<button type="submit" onClick={() => {*/}
-                        {/*    this.download()*/}
-                        {/*}}>tag*/}
-                        {/*</button>*/}
                     </div>
                 </div>
             </div>
@@ -145,8 +129,7 @@ class ExperimentDetails extends Component {
     }
 }
 
-const
-    mapStateToProps = state => ({
+const mapStateToProps = state => ({
         experiment: state.experiments.experiment,
         token: state.auth.token
     });
