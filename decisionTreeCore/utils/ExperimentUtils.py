@@ -40,8 +40,8 @@ def read_tree(tree: List[str]) -> Node:
                 stack.pop()
         if row.count("|") == 0:
             parent = Node(row)
-            nodes.append(parent)
             stack.append(parent)
+            nodes.append(parent)
             continue
         elif row.count("|") > stack[-1].name.count("|"):
             child = Node(row)

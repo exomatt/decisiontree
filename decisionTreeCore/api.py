@@ -1,7 +1,9 @@
+import json
 import os
 from os import mkdir, listdir
 from os.path import abspath, isfile, join
 from shutil import copyfile, make_archive
+
 import xmltodict
 from django.conf import settings
 from rest_framework import permissions, viewsets, status
@@ -80,7 +82,7 @@ class ExperimentResult(APIView):
     @staticmethod
     def get(request):
         experiment_id = request.query_params['id']
-        run_number: int = int(request.query_params['runNumber']) - 1
+        run_number: int = int(request.query_params['runNumber'])
         error = ('Finished', 'Error')
         experiment = Experiment.objects.get(pk=experiment_id)
         if experiment.status not in error:
@@ -90,12 +92,12 @@ class ExperimentResult(APIView):
         filename: str = ""
         for name in only_files:
             number_ = "RUN" + str(run_number)
-            if number_ in name:
+            if number_ in name and name.endswith(".txt"):
                 filename = name
                 break
         tree = ExperimentUtils.get_tree(path + filename)
-        import json
-        obj = json.loads(tree)
+        tree_without_line = tree.replace("| ", "")
+        obj = json.loads(tree_without_line)
 
         return Response(status=status.HTTP_200_OK, data=obj)
 
