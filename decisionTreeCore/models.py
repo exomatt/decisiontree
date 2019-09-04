@@ -20,6 +20,8 @@ class Experiment(models.Model):
     data_file_name = models.CharField(max_length=50)
     result_directory_path = models.CharField(max_length=50, blank=True)
     runs_number = models.SmallIntegerField(blank=True, default=1)
+    task_id = models.CharField(max_length=250, blank=True)
+
 
 class Result(models.Model):
     experiment = models.OneToOneField(Experiment, on_delete=models.CASCADE)

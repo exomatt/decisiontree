@@ -6,10 +6,12 @@ from shutil import copyfile, make_archive
 
 import xmltodict
 from django.conf import settings
+from django.views.static import serve
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from decisionTree.celery import app
 from decisionTreeCore.models import Experiment
 from decisionTreeCore.task import gdt_run
 from decisionTreeCore.utils import ExperimentUtils
@@ -102,7 +104,19 @@ class ExperimentResult(APIView):
         return Response(status=status.HTTP_200_OK, data=obj)
 
 
-from django.views.static import serve
+# EXPERIMENT CELERY CONTROL TASK API
+class ExperimentTask(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    @staticmethod
+    def get(request):
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        task_id = experiment.task_id
+        app.control.revoke(task_id, terminate=True, signal='SIGKILL')
+        return Response(status=status.HTTP_200_OK, data="Successfully delete task with id " + task_id)
 
 
 class ExperimentFiles(APIView):

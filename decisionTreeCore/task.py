@@ -17,27 +17,39 @@ def test():
     return "test task "
 
 
-@shared_task
-def gdt_run(filename, experiment_id):
-    set_status(experiment_id, "Created")
+@shared_task(bind=True)
+def gdt_run(self, filename, experiment_id):
+    task_id = self.request.id
+    logger.info(task_id)
+    set_task_id(experiment_id, task_id)
+    set_status(experiment_id, "Running")
     filename = os.path.abspath(filename)
     logger.info('Parameters: id: ' + str(experiment_id) + ' filename: ' + filename)
-    print(filename)
+    logger.info(filename)
     command = settings.PROGRAM_PATH + " -f %s" % filename
     logger.info('Command: ' + command)
-    print(command)
+    logger.info(command)
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
     while True:
         output = process.stdout.readline().decode('utf-8')
         if process.poll() is not None:
             break
-        print(output.strip())
-    print(process.stderr)
+        logger.info(output.strip())
+    logger.info(process.stderr)
     set_status(experiment_id, "Finished")
     return process.stdout
 
 
-def set_status(experiment_id, status: str):
+def set_status(experiment_id, status: str, task_id: str = None):
+    logger.info(f"Change model status {status} and task_id {task_id}")
     experiment = Experiment.objects.all().get(id=experiment_id)
     experiment.status = status
+    if task_id is not None:
+        experiment.task_id = task_id
+    experiment.save()
+
+
+def set_task_id(experiment_id, request_id):
+    experiment = Experiment.objects.all().get(id=experiment_id)
+    experiment.task_id = request_id
     experiment.save()
