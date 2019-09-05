@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import os
+import re
 from subprocess import Popen, PIPE
 
 from celery import shared_task
@@ -34,9 +35,13 @@ def gdt_run(self, filename, experiment_id):
         output = process.stdout.readline().decode('utf-8')
         if process.poll() is not None:
             break
-        logger.info(output.strip())
+        output_striped = output.strip()
+        logger.info(output_striped)
+        if "loop mean time:" in output_striped:
+            set_progress(experiment_id, output_striped)
     logger.info(process.stderr)
     set_status(experiment_id, "Finished")
+
     return process.stdout
 
 
@@ -52,4 +57,20 @@ def set_status(experiment_id, status: str, task_id: str = None):
 def set_task_id(experiment_id, request_id):
     experiment = Experiment.objects.all().get(id=experiment_id)
     experiment.task_id = request_id
+    experiment.save()
+
+
+def set_progress(experiment_id: str, output_striped: str):
+    findall = re.findall(r'\d+(?:\.\d+)?', output_striped)
+    iter_number = int(findall[0])
+    if iter_number % 20 != 0:
+        return
+
+    experiment = Experiment.objects.all().get(id=experiment_id)
+    progress = experiment.progress
+    if progress.last_iter_number > iter_number:
+        progress.run_number = progress.run_number + 1
+    progress.mean_time = float(findall[1])
+    progress.last_iter_number = iter_number
+    progress.save()
     experiment.save()

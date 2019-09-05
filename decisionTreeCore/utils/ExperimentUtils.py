@@ -23,6 +23,13 @@ class Node:
         self.attributes.append(attribute)
 
 
+@to_object()
+class ProgressData:
+    def __init__(self, time: float, progress_percent: float) -> None:
+        self.progress_percent: str = progress_percent
+        self.time: float = time
+
+
 def read_from_file(file_path) -> List[str]:
     with open(file_path, "r") as f:
         words: List[str] = f.readlines()
@@ -66,6 +73,10 @@ def read_tree(tree: List[str]) -> Node:
 
 def get_json_tree(tree: List[Node]) -> str:
     return dumper(tree)
+
+
+def get_json_progress(progress: ProgressData) -> str:
+    return dumper(progress)
 
 
 def get_tree(file_path: str) -> str:

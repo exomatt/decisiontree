@@ -23,9 +23,9 @@ class Experiment(models.Model):
     task_id = models.CharField(max_length=250, blank=True)
 
 
-class Result(models.Model):
+class Progress(models.Model):
     experiment = models.OneToOneField(Experiment, on_delete=models.CASCADE)
-    min_iteration = models.IntegerField(blank=True)
-    runs = models.IntegerField(blank=True)
-    mean_time = models.FloatField(blank=True)
-    last_iter_number = models.IntegerField(blank=True)
+    run_number = models.IntegerField(blank=True, default=0)
+    iteration = models.IntegerField(blank=True, default=1000)
+    last_iter_number = models.IntegerField(blank=True, default=0)
+    mean_time = models.FloatField(blank=True, default=0)

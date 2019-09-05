@@ -3,6 +3,7 @@ import os
 from os import mkdir, listdir
 from os.path import abspath, isfile, join
 from shutil import copyfile, make_archive
+from typing import List
 
 import xmltodict
 from django.conf import settings
@@ -12,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from decisionTree.celery import app
-from decisionTreeCore.models import Experiment
+from decisionTreeCore.models import Experiment, Progress
 from decisionTreeCore.task import gdt_run
 from decisionTreeCore.utils import ExperimentUtils
 from .serializers import ExperimentSerializer
@@ -37,7 +38,7 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         config_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
         data_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.data_file_name
         prepare_files(experiment, username, config_file_path, data_file_path)
-        change_xml_params(experiment)
+        change_xml_params_and_model(experiment)
         gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
     # def perform_destroy(self, instance):
@@ -59,7 +60,7 @@ def prepare_files(experiment: Experiment, username: str, config_file_path: str, 
 
 
 # todo dokonczyc parsownie i okreslenie sciezek
-def change_xml_params(experiment: Experiment):
+def change_xml_params_and_model(experiment: Experiment):
     config_file_name = experiment.result_directory_path + "/" + experiment.config_file_name
     with open(config_file_name, "r") as file:
         read_lines = file.read().replace('\n', '')
@@ -68,9 +69,23 @@ def change_xml_params(experiment: Experiment):
     config['MLPExperiment']['MLPClassification']['MLPDatasets']['MLPDataset']['@Name'] = experiment.data_file_name
     config['MLPExperiment']['MLPClassification']['MLPDatasets']['MLPDataset'][
         '@Path2Stem'] = abspath(experiment.result_directory_path) + '/' + experiment.data_file_name
-    config['MLPExperiment']['MLPClassification']['@Runs'] = experiment.runs_number
-    unparsed = xmltodict.unparse(config, pretty=True)
+    # config['MLPExperiment']['MLPClassification']['@Runs'] = experiment.runs_number
+    # change model fields base on file
+    runs_ = config['MLPExperiment']['MLPClassification']['@Runs']
+    # config['MLPExperiment']['MLPClassification']['@Runs'] = 3
+    experiment.runs_number = runs_
+    mlp_param_: List[dict] = config['MLPExperiment']['MLPClassification']['MLPClassifiers']['MLPClassifier']['MLPParam']
+    progress = Progress(experiment=experiment)
 
+    for i in mlp_param_:
+        if i.get("@Name") is "maximumiterations":
+            progress.iteration = i.get("@Value")
+            break
+
+    progress.save()
+    experiment.progress = progress
+    experiment.save()
+    unparsed = xmltodict.unparse(config, pretty=True)
     with open(config_file_name, "w") as file:
         file.write(unparsed)
 
@@ -119,6 +134,27 @@ class ExperimentTask(APIView):
         experiment.save()
         app.control.revoke(task_id, terminate=True, signal='SIGKILL')
         return Response(status=status.HTTP_200_OK, data="Successfully delete task with id " + task_id)
+
+
+# EXPERIMENT CELERY CONTROL TASK API
+class ExperimentProgress(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    @staticmethod
+    def get(request):
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        progress = experiment.progress
+        all_iter = progress.iteration * experiment.runs_number
+        actual_iter = progress.last_iter_number + progress.run_number * progress.iteration
+        progress_percent = float(actual_iter / all_iter)
+        time = (all_iter - actual_iter) * progress.mean_time
+        progress_data = ExperimentUtils.ProgressData(time, progress_percent)
+        str_progress_data = ExperimentUtils.get_json_progress(progress_data)
+        data = json.loads(str_progress_data)
+        return Response(status=status.HTTP_200_OK, data=data)
 
 
 class ExperimentFiles(APIView):

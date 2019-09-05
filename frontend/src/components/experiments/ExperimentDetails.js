@@ -5,7 +5,6 @@ import {Link, Redirect} from "react-router-dom";
 import axios from "axios";
 import {cancelTask, getExperimentById, getTreeByNumber} from "../../actions/experiments";
 
-let redirectMe;
 
 class ExperimentDetails extends Component {
     static propTypes = {
