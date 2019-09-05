@@ -116,6 +116,7 @@ class ExperimentTask(APIView):
         experiment = Experiment.objects.get(pk=experiment_id)
         task_id = experiment.task_id
         experiment.status = "Canceled"
+        experiment.save()
         app.control.revoke(task_id, terminate=True, signal='SIGKILL')
         return Response(status=status.HTTP_200_OK, data="Successfully delete task with id " + task_id)
 

@@ -3,7 +3,7 @@ import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
 import {ADD_FILES, DELETE_FILES, GET_FILES} from "./types";
 
-// GET EXPERIMENTS
+// GET FILES
 export const getFiles = () => (dispatch, getState) => {
     axios.get('api/auth/userFiles', tokenConfig(getState))
         .then(res => {
@@ -14,7 +14,7 @@ export const getFiles = () => (dispatch, getState) => {
         })
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
 };
-// DELETE EXPERIMENT
+// DELETE FILES
 export const deleteFiles = name => (dispatch, getState) => {
     //Get token from state
     const token = getState().auth.token;
@@ -38,7 +38,7 @@ export const deleteFiles = name => (dispatch, getState) => {
     console.log("config " + config.headers.toString());
     axios.delete(`api/auth/userFiles`, config)
         .then(res => {
-            dispatch(createMessage({deleteExperiment: "File Deleted"}));
+            dispatch(createMessage({deleteFiles: "File Deleted"}));
             dispatch({
                 type: DELETE_FILES,
                 payload: name
@@ -47,7 +47,7 @@ export const deleteFiles = name => (dispatch, getState) => {
         .catch(err => console.log(err))
 };
 
-// ADD EXPERIMENT
+// ADD FILES TO EXPERIMENT
 export const addFiles = (file) => (dispatch, getState) => {
     //Get token from state
     const token = getState().auth.token;
@@ -69,7 +69,7 @@ export const addFiles = (file) => (dispatch, getState) => {
     });
     axios.put(`api/auth/userFiles`, formData, config)
         .then(res => {
-            dispatch(createMessage({createExperiment: "File/Files added"}));
+            dispatch(createMessage({addFiles: "File/Files added"}));
             dispatch({
                 type: ADD_FILES,
                 payload: res.data

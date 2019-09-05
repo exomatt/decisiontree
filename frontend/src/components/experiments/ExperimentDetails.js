@@ -3,14 +3,16 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, Redirect} from "react-router-dom";
 import axios from "axios";
-import {getTreeByNumber} from "../../actions/experiments";
+import {cancelTask, getExperimentById, getTreeByNumber} from "../../actions/experiments";
 
+let redirectMe;
 
 class ExperimentDetails extends Component {
     static propTypes = {
         experiment: PropTypes.object.isRequired,
         token: PropTypes.string.isRequired,
         getTreeByNumber: PropTypes.func.isRequired,
+        redirectMe: PropTypes.bool,
     };
 
     error() {
@@ -88,11 +90,33 @@ class ExperimentDetails extends Component {
                                onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, i)}>Tree from
                 run number {i + 1} </Link><br/></li>);
         }
-
-
+        if (this.props.redirectMe) {
+            return <Redirect to='/'/>
+        }
         if (!this.props.experiment.hasOwnProperty('id'))
             return (<Redirect to='/'/>);
-        if (this.props.experiment.error_message) {
+
+        if (this.props.experiment.status !== "Error" && this.props.experiment.status !== "Canceled") {
+            return (
+                <div className="card border-primary mb-3">
+                    <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                    <div className="card-body">
+                        <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                        <p className="card-text">Description: {this.props.experiment.description}</p><br/>
+                        <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                        <p className="card-text">Status: {this.props.experiment.status}</p><br/>
+                        <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
+                        <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                        <p className="card-text">{this.error()}</p><br/>
+                        <button onClick={this.props.cancelTask.bind(this, this.props.experiment.id)} type="button"
+                                className="btn btn-primary">Cancel Task
+                        </button>
+                    </div>
+                </div>
+            );
+
+        }
+        if (this.props.experiment.status === "Error") {
             return (
                 <div className="card border-danger mb-3">
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
@@ -109,9 +133,10 @@ class ExperimentDetails extends Component {
                 </div>
             )
         }
-        return (
-            <div>
-                <div className="card border-success mb-3">
+
+        if (this.props.experiment.status === "Canceled") {
+            return (
+                <div className="card border-danger mb-3">
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
                         <h4 className="card-title">Name: {this.props.experiment.name}</h4>
@@ -120,18 +145,46 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                        {lis}
+                        <p className="card-text">{this.error()}</p><br/>
                         {this.renderButton()}
                     </div>
                 </div>
-            </div>
-        );
+            )
+        }
+
+        if (this.props.experiment.status === "Finished") {
+            return (
+                <div>
+                    <div className="card border-success mb-3">
+                        <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                        <div className="card-body">
+                            <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                            <p className="card-text">Description: {this.props.experiment.description}</p><br/>
+                            <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                            <p className="card-text">Status: {this.props.experiment.status}</p><br/>
+                            <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
+                            <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                            {lis}
+                            {this.renderButton()}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
     }
 }
 
-const mapStateToProps = state => ({
+const
+    mapStateToProps = state => ({
         experiment: state.experiments.experiment,
-        token: state.auth.token
+        token: state.auth.token,
+        redirectMe: state.experiments.redirectMe,
     });
 
-export default connect(mapStateToProps, {getTreeByNumber})(ExperimentDetails);
+export default connect(mapStateToProps, {getTreeByNumber, getExperimentById, cancelTask})
+
+(
+    ExperimentDetails
+)
+;

@@ -34,6 +34,12 @@ class Alerts extends Component {
                 alert.success(message.createExperiment);
             if (message.passwordNotMatch)
                 alert.error(message.passwordNotMatch);
+            if (message.addFiles)
+                alert.success(message.addFiles);
+            if (message.deleteFiles)
+                alert.success(message.deleteFiles);
+            if (message.cancelTask)
+                alert.success(message.cancelTask);
         }
     }
 

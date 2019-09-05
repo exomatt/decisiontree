@@ -3,14 +3,16 @@ import {
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
-    GET_TREE_BY_NUMBER
+    GET_TREE_BY_NUMBER,
+    CANCEL_TASK
 } from "../actions/types";
 
 const initialState = {
     experiments: [],
     experiment: {},
     tree: [],
-    file: {}
+    file: {},
+    redirectMe: false,
 };
 
 export default function (state = initialState, action) {
@@ -39,6 +41,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 tree: [...state.tree, action.payload]
+            };
+        case CANCEL_TASK:
+            return {
+                ...state,
+                redirectMe: true
             };
         default:
             return state;
