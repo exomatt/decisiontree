@@ -3,7 +3,8 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, Redirect} from "react-router-dom";
 import axios from "axios";
-import {cancelTask, getExperimentById, getTreeByNumber} from "../../actions/experiments";
+import {cancelTask, getExperimentById, getProgress, getTreeByNumber} from "../../actions/experiments";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 
 class ExperimentDetails extends Component {
@@ -11,7 +12,9 @@ class ExperimentDetails extends Component {
         experiment: PropTypes.object.isRequired,
         token: PropTypes.string.isRequired,
         getTreeByNumber: PropTypes.func.isRequired,
+        getProgress: PropTypes.func.isRequired,
         redirectMe: PropTypes.bool,
+        progress: PropTypes.object,
     };
 
     error() {
@@ -80,6 +83,15 @@ class ExperimentDetails extends Component {
         }
     }
 
+    componentDidMount() {
+        if (this.props.experiment.status === "Running") {
+            this.props.getProgress(this.props.experiment.id);
+            this.interval = setInterval(() => {
+                this.props.getProgress(this.props.experiment.id);
+            }, 1000);
+        }
+    }
+
     render() {
         let i;
         let lis = [];
@@ -101,12 +113,15 @@ class ExperimentDetails extends Component {
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
                         <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                        <ProgressBar animated now={parseFloat(this.props.progress.progress_percent) * 100}
+                                     label={`${(parseFloat(this.props.progress.progress_percent) * 100).toFixed(2)}%`}/>
+                        <p className="card-text">Time
+                            left: ~{(parseFloat(this.props.progress.time) / 60).toFixed()} minutes </p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                        <p className="card-text">{this.error()}</p><br/>
                         <button onClick={this.props.cancelTask.bind(this, this.props.experiment.id)} type="button"
                                 className="btn btn-primary">Cancel Task
                         </button>
@@ -179,9 +194,10 @@ const
         experiment: state.experiments.experiment,
         token: state.auth.token,
         redirectMe: state.experiments.redirectMe,
+        progress: state.experiments.progress,
     });
 
-export default connect(mapStateToProps, {getTreeByNumber, getExperimentById, cancelTask})
+export default connect(mapStateToProps, {getTreeByNumber, getExperimentById, cancelTask, getProgress})
 
 (
     ExperimentDetails

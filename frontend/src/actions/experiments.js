@@ -7,7 +7,8 @@ import {
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
-    GET_TREE_BY_NUMBER
+    GET_TREE_BY_NUMBER,
+    PROGRESS_EXPERIMENT
 } from "./types";
 
 // GET EXPERIMENTS
@@ -79,6 +80,18 @@ export const cancelTask = (id) => (dispatch, getState) => {
             dispatch(createMessage({cancelTask: "Experiment task canceled"}));
             dispatch({
                 type: CANCEL_TASK,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
+// PROGRESS TASK
+export const getProgress = (id) => (dispatch, getState) => {
+    axios.get(`/api/progress?id=${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: PROGRESS_EXPERIMENT,
                 payload: res.data
             });
         })

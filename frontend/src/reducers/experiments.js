@@ -4,7 +4,7 @@ import {
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
-    CANCEL_TASK
+    CANCEL_TASK, PROGRESS_EXPERIMENT
 } from "../actions/types";
 
 const initialState = {
@@ -13,6 +13,10 @@ const initialState = {
     tree: [],
     file: {},
     redirectMe: false,
+    progress: {
+        "progress_percent": 0,
+        "time": 0
+    },
 };
 
 export default function (state = initialState, action) {
@@ -46,6 +50,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 redirectMe: true
+            };
+        case PROGRESS_EXPERIMENT:
+            return {
+                ...state,
+                progress: action.payload
             };
         default:
             return state;

@@ -17,3 +17,4 @@ export const DELETE_FILES = "DELETE_FILES";
 export const ADD_FILES = "ADD_FILES";
 export const GET_TREE_BY_NUMBER = "GET_TREE_BY_NUMBER";
 export const CANCEL_TASK = "CANCEL_TASK";
+export const PROGRESS_EXPERIMENT = "PROGRESS_EXPERIMENT";
