@@ -16,6 +16,7 @@ from decisionTree.celery import app
 from decisionTreeCore.models import Experiment, Progress
 from decisionTreeCore.task import gdt_run
 from decisionTreeCore.utils import ExperimentUtils
+from decisionTreeCore.utils.ExperimentUtils import ConfigFileSerializer, ConfigFile
 from .serializers import ExperimentSerializer
 
 
@@ -157,6 +158,39 @@ class ExperimentProgress(APIView):
         return Response(status=status.HTTP_200_OK, data=data)
 
 
+def create_config_file(data: ConfigFile, config_file_path: str, user_dir: str):
+    with open(config_file_path, "r") as file:
+        read_lines = file.read().replace('\n', '')
+    config = xmltodict.parse(read_lines)
+    config['MLPExperiment']['MLPClassification']['@Runs'] = data.runs
+    # config['MLPExperiment']['MLPClassification']['MLPClassifiers']['MLPClassifier']['MLPParam']['MLPSubParam'] = data.runs
+    # config['MLPExperiment']['MLPClassification']['@Runs'] = data.runs
+    # config['MLPExperiment']['MLPClassification']['@Runs'] = data.runs
+    mlp_param_: List[dict] = config['MLPExperiment']['MLPClassification']['MLPClassifiers']['MLPClassifier']['MLPParam']
+    attribute_dict: dict = data.__dict__
+    for i in mlp_param_:
+        if i.get("@Name") == 'parallelizationOMP':
+            sub_param: List[dict] = i.get("MLPSubParam")
+            for param in sub_param:
+                if param.get("@Name").lower() in attribute_dict:
+                    if attribute_dict.get(param.get("@Name").lower()):
+                        param['@Value'] = 'yes'
+                    else:
+                        param['@Value'] = 'no'
+            i['MLPSubParam'] = sub_param
+        if i.get("@Name") in attribute_dict:
+            i['@Value'] = str(attribute_dict.get(i.get("@Name")))
+    config['MLPExperiment']['MLPClassification']['MLPClassifiers']['MLPClassifier']['MLPParam'] = mlp_param_
+    unparsed = xmltodict.unparse(config, pretty=True)
+    file_name = user_dir + "/" + data.name + ".xml"
+    name = ExperimentUtils.generate_file_name(file_name)
+    with open(name, "w") as file:
+        file.write(unparsed)
+
+
+# change model fields base on file
+
+
 class ExperimentFiles(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -181,3 +215,16 @@ class ExperimentFiles(APIView):
         # return response
         # return Response(status=status.HTTP_200_OK, content_type='application/zip', data=zip_file)
         return serve(request, os.path.basename(zip_file_path + '.zip'), os.path.dirname(zip_file_path + '.zip'))
+
+    def post(self, request):
+        user = self.request.user
+        username = user.username
+        config_file_path = settings.BASE_DIR + "/example.xml"
+        user_dir = settings.BASE_USERS_DIR + username
+        serializer = ConfigFileSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Problem with serializer")
+        config_file_object = serializer.create(serializer.validated_data)
+        create_config_file(config_file_object, config_file_path, user_dir)
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)

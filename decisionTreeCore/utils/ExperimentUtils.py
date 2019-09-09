@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from jsonweb.encode import to_object, dumper
+import os
 
 
 @to_object()
@@ -84,3 +85,76 @@ def get_tree(file_path: str) -> str:
     tree_structure = read_tree(tree_from_file)
     json_tree = get_json_tree(tree_structure)
     return json_tree
+
+
+class ConfigFile(object):
+    def __init__(self, name: str, runs: int = 5, mutationomp: bool = True, crossoveromp: bool = True,
+                 selectionomp: bool = True,
+                 selectiontype: str = "normal",
+                 sizeofpopulation: int = 64,
+                 maximumiterations: int = 1000, minimumiterations: int = 1000,
+                 probabilityofmutation: int = 80, probabilityofcrossover: int = 20,
+                 selectionpressure: float = 1.2) -> None:
+        self.name = name
+        self.runs = runs
+        self.mutationomp = mutationomp
+        self.crossoveromp = crossoveromp
+        self.selectionomp = selectionomp
+        self.selectiontype = selectiontype
+        self.sizeofpopulation = sizeofpopulation
+        self.maximumiterations = maximumiterations
+        self.minimumiterations = minimumiterations
+        self.probabilityofmutation = probabilityofmutation
+        self.probabilityofcrossover = probabilityofcrossover
+        self.selectionpressure = selectionpressure
+
+
+from rest_framework import serializers
+
+
+class ConfigFileSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=250)
+    runs = serializers.IntegerField(required=False)
+    mutationomp = serializers.BooleanField(required=False)
+    crossoveromp = serializers.BooleanField(required=False)
+    selectionomp = serializers.BooleanField(required=False)
+    selectiontype = serializers.CharField(max_length=40, required=False)
+    sizeofpopulation = serializers.IntegerField(required=False)
+    maximumiterations = serializers.IntegerField(required=False)
+    minimumiterations = serializers.IntegerField(required=False)
+    probabilityofmutation = serializers.IntegerField(required=False)
+    probabilityofcrossover = serializers.IntegerField(required=False)
+    selectionpressure = serializers.FloatField(required=False)
+
+    def create(self, validated_data):
+        return ConfigFile(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.runs = validated_data.get('runs', instance.runs)
+        instance.mutationomp = validated_data.get('mutationomp', instance.mutationomp)
+        instance.crossoveromp = validated_data.get('crossoveromp', instance.crossoveromp)
+        instance.selectionomp = validated_data.get('selectionomp', instance.selectionomp)
+        instance.selectiontype = validated_data.get('selectiontype', instance.selectiontype)
+        instance.sizeofpopulation = validated_data.get('sizeofpopulation', instance.created)
+        instance.maximumiterations = validated_data.get('maximumiterations', instance.created)
+        instance.minimumiterations = validated_data.get('minimumiterations', instance.created)
+        instance.probabilityofmutation = validated_data.get('probabilityofmutation', instance.created)
+        instance.probabilityofcrossover = validated_data.get('probabilityofcrossover', instance.created)
+        instance.selectionpressure = validated_data.get('selectionpressure', instance.created)
+        instance.save()
+        return instance
+
+
+def generate_file_name(file_path):
+    if os.path.isfile(file_path):
+        expand = 0
+        while True:
+            expand += 1
+            new_file_name = file_path.split(".xml")[0] + "(" + str(expand) + ")" + ".xml"
+            if os.path.isfile(new_file_name):
+                continue
+            else:
+                file_path = new_file_name
+                break
+    return file_path

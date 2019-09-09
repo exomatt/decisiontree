@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from decisionTreeCore.utils import ExperimentUtils
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 
 
@@ -87,7 +88,9 @@ class UserFiles(APIView):
         for file in file_list:
             name = file._name
             path = "users/" + username + "/" + name
-            with open(path, 'wb') as f:
+            name = ExperimentUtils.generate_file_name(path)
+            # todo need to check it
+            with open(name, 'wb') as f:
                 for chunk in file.chunks():
                     f.write(chunk)
         return Response(status=status.HTTP_200_OK)
