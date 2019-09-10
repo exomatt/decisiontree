@@ -40,6 +40,10 @@ class Alerts extends Component {
                 alert.success(message.deleteFiles);
             if (message.cancelTask)
                 alert.success(message.cancelTask);
+            if (message.createConfigFile)
+                alert.success(message.createConfigFile);
+            if (message.emptyField)
+                alert.error(message.emptyField);
         }
     }
 

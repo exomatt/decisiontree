@@ -20,6 +20,7 @@ import {loadUser} from "../actions/auth";
 import UserFiles from "./files/UserFiles";
 import ExperimentDetails from "./experiments/ExperimentDetails";
 import ShowTree from "./experiments/ShowTree";
+import FormConfigFile from "./files/FormConfigFile";
 
 const alertOptions = {
     timeout: 3000,
@@ -48,6 +49,7 @@ class App extends Component {
                                     <Route exact path="/login" component={Login}/>
                                     <PrivateRoute exact path="/showExperiment" component={ExperimentDetails}/>
                                     <PrivateRoute exact path="/showTree" component={ShowTree}/>
+                                    <PrivateRoute exact path="/createConfigFile" component={FormConfigFile}/>
                                 </Switch>
                                 {/*<Experiments/>*/}
                             </div>

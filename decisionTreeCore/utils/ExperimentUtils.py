@@ -114,8 +114,8 @@ from rest_framework import serializers
 
 class ConfigFileSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
-    runs = serializers.IntegerField(required=False)
-    mutationomp = serializers.BooleanField(required=False)
+    runs = serializers.IntegerField()
+    mutationomp = serializers.BooleanField()
     crossoveromp = serializers.BooleanField(required=False)
     selectionomp = serializers.BooleanField(required=False)
     selectiontype = serializers.CharField(max_length=40, required=False)
@@ -146,7 +146,7 @@ class ConfigFileSerializer(serializers.Serializer):
         return instance
 
 
-def generate_file_name(file_path):
+def generate_file_name(file_path) -> str:
     if os.path.isfile(file_path):
         expand = 0
         while True:

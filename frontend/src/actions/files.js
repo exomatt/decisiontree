@@ -1,7 +1,7 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
-import {ADD_FILES, DELETE_FILES, GET_FILES} from "./types";
+import {ADD_FILES, CREATE_CONFIG_FILE, DELETE_FILES, GET_FILES} from "./types";
 
 // GET FILES
 export const getFiles = () => (dispatch, getState) => {
@@ -77,3 +77,17 @@ export const addFiles = (file) => (dispatch, getState) => {
         })
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
+
+// CREATE NEW CONFIG FILE
+export const createConfigFile = (configFile) => (dispatch, getState) => {
+    axios.post(`/api/files`, configFile, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({createConfigFile: res.data}));
+            dispatch({
+                type: CREATE_CONFIG_FILE,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+

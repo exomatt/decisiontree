@@ -21,10 +21,13 @@ export class Header extends Component {
                 <li className="nav-item active">
                     <Link to={"/files"} className={"nav-link"}>Files</Link>
                 </li>
-                 <span className="navbar-text mr-3">
+                <li className="nav-item active">
+                    <Link to={"/createConfigFile"} className={"nav-link"}>Create Config File</Link>
+                </li>
+                <span className="navbar-text mr-3">
                                  <strong>{user ? `Welcome ${user.username}` : ""}
                       </strong>
-            </span>
+                </span>
                 <li className="nav-item active">
                     <button onClick={this.props.logout} type="button" className="btn btn-primary">Logout</button>
                 </li>

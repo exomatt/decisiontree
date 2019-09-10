@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from os import mkdir, listdir
 from os.path import abspath, isfile, join
@@ -19,9 +20,10 @@ from decisionTreeCore.utils import ExperimentUtils
 from decisionTreeCore.utils.ExperimentUtils import ConfigFileSerializer, ConfigFile
 from .serializers import ExperimentSerializer
 
+logger = logging.getLogger(__name__)
+
 
 # Experiments Viewset
-
 class ExperimentViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
@@ -158,7 +160,7 @@ class ExperimentProgress(APIView):
         return Response(status=status.HTTP_200_OK, data=data)
 
 
-def create_config_file(data: ConfigFile, config_file_path: str, user_dir: str):
+def create_config_file(data: ConfigFile, config_file_path: str, user_dir: str) -> str:
     with open(config_file_path, "r") as file:
         read_lines = file.read().replace('\n', '')
     config = xmltodict.parse(read_lines)
@@ -186,6 +188,9 @@ def create_config_file(data: ConfigFile, config_file_path: str, user_dir: str):
     name = ExperimentUtils.generate_file_name(file_name)
     with open(name, "w") as file:
         file.write(unparsed)
+    if file_name != name:
+        return "File with that name exist -> create file with new name: " + name.split("/")[2]
+    return "File created with name: " + name.split("/")[2]
 
 
 # change model fields base on file
@@ -218,13 +223,14 @@ class ExperimentFiles(APIView):
 
     def post(self, request):
         user = self.request.user
+        logger.info("Request data: " + str(request.data))
         username = user.username
         config_file_path = settings.BASE_DIR + "/example.xml"
         user_dir = settings.BASE_USERS_DIR + username
         serializer = ConfigFileSerializer(data=request.data)
+
         if not serializer.is_valid():
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Problem with serializer")
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=serializer.error_messages)
         config_file_object = serializer.create(serializer.validated_data)
-        create_config_file(config_file_object, config_file_path, user_dir)
-        print(request.data)
-        return Response(status=status.HTTP_200_OK)
+        message = create_config_file(config_file_object, config_file_path, user_dir)
+        return Response(status=status.HTTP_200_OK, data=message)
