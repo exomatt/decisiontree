@@ -13,6 +13,7 @@ xmltodict = "*"
 flower = "*"
 jsonweb = "*"
 django-reset-migrations = "*"
+django-rest-swagger = "*"
 
 [requires]
 python_version = "3.7"

@@ -8,6 +8,7 @@ from typing import List
 
 import xmltodict
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.views.static import serve
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
@@ -234,3 +235,29 @@ class ExperimentFiles(APIView):
         config_file_object = serializer.create(serializer.validated_data)
         message = create_config_file(config_file_object, config_file_path, user_dir)
         return Response(status=status.HTTP_200_OK, data=message)
+
+
+# SHARE EXEPERIMENT WITH OTHER USERS
+class ExperimentShare(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def get(self, request):
+        user = self.request.user
+        user_username = user.username
+        experiment_id = request.query_params['id']
+        username_to_share = request.query_params['username']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        user_to_share_with = User.objects.get(username=username_to_share)
+        if user_to_share_with is None:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            data="User don't exists with that name:  " + username_to_share)
+
+        experiment.pk = None
+        experiment.user = user_to_share_with
+        experiment.name = experiment.name + " (shared from " + user_username + ")"
+        experiment.save()
+
+        # todo copy file
+        return Response(status=status.HTTP_200_OK, data="Experiment share with " + username_to_share)
