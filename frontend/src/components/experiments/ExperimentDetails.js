@@ -107,6 +107,25 @@ class ExperimentDetails extends Component {
         if (!this.props.experiment.hasOwnProperty('id'))
             return (<Redirect to='/'/>);
 
+        if (this.props.experiment.status === "Finished") {
+            return (
+                <div>
+                    <div className="card border-success mb-3">
+                        <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                        <div className="card-body">
+                            <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                            <p className="card-text">Description: {this.props.experiment.description}</p><br/>
+                            <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                            <p className="card-text">Status: {this.props.experiment.status}</p><br/>
+                            <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
+                            <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                            {lis}
+                            {this.renderButton()}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         if (this.props.experiment.status !== "Error" && this.props.experiment.status !== "Canceled") {
             return (
                 <div className="card border-primary mb-3">
@@ -166,25 +185,6 @@ class ExperimentDetails extends Component {
             )
         }
 
-        if (this.props.experiment.status === "Finished") {
-            return (
-                <div>
-                    <div className="card border-success mb-3">
-                        <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
-                        <div className="card-body">
-                            <h4 className="card-title">Name: {this.props.experiment.name}</h4>
-                            <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                            <p className="card-text">Date: {this.props.experiment.date}</p><br/>
-                            <p className="card-text">Status: {this.props.experiment.status}</p><br/>
-                            <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
-                            <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                            {lis}
-                            {this.renderButton()}
-                        </div>
-                    </div>
-                </div>
-            );
-        }
 
     }
 }

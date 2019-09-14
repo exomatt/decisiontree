@@ -1,9 +1,10 @@
 import json
 import logging
 import os
+import zipfile
 from os import mkdir, listdir
 from os.path import abspath, isfile, join
-from shutil import copyfile, make_archive
+from shutil import copyfile
 from typing import List
 
 import xmltodict
@@ -209,18 +210,18 @@ class ExperimentFiles(APIView):
         error = ('Finished', 'Error')
         if experiment.status not in error:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Experiment is not finished yet")
-        result_directory_path = experiment.result_directory_path
-        zip_file_path = result_directory_path + '/' + experiment_id + '_' + experiment.name
-        make_archive(zip_file_path, 'zip',
-                     result_directory_path + "/")
-        # zip_file = open(zip_file_path + '.zip', 'rb')
+        result_directory_path = settings.BASE_USERS_DIR + request.user.username + "/tmp"
+        if not os.path.exists(result_directory_path):
+            os.mkdir(result_directory_path)
 
-        # response = HttpResponse(zip_file, content_type='application/force-download')
-        # response['Content-Disposition'] = 'attachment; filename=%s' %  smart_str(zip_file)
-        # response['X-Sendfile'] = smart_str(zip_file)
-        # return response
-        # return Response(status=status.HTTP_200_OK, content_type='application/zip', data=zip_file)
-        return serve(request, os.path.basename(zip_file_path + '.zip'), os.path.dirname(zip_file_path + '.zip'))
+        zip_file_path = result_directory_path + "/" + str(experiment.id) + "_" + experiment.name + ".zip"
+        zipf = zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED)
+        zipdir(experiment.result_directory_path, zipf)
+        zipf.close()
+
+        # make_archive(zip_file_path, 'zip', experiment.result_directory_path)
+
+        return serve(request, os.path.basename(zip_file_path), os.path.dirname(zip_file_path))
 
     def post(self, request):
         user = self.request.user
@@ -237,12 +238,19 @@ class ExperimentFiles(APIView):
         return Response(status=status.HTTP_200_OK, data=message)
 
 
-# SHARE EXEPERIMENT WITH OTHER USERS
 def copy_experiment_files(old_path: str, new_path: str):
     os.mkdir(new_path)
     ExperimentUtils.copytree(old_path, new_path)
 
 
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
+
+
+# SHARE EXEPERIMENT WITH OTHER USERS
 class ExperimentShare(APIView):
     permission_classes = [
         permissions.IsAuthenticated
