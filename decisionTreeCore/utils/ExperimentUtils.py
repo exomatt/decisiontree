@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 from typing import List
 
 from jsonweb.encode import to_object, dumper
@@ -158,3 +159,13 @@ def generate_file_name(file_path) -> str:
                 file_path = new_file_name
                 break
     return file_path
+
+
+def copytree(src, dst, symlinks=False, ignore=None):
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)

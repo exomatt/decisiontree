@@ -238,6 +238,11 @@ class ExperimentFiles(APIView):
 
 
 # SHARE EXEPERIMENT WITH OTHER USERS
+def copy_experiment_files(old_path: str, new_path: str):
+    os.mkdir(new_path)
+    ExperimentUtils.copytree(old_path, new_path)
+
+
 class ExperimentShare(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -254,10 +259,21 @@ class ExperimentShare(APIView):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data="User don't exists with that name:  " + username_to_share)
 
-        experiment.pk = None
-        experiment.user = user_to_share_with
+        old_path = settings.BASE_USERS_DIR + user_username + "/" + str(experiment.id) + "_" + experiment.name
+        progress = experiment.progress
         experiment.name = experiment.name + " (shared from " + user_username + ")"
+        experiment.user = user_to_share_with
+        experiment.pk = None
         experiment.save()
+        progress.pk = None
+        progress.experiment = experiment
+        progress.save()
+        experiment.progress = progress
+        experiment.save()
+        new_path = settings.BASE_USERS_DIR + username_to_share + "/" + str(
+            experiment.id) + "_" + experiment.name
+
+        copy_experiment_files(old_path, new_path)
 
         # todo copy file
         return Response(status=status.HTTP_200_OK, data="Experiment share with " + username_to_share)
