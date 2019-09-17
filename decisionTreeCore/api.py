@@ -4,7 +4,7 @@ import os
 import zipfile
 from os import mkdir, listdir
 from os.path import abspath, isfile, join
-from shutil import copyfile
+from shutil import copyfile, rmtree
 from typing import List
 
 import xmltodict
@@ -46,10 +46,19 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         change_xml_params_and_model(experiment)
         gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
-    # def perform_destroy(self, instance):
+    def perform_destroy(self, instance):
+        user = self.request.user
+        username = user.username
+        remove_model_files(instance, username)
+        instance.delete()
 
 
-def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str):
+def remove_model_files(experiment: Experiment, username: str) -> None:
+    path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{experiment.name}'
+    rmtree(path)
+
+
+def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str) -> None:
     path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
     mkdir(path)
     mkdir(path + '/out')
@@ -65,7 +74,7 @@ def prepare_files(experiment: Experiment, username: str, config_file_path: str, 
 
 
 # todo dokonczyc parsownie i okreslenie sciezek
-def change_xml_params_and_model(experiment: Experiment):
+def change_xml_params_and_model(experiment: Experiment) -> None:
     config_file_name = experiment.result_directory_path + "/" + experiment.config_file_name
     with open(config_file_name, "r") as file:
         read_lines = file.read().replace('\n', '')
@@ -282,6 +291,4 @@ class ExperimentShare(APIView):
             experiment.id) + "_" + experiment.name
 
         copy_experiment_files(old_path, new_path)
-
-        # todo copy file
         return Response(status=status.HTTP_200_OK, data="Experiment share with " + username_to_share)

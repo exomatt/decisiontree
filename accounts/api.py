@@ -1,4 +1,4 @@
-from os import listdir, remove
+from os import listdir, remove, rename
 from os.path import isfile, join
 
 from django.conf import settings
@@ -107,3 +107,20 @@ class UserFiles(APIView):
             return Response(status=status.HTTP_200_OK, data="Successfully delete file ")
         else:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Can't delete file")
+
+    @staticmethod
+    def post(request):
+        user = request.user
+        username = user.username
+        filename = request.data['filename']
+        new_name = request.data['new_name']
+        path = settings.BASE_USERS_DIR + username + "/" + filename
+        new_path = settings.BASE_USERS_DIR + username + "/" + new_name
+
+        if isfile(path):
+            if isfile(new_path):
+                new_path = ExperimentUtils.generate_file_name(new_path)
+            rename(path, new_path)
+            return Response(status=status.HTTP_200_OK, data=f'Successfully change file name to: {new_name}')
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Cannot change file name")

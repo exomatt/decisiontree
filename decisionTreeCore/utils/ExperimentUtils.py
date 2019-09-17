@@ -152,7 +152,8 @@ def generate_file_name(file_path) -> str:
         expand = 0
         while True:
             expand += 1
-            new_file_name = file_path.split(".xml")[0] + "(" + str(expand) + ")" + ".xml"
+            file_extension = file_path.rsplit(".", 1)[1]
+            new_file_name = file_path.rsplit(".")[0] + "(" + str(expand) + ")." + file_extension
             if os.path.isfile(new_file_name):
                 continue
             else:
