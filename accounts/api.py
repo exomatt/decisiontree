@@ -111,11 +111,16 @@ class UserFiles(APIView):
     @staticmethod
     def post(request):
         user = request.user
-        username = user.username
-        filename = request.data['filename']
-        new_name = request.data['new_name']
-        path = settings.BASE_USERS_DIR + username + "/" + filename
-        new_path = settings.BASE_USERS_DIR + username + "/" + new_name
+        username: str = user.username
+        filename: str = request.data['filename']
+        new_name: str = request.data['new_name']
+        path: str = settings.BASE_USERS_DIR + username + "/" + filename
+        file_extension = filename.rsplit(".", 1)[1]
+        new_path = settings.BASE_USERS_DIR + username + "/" + new_name + "." + file_extension
+        if len(new_name.rsplit(".", 1)) >= 2:
+            new_file_extension = new_name.rsplit(".", 1)[1]
+            if new_file_extension == file_extension:
+                new_path = settings.BASE_USERS_DIR + username + "/" + new_name
 
         if isfile(path):
             if isfile(new_path):

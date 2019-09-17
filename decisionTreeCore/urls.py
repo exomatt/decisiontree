@@ -1,8 +1,9 @@
 from django.urls import path, include
 from rest_framework import routers
 
+
 from .api import ExperimentViewSet, ExperimentResult, ExperimentFiles, ExperimentTask, ExperimentProgress, \
-    ExperimentShare
+    ExperimentShare, ExperimentCrud
 
 router = routers.DefaultRouter()
 router.register('api/experiment', ExperimentViewSet, 'experiment')
@@ -16,5 +17,6 @@ urlpatterns = [
     path('api/files', ExperimentFiles.as_view()),
     path('api/task', ExperimentTask.as_view()),
     path('api/progress', ExperimentProgress.as_view()),
-    path('api/share', ExperimentShare.as_view())
+    path('api/share', ExperimentShare.as_view()),
+    path('api/crud', ExperimentCrud.as_view())
 ]

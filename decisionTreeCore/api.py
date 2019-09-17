@@ -3,7 +3,7 @@ import logging
 import os
 import zipfile
 from os import mkdir, listdir
-from os.path import abspath, isfile, join
+from os.path import abspath, isfile, join, exists
 from shutil import copyfile, rmtree
 from typing import List
 
@@ -51,6 +51,27 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         username = user.username
         remove_model_files(instance, username)
         instance.delete()
+
+
+class ExperimentCrud(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    @staticmethod
+    def post(request):
+        user = request.user
+        username = user.username
+        experiment_id = request.data['id']
+        new_name = request.data['new_name']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{experiment.name}'
+        new_path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{new_name}'
+        if exists(path):
+            os.rename(path, new_path)
+        experiment.name = new_name
+        experiment.save()
+        return Response(status=status.HTTP_200_OK, data=f'Change model name to -> {new_name}')
 
 
 def remove_model_files(experiment: Experiment, username: str) -> None:
