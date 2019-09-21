@@ -3,12 +3,12 @@ import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
 import {
     ADD_EXPERIMENTS,
-    CANCEL_TASK,
+    CANCEL_TASK, CHANGE_EXPERIMENT_NAME,
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
-    PROGRESS_EXPERIMENT
+    PROGRESS_EXPERIMENT, SHARE_EXPERIMENT
 } from "./types";
 
 // GET EXPERIMENTS
@@ -60,6 +60,33 @@ export const addExperiment = (experiment) => (dispatch, getState) => {
         })
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
+
+// CHANGE EXPERIMENT NAME
+export const changeExperimentName = (body) => (dispatch, getState) => {
+    axios.post(`/api/crud`, body, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({changeExperimentName: res.data}));
+            dispatch({
+                type: CHANGE_EXPERIMENT_NAME,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+// SHARE EXPERIMENT
+export const shareExperiment = (id, username) => (dispatch, getState) => {
+    axios.get(`/api/share?id=${id}&username=${username}`, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({shareExperiment: res.data}));
+            dispatch({
+                type: SHARE_EXPERIMENT,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
 
 // GET TREE BY RUN NUMBER
 export const getTreeByNumber = (id, runNumber) => (dispatch, getState) => {

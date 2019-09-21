@@ -4,7 +4,7 @@ import {
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
-    CANCEL_TASK, PROGRESS_EXPERIMENT
+    CANCEL_TASK, PROGRESS_EXPERIMENT, CHANGE_EXPERIMENT_NAME, SHARE_EXPERIMENT
 } from "../actions/types";
 
 const initialState = {
@@ -45,6 +45,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 tree: [...state.tree, action.payload]
+            };
+        case CHANGE_EXPERIMENT_NAME:
+            return {
+                ...state
+            };
+        case SHARE_EXPERIMENT:
+            return {
+                ...state
             };
         case CANCEL_TASK:
             return {

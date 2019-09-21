@@ -44,6 +44,10 @@ class Alerts extends Component {
                 alert.success(message.createConfigFile);
             if (message.emptyField)
                 alert.error(message.emptyField);
+            if (message.changeExperimentName)
+                alert.success(message.changeExperimentName);
+            if (message.shareExperiment)
+                alert.success(message.shareExperiment);
         }
     }
 
