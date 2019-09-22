@@ -1,7 +1,7 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
-import {ADD_FILES, CREATE_CONFIG_FILE, DELETE_FILES, GET_FILES} from "./types";
+import {ADD_FILES, CHANGE_FILE_NAME, CREATE_CONFIG_FILE, DELETE_FILES, GET_FILES} from "./types";
 
 // GET FILES
 export const getFiles = () => (dispatch, getState) => {
@@ -69,7 +69,7 @@ export const addFiles = (file) => (dispatch, getState) => {
     });
     axios.put(`api/auth/userFiles`, formData, config)
         .then(res => {
-            dispatch(createMessage({addFiles: "File/Files added"}));
+            dispatch(createMessage({addFiles: res.data}));
             dispatch({
                 type: ADD_FILES,
                 payload: res.data
@@ -91,3 +91,15 @@ export const createConfigFile = (configFile) => (dispatch, getState) => {
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
+// CHANGE FILE NAME
+export const changeFileName = (object) => (dispatch, getState) => {
+    axios.post(`api/auth/userFiles`, object, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({changeName: res.data}));
+            dispatch({
+                type: CHANGE_FILE_NAME,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};

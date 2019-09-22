@@ -85,15 +85,18 @@ class UserFiles(APIView):
         user = request.user
         username = user.username
         file_list = request.FILES.getlist('file')
+        name_file = list()
         for file in file_list:
             name = file._name
             path = "users/" + username + "/" + name
             name = ExperimentUtils.generate_file_name(path)
+            name_file.append(name.split("/")[-1])
             # todo need to check it
             with open(name, 'wb') as f:
                 for chunk in file.chunks():
                     f.write(chunk)
-        return Response(status=status.HTTP_200_OK)
+            data = ",".join(name_file)
+        return Response(status=status.HTTP_200_OK, data=f'Add file/files with name: {data}')
 
     @staticmethod
     def delete(request):

@@ -2,11 +2,12 @@ import Dropzone from 'react-dropzone'
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {addFiles} from "../../actions/files";
+import {addFiles, getFiles} from "../../actions/files";
 
 class AddFiles extends Component {
     static propTypes = {
-        addFiles: PropTypes.func.isRequired
+        addFiles: PropTypes.func.isRequired,
+        getFiles: PropTypes.func.isRequired
     };
     state = {
         files: []
@@ -16,7 +17,7 @@ class AddFiles extends Component {
     handleDrop = (files) => {
         this.setState({files});
         this.props.addFiles(files);
-
+        this.props.getFiles();
     };
 
     render() {
@@ -36,4 +37,4 @@ class AddFiles extends Component {
     }
 }
 
-export default connect(null, {addFiles})(AddFiles);
+export default connect(null, {addFiles, getFiles})(AddFiles);

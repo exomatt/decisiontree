@@ -133,7 +133,7 @@ class ExperimentDetails extends Component {
     }
 
     render() {
-        const name = this.state.name;
+        const name = this.props.experiment.name;
         const username = this.state.username;
         let i;
         let lis = [];

@@ -48,6 +48,8 @@ class Alerts extends Component {
                 alert.success(message.changeExperimentName);
             if (message.shareExperiment)
                 alert.success(message.shareExperiment);
+            if (message.changeName)
+                alert.success(message.changeName);
         }
     }
 
