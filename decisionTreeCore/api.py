@@ -6,7 +6,7 @@ from os import mkdir, listdir
 from os.path import abspath, isfile, join, exists
 from shutil import copyfile, rmtree
 from typing import List
-
+import re
 import xmltodict
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -42,7 +42,9 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         username = user.username
         config_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
         data_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.data_file_name
-        prepare_files(experiment, username, config_file_path, data_file_path)
+        names_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.names_file_name
+        test_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.test_file_name
+        prepare_files(experiment, username, config_file_path, data_file_path, names_file_path, test_file_path)
         change_xml_params_and_model(experiment)
         gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
@@ -79,16 +81,32 @@ def remove_model_files(experiment: Experiment, username: str) -> None:
     rmtree(path)
 
 
-def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str) -> None:
+def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str,
+                  names_file_path: str, test_file_path: str) -> None:
     path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
     mkdir(path)
     mkdir(path + '/out')
+    experiment.config_file_name = re.sub(r"[\(\[].*?[\)\]]", "", experiment.config_file_name)
+    experiment.data_file_name = re.sub(r"[\(\[].*?[\)\]]", "", experiment.data_file_name)
     new_config_path = path + "/" + experiment.config_file_name
     new_data_path = path + "/" + experiment.data_file_name
+    new_test_path = path + "/" + experiment.data_file_name
+    new_names_path = path + "/" + experiment.data_file_name
     copyfile(config_file_path, new_config_path)
-    copyfile(data_file_path + ".names", new_data_path + ".names")
     copyfile(data_file_path + ".data", new_data_path + ".data")
-    copyfile(data_file_path + ".test", new_data_path + ".test")
+    copyfile(test_file_path + ".test", new_test_path + ".test")
+    copyfile(names_file_path + ".names", new_names_path + ".names")
+    parameters_string = f'Information about created experiment: \n' \
+                        f'Experiment id: {experiment.id}\n' \
+                        f'Experiment name: {experiment.name}\n' \
+                        f'Files used in experiment: \n' \
+                        f'- config: {experiment.config_file_name},\n' \
+                        f'- data: {experiment.data_file_name}, \n' \
+                        f'- test: {experiment.test_file_name}, \n' \
+                        f'- names: {experiment.names_file_name}\n'
+    txt_path = path + "/" + "info.txt"
+    with open(txt_path, "w") as text_file:
+        text_file.write(parameters_string)
     experiment.result_directory_path = path
     experiment.save()
     experiment.refresh_from_db()
@@ -225,9 +243,6 @@ def create_config_file(data: ConfigFile, config_file_path: str, user_dir: str) -
     return "File created with name: " + name.split("/")[2]
 
 
-# change model fields base on file
-
-
 class ExperimentFiles(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -266,6 +281,19 @@ class ExperimentFiles(APIView):
         config_file_object = serializer.create(serializer.validated_data)
         message = create_config_file(config_file_object, config_file_path, user_dir)
         return Response(status=status.HTTP_200_OK, data=message)
+
+
+class FileDownloader(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    @staticmethod
+    def get(request):
+        filename = request.query_params['filename']
+        path = settings.BASE_USERS_DIR + request.user.username + "/" + filename
+
+        return serve(request, os.path.basename(path), os.path.dirname(path))
 
 
 def copy_experiment_files(old_path: str, new_path: str):

@@ -14,20 +14,25 @@ class FormExperiment extends Component {
         name: '',
         description: '',
         config_file_name: '',
-        data_file_name: ''
+        data_file_name: '',
+        test_file_name: '',
+        names_file_name: ""
     };
     onChange = e => this.setState({[e.target.name]: e.target.value});
 
     onSubmit = e => {
         e.preventDefault();
-        const {name, description, config_file_name, data_file_name} = this.state;
-        const experiment = {name, description, config_file_name, data_file_name};
+        const {name, description, config_file_name, data_file_name, test_file_name, names_file_name} = this.state;
+        const experiment = {name, description, config_file_name, data_file_name, test_file_name, names_file_name};
+        console.log(experiment);
         this.props.addExperiment(experiment);
         this.setState({
             name: "",
             description: "",
             config_file_name: "",
-            data_file_name: ""
+            data_file_name: "",
+            test_file_name: "",
+            names_file_name: ""
         })
     };
 
@@ -36,17 +41,23 @@ class FormExperiment extends Component {
     };
 
     render() {
-        const {name, description, config_file_name, data_file_name} = this.state;
+        const {name, description, config_file_name, data_file_name, test_file_name, names_file_name} = this.state;
         let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
         let data_files = this.props.files.filter(file => file.endsWith(".data"));
+        let names_files = this.props.files.filter(file => file.endsWith(".names"));
+        let test_files = this.props.files.filter(file => file.endsWith(".test"));
         let optionItemsXml = xml_files.map((file) =>
             <option key={file}>{file}</option>
         );
         let optionItemsData = data_files.map((file) =>
-            <option key={file}>{file.substring(0, file.length - 5)}</option>
+            <option key={file} value={file.substring(0, file.length - 5)}>{file}</option>
         );
-        console.log(xml_files);
-        console.log(data_files);
+        let optionItemsNames = names_files.map((file) =>
+            <option key={file} value={file.substring(0, file.length - 6)}>{file}</option>
+        );
+        let optionItemsTest = test_files.map((file) =>
+            <option key={file} value={file.substring(0, file.length - 5)}>{file}</option>
+        );
         return (
             <div className="card border-light mb-3">
                 <form onSubmit={this.onSubmit}>
@@ -88,6 +99,26 @@ class FormExperiment extends Component {
                                     onChange={this.onChange}>
                                 <option value="select">Select an Option</option>
                                 {optionItemsData}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>Test file</label>
+                            <select className="form-control"
+                                    name="test_file_name"
+                                    value={test_file_name}
+                                    onChange={this.onChange}>
+                                <option value="select">Select an Option</option>
+                                {optionItemsTest}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>Names file</label>
+                            <select className="form-control"
+                                    name="names_file_name"
+                                    value={names_file_name}
+                                    onChange={this.onChange}>
+                                <option value="select">Select an Option</option>
+                                {optionItemsNames}
                             </select>
                         </div>
 

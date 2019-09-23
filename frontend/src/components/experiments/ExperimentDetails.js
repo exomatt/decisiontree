@@ -12,6 +12,7 @@ import {
 } from "../../actions/experiments";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import {Modal} from "react-bootstrap";
+import {createMessage} from "../../actions/messages";
 
 
 class ExperimentDetails extends Component {
@@ -22,6 +23,7 @@ class ExperimentDetails extends Component {
         getProgress: PropTypes.func.isRequired,
         changeExperimentName: PropTypes.func.isRequired,
         getExperimentById: PropTypes.func.isRequired,
+        createMessage: PropTypes.func.isRequired,
         shareExperiment: PropTypes.func.isRequired,
         redirectMe: PropTypes.bool,
         progress: PropTypes.object,
@@ -41,6 +43,10 @@ class ExperimentDetails extends Component {
     handleClose = () => this.setState({isShowingModal: false});
     handleCloseShare = () => this.setState({isShowingModalShare: false});
     handleSubmit = () => {
+        if (this.state.name === '') {
+            this.props.createMessage({emptyField: 'Please fill new name field'});
+            return;
+        }
         let object = {
             id: this.props.experiment.id,
             new_name: this.state.name
@@ -54,6 +60,10 @@ class ExperimentDetails extends Component {
         this.props.getExperimentById(this.props.experiment.id);
     };
     handleSubmitShare = () => {
+        if (this.state.username === '') {
+            this.props.createMessage({emptyField: 'Please fill username field'});
+            return;
+        }
         this.props.shareExperiment(this.props.experiment.id, this.state.username);
         this.setState({
             isShowingModalShare: false,
@@ -66,7 +76,7 @@ class ExperimentDetails extends Component {
         const errorMessage = this.props.experiment.error_message;
         console.log(errorMessage);
         if (errorMessage) {
-            return "Error: " + errorMessage;
+            return "Errors: " + errorMessage;
         }
     };
 
@@ -77,7 +87,6 @@ class ExperimentDetails extends Component {
         const filename = "".concat(id, "_", name, ".zip");
         //Get token from state
         const token = this.props.token;
-
         // Headers and Params
         const config =
             {
@@ -133,7 +142,7 @@ class ExperimentDetails extends Component {
     }
 
     render() {
-        const name = this.props.experiment.name;
+        const name = this.state.name;
         const username = this.state.username;
         let i;
         let lis = [];
@@ -264,10 +273,6 @@ class ExperimentDetails extends Component {
                                 className="btn btn-primary" onClick={this.handleShow.bind()}>
                             Change name
                         </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                            Share experiment
-                        </button>
                     </div>
                 </div>
             );
@@ -312,10 +317,6 @@ class ExperimentDetails extends Component {
                                 className="btn btn-primary" onClick={this.handleShow.bind()}>
                             Change name
                         </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                            Share experiment
-                        </button>
                     </div>
                 </div>
             )
@@ -340,10 +341,6 @@ class ExperimentDetails extends Component {
                                     className="btn btn-secondary" onClick={this.handleClose}>
                                 Close
                             </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmit.bind()}>
-                                Save Changes
-                            </button>
                         </Modal.Footer>
                     </Modal>
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
@@ -359,10 +356,6 @@ class ExperimentDetails extends Component {
                         <button type="button"
                                 className="btn btn-primary" onClick={this.handleShow.bind()}>
                             Change name
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                            Share experiment
                         </button>
                     </div>
                 </div>
@@ -387,5 +380,6 @@ export default connect(mapStateToProps, {
     cancelTask,
     getProgress,
     changeExperimentName,
+    createMessage,
     shareExperiment
 })(ExperimentDetails);

@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 import re
 from subprocess import Popen, PIPE
+from typing import List
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
@@ -39,9 +40,13 @@ def gdt_run(self, filename, experiment_id):
         logger.info(output_striped)
         if "loop mean time:" in output_striped:
             set_progress(experiment_id, output_striped)
-    logger.info(process.stderr)
+    # logger.error("Errors" + ",".join(errors))
     set_status(experiment_id, "Finished")
-
+    # error = ''.join(process.stderr.readline().decode().strip().split())
+    # if error:
+    #     logger.error("Error to: " + error)
+    #     logger.error("Error to: " + ''.join(process.stdout.readline().decode().strip().split()))
+    #     set_error(experiment_id, "Error", error)
     return process.stdout
 
 
@@ -49,6 +54,16 @@ def set_status(experiment_id, status: str, task_id: str = None):
     logger.info(f"Change model status {status} and task_id {task_id}")
     experiment = Experiment.objects.all().get(id=experiment_id)
     experiment.status = status
+    if task_id is not None:
+        experiment.task_id = task_id
+    experiment.save()
+
+
+def set_error(experiment_id, status: str, errors: str, task_id: str = None):
+    logger.info(f"Change model status {status} and task_id {task_id}")
+    experiment = Experiment.objects.all().get(id=experiment_id)
+    experiment.status = status
+    experiment.error_message = errors
     if task_id is not None:
         experiment.task_id = task_id
     experiment.save()
