@@ -14,6 +14,8 @@ flower = "*"
 jsonweb = "*"
 django-reset-migrations = "*"
 django-rest-swagger = "*"
+gunicorn = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

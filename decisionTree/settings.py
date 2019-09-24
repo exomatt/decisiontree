@@ -13,13 +13,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 BASE_USERS_DIR = "users/"
-PROGRAM_PATH = "/home/exomat/Pulpit/decisionTree/mlpdt"
+# PROGRAM_PATH = "/home/exomat/Pulpit/decisionTree/mlpdt"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+PROGRAM_PATH = BASE_DIR + "/mlpdt"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '1$4)wd60abv_a(l@b=m!hrbwe2@#i(fus=+wej-@68op2r_)rg'
@@ -27,7 +31,9 @@ SECRET_KEY = '1$4)wd60abv_a(l@b=m!hrbwe2@#i(fus=+wej-@68op2r_)rg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1"
+]
 
 # Application definition
 
@@ -86,10 +92,21 @@ WSGI_APPLICATION = 'decisionTree.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'decisionTree',
+        'USER': 'decisionTree',
+        'PASSWORD': 'decisionTree',
+        'HOST': 'postgres',
+        'PORT': '5552',
     }
 }
 
@@ -127,3 +144,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR + '/debug.log'
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
