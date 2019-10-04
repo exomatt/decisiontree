@@ -1,12 +1,13 @@
 import json
 import logging
 import os
+import re
 import zipfile
 from os import mkdir, listdir
 from os.path import abspath, isfile, join, exists
 from shutil import copyfile, rmtree
 from typing import List
-import re
+
 import xmltodict
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -46,7 +47,7 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         test_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.test_file_name
         prepare_files(experiment, username, config_file_path, data_file_path, names_file_path, test_file_path)
         change_xml_params_and_model(experiment)
-        gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
+        # gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
     def perform_destroy(self, instance):
         user = self.request.user
@@ -178,6 +179,7 @@ class ExperimentTask(APIView):
         permissions.IsAuthenticated
     ]
 
+    # cancle experiment
     @staticmethod
     def get(request):
         experiment_id = request.query_params['id']
@@ -188,8 +190,30 @@ class ExperimentTask(APIView):
         app.control.revoke(task_id, terminate=True, signal='SIGKILL')
         return Response(status=status.HTTP_200_OK, data="Successfully delete task with id " + task_id)
 
+    # rerun experiment
+    @staticmethod
+    def post(request):
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        user = request.user
+        username = user.username
+        path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
+        rmtree(path + '/out')
+        mkdir(path + '/out')
+        gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
+        return Response(status=status.HTTP_200_OK, data="Successfully rerun experiment")
 
-# EXPERIMENT CELERY CONTROL TASK API
+    # start experiment
+    @staticmethod
+    def put(request):
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+
+        gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
+        return Response(status=status.HTTP_200_OK, data="Successfully start experiment")
+
+
+# EXPERIMENT PROGRESS
 class ExperimentProgress(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -314,6 +338,7 @@ class ExperimentShare(APIView):
         permissions.IsAuthenticated
     ]
 
+    # share experiment
     def get(self, request):
         user = self.request.user
         user_username = user.username
@@ -341,3 +366,32 @@ class ExperimentShare(APIView):
 
         copy_experiment_files(old_path, new_path)
         return Response(status=status.HTTP_200_OK, data="Experiment share with " + username_to_share)
+
+
+# COPY EXEPERIMENT
+class ExperimentCopy(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    # copy experiment
+    def get(self, request):
+        user = self.request.user
+        user_username = user.username
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        old_path = settings.BASE_USERS_DIR + user_username + "/" + str(experiment.id) + "_" + experiment.name
+        progress = experiment.progress
+        experiment.name = experiment.name + " (copy)"
+        experiment.pk = None
+        experiment.save()
+        progress.pk = None
+        progress.experiment = experiment
+        progress.save()
+        experiment.progress = progress
+        experiment.save()
+        new_path = settings.BASE_USERS_DIR + user_username + "/" + str(
+            experiment.id) + "_" + experiment.name
+
+        copy_experiment_files(old_path, new_path)
+        return Response(status=status.HTTP_200_OK, data=f'Experiment copy with id {experiment.id}')
