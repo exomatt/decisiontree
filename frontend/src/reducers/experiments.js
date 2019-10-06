@@ -1,10 +1,16 @@
 import {
     ADD_EXPERIMENTS,
+    CANCEL_TASK,
+    CHANGE_EXPERIMENT_NAME,
+    COPY_EXPERIMENT,
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
-    CANCEL_TASK, PROGRESS_EXPERIMENT, CHANGE_EXPERIMENT_NAME, SHARE_EXPERIMENT
+    PROGRESS_EXPERIMENT,
+    RERUN_TASK,
+    SHARE_EXPERIMENT,
+    START_TASK
 } from "../actions/types";
 
 const initialState = {
@@ -51,9 +57,12 @@ export default function (state = initialState, action) {
                 ...state
             };
         case SHARE_EXPERIMENT:
+        case COPY_EXPERIMENT:
             return {
                 ...state
             };
+        case START_TASK:
+        case RERUN_TASK:
         case CANCEL_TASK:
             return {
                 ...state,

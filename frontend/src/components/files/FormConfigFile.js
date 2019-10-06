@@ -156,13 +156,6 @@ class FormConfigFile extends Component {
                                    onChange={this.onChange}/>
                         </div>
                         <div className="form-group">
-                            <label>Minimum iterations number</label>
-                            <input type="number" className="form-control"
-                                   name="minimumiterations"
-                                   value={minimumiterations}
-                                   onChange={this.onChange}/>
-                        </div>
-                        <div className="form-group">
                             <label>Probability of mutation </label>
                             <input type="number" className="form-control"
                                    name="probabilityofmutation"

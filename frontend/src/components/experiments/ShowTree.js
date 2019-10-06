@@ -24,12 +24,6 @@ class ShowTree extends Component {
                               onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back to
                             experiment</Link>
                     </div>
-
-                    <div id="treeWrapper" style={{width: '70em', height: '50em'}}>
-                        <Link to={"/showExperiment"} className={"btn btn-primary"}
-                              onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back to
-                            experiment</Link>
-                    </div>
                 </div>
             );
         } else {

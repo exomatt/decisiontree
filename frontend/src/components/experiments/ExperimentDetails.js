@@ -1,18 +1,21 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Link, Redirect} from "react-router-dom";
 import axios from "axios";
-import {
-    cancelTask,
-    changeExperimentName,
-    getExperimentById,
-    getProgress,
-    getTreeByNumber, shareExperiment
-} from "../../actions/experiments";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import {Modal} from "react-bootstrap";
+import {
+    cancelTask,
+    changeExperimentName, copyExperiment,
+    getExperimentById,
+    getProgress,
+    getTreeByNumber,
+    rerunTask,
+    shareExperiment,
+    startTask
+} from "../../actions/experiments";
 import {createMessage} from "../../actions/messages";
+import {connect} from "react-redux";
 
 
 class ExperimentDetails extends Component {
@@ -24,6 +27,10 @@ class ExperimentDetails extends Component {
         changeExperimentName: PropTypes.func.isRequired,
         getExperimentById: PropTypes.func.isRequired,
         createMessage: PropTypes.func.isRequired,
+        cancelTask: PropTypes.func.isRequired,
+        rerunTask: PropTypes.func.isRequired,
+        startTask: PropTypes.func.isRequired,
+        copyExperiment: PropTypes.func.isRequired,
         shareExperiment: PropTypes.func.isRequired,
         redirectMe: PropTypes.bool,
         progress: PropTypes.object,
@@ -209,27 +216,37 @@ class ExperimentDetails extends Component {
                         <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                         <div className="card-body">
                             <h4 className="card-title">Name: {this.props.experiment.name}</h4>
-                            <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                            <p className="card-text">Date: {this.props.experiment.date}</p><br/>
-                            <p className="card-text">Status: {this.props.experiment.status}</p><br/>
-                            <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
-                            <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                            {lis}
                             {this.renderButton()}
                             <button type="button"
                                     className="btn btn-primary" onClick={this.handleShow.bind()}>
                                 Change name
                             </button>
                             <button type="button"
+                                    className="btn btn-primary"
+                                    onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
+                                Rerun
+                            </button>
+                            <button type="button"
+                                    className="btn btn-primary"
+                                    onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
+                                Create copy
+                            </button>
+                            <button type="button"
                                     className="btn btn-primary" onClick={this.handleShowShare.bind()}>
                                 Share experiment
                             </button>
+                            <p className="card-text">Description: {this.props.experiment.description}</p><br/>
+                            <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                            <p className="card-text">Status: {this.props.experiment.status}</p><br/>
+                            <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
+                            <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                            {lis}
                         </div>
                     </div>
                 </div>
             );
         }
-        if (this.props.experiment.status !== "Error" && this.props.experiment.status !== "Canceled") {
+        if (this.props.experiment.status === "Running") {
             return (
                 <div className="card border-primary mb-3">
                     <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
@@ -257,6 +274,13 @@ class ExperimentDetails extends Component {
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
                         <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                        <button type="button"
+                                className="btn btn-primary" onClick={this.handleShow.bind()}>
+                            Change name
+                        </button>
+                        <button onClick={this.props.cancelTask.bind(this, this.props.experiment.id)} type="button"
+                                className="btn btn-primary">Cancel Task
+                        </button>
                         <ProgressBar animated now={parseFloat(this.props.progress.progress_percent) * 100}
                                      label={`${(parseFloat(this.props.progress.progress_percent) * 100).toFixed(2)}%`}/>
                         <p className="card-text">Time
@@ -266,13 +290,7 @@ class ExperimentDetails extends Component {
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                        <button onClick={this.props.cancelTask.bind(this, this.props.experiment.id)} type="button"
-                                className="btn btn-primary">Cancel Task
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShow.bind()}>
-                            Change name
-                        </button>
+
                     </div>
                 </div>
             );
@@ -306,23 +324,96 @@ class ExperimentDetails extends Component {
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
                         <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                        {this.renderButton()}
+                        <button type="button"
+                                className="btn btn-primary" onClick={this.handleShow.bind()}>
+                            Change name
+                        </button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
+                            Rerun
+                        </button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
+                            Create copy
+                        </button>
+                        <button type="submit"
+                                className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
+                            Share
+                        </button>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
                         <p className="card-text">{this.error()}</p><br/>
-                        {this.renderButton()}
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShow.bind()}>
-                            Change name
-                        </button>
+
                     </div>
                 </div>
             )
         }
 
         if (this.props.experiment.status === "Canceled") {
+            return (
+                <div className="card border-primary mb-3">
+                    <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>New name form</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>New experiment name: </Modal.Body>
+                        <input type="text"
+                               className="form-control"
+                               name="name"
+                               value={name}
+                               placeholder="Enter new name"
+                               onChange={this.onChange}/>
+                        <Modal.Footer>
+                            <button type="button"
+                                    className="btn btn-secondary" onClick={this.handleClose}>
+                                Close
+                            </button>
+                            <button type="submit"
+                                    className="btn btn-primary" onClick={this.handleSubmit.bind()}>
+                                Save Changes
+                            </button>
+                        </Modal.Footer>
+                    </Modal>
+                    <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                    <div className="card-body">
+                        <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                        {this.renderButton()}
+                        <button type="button"
+                                className="btn btn-primary" onClick={this.handleShow.bind()}>
+                            Change name
+                        </button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
+                            Rerun
+                        </button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
+                            Create copy
+                        </button>
+                        <button type="submit"
+                                className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
+                            Share
+                        </button>
+                        <p className="card-text">Description: {this.props.experiment.description}</p><br/>
+                        <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                        <p className="card-text">Status: {this.props.experiment.status}</p><br/>
+                        <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
+                        <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+                        <p className="card-text">{this.error()}</p><br/>
+
+                    </div>
+                </div>
+            );
+        }
+        if (this.props.experiment.status === "Created") {
             return (
                 <div className="card border-danger mb-3">
                     <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
@@ -341,22 +432,41 @@ class ExperimentDetails extends Component {
                                     className="btn btn-secondary" onClick={this.handleClose}>
                                 Close
                             </button>
+                            <button type="submit"
+                                    className="btn btn-primary" onClick={this.handleSubmit.bind()}>
+                                Save Changes
+                            </button>
                         </Modal.Footer>
                     </Modal>
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
                         <h4 className="card-title">Name: {this.props.experiment.name}</h4>
+                        {this.renderButton()}
+                        <button type="button"
+                                className="btn btn-primary" onClick={this.handleShow.bind()}>
+                            Change name
+                        </button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                onClick={this.props.startTask.bind(this, this.props.experiment.id)}>
+                            Start
+                        </button>
+                        <button type="button"
+                                className="btn btn-primary"
+                                onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
+                            Create copy
+                        </button>
+                        <button type="submit"
+                                className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
+                            Share
+                        </button>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
                         <p className="card-text">{this.error()}</p><br/>
-                        {this.renderButton()}
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShow.bind()}>
-                            Change name
-                        </button>
+
                     </div>
                 </div>
             )
@@ -378,8 +488,11 @@ export default connect(mapStateToProps, {
     getTreeByNumber,
     getExperimentById,
     cancelTask,
+    rerunTask,
+    startTask,
     getProgress,
     changeExperimentName,
     createMessage,
+    copyExperiment,
     shareExperiment
 })(ExperimentDetails);

@@ -3,12 +3,12 @@ import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
 import {
     ADD_EXPERIMENTS,
-    CANCEL_TASK, CHANGE_EXPERIMENT_NAME,
+    CANCEL_TASK, CHANGE_EXPERIMENT_NAME, COPY_EXPERIMENT,
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
-    PROGRESS_EXPERIMENT, SHARE_EXPERIMENT
+    PROGRESS_EXPERIMENT, RERUN_TASK, SHARE_EXPERIMENT, START_TASK
 } from "./types";
 
 // GET EXPERIMENTS
@@ -100,6 +100,20 @@ export const getTreeByNumber = (id, runNumber) => (dispatch, getState) => {
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
 };
 
+
+// PROGRESS TASK
+export const getProgress = (id) => (dispatch, getState) => {
+    axios.get(`/api/progress?id=${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: PROGRESS_EXPERIMENT,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
+
 // CANCEL TASK
 export const cancelTask = (id) => (dispatch, getState) => {
     axios.get(`/api/task?id=${id}`, tokenConfig(getState))
@@ -113,12 +127,42 @@ export const cancelTask = (id) => (dispatch, getState) => {
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
 };
 
-// PROGRESS TASK
-export const getProgress = (id) => (dispatch, getState) => {
-    axios.get(`/api/progress?id=${id}`, tokenConfig(getState))
+
+// RERUN TASK
+export const rerunTask = (id) => (dispatch, getState) => {
+    axios.post(`/api/task?id=${id}`, {}, tokenConfig(getState))
         .then(res => {
+            dispatch(createMessage({rerunTask: "Experiment rerun"}));
             dispatch({
-                type: PROGRESS_EXPERIMENT,
+                type: RERUN_TASK,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
+
+// START TASK
+export const startTask = (id) => (dispatch, getState) => {
+    axios.put(`/api/task?id=${id}`, {}, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({startTask: "Experiment start"}));
+            dispatch({
+                type: START_TASK,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
+
+// COPY EXPERIMENT
+export const copyExperiment = (id) => (dispatch, getState) => {
+    axios.get(`/api/copy?id=${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({copyExperiment: res.data}));
+            dispatch({
+                type: COPY_EXPERIMENT,
                 payload: res.data
             });
         })

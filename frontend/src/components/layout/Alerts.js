@@ -50,6 +50,12 @@ class Alerts extends Component {
                 alert.success(message.shareExperiment);
             if (message.changeName)
                 alert.success(message.changeName);
+            if (message.rerunTask)
+                alert.success(message.rerunTask);
+            if (message.startTask)
+                alert.success(message.startTask);
+            if (message.copyExperiment)
+                alert.success(message.copyExperiment);
         }
     }
 

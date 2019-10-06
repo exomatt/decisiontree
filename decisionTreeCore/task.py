@@ -28,7 +28,7 @@ def gdt_run(self, filename, experiment_id):
     filename = os.path.abspath(filename)
     logger.info('Parameters: id: ' + str(experiment_id) + ' filename: ' + filename)
     logger.info(filename)
-    command = settings.PROGRAM_PATH + " -f %s" % filename
+    command = settings.PROGRAM_PATH + " -f \"%s\"" % filename
     logger.info('Command: ' + command)
     logger.info(command)
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
