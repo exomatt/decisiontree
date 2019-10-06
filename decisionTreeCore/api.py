@@ -57,6 +57,7 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
+# EXPERIMENT CRUD
 class ExperimentCrud(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -67,16 +68,50 @@ class ExperimentCrud(APIView):
         user = request.user
         username = user.username
         experiment_id = request.data['id']
-        new_name = request.data['new_name']
         experiment = Experiment.objects.get(pk=experiment_id)
-        path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{experiment.name}'
-        new_path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{new_name}'
-        if exists(path):
-            os.rename(path, new_path)
-        experiment.name = new_name
-        experiment.result_directory_path = new_path
-        experiment.save()
-        return Response(status=status.HTTP_200_OK, data=f'Change model name to -> {new_name}')
+        if 'new_name' in request.data:
+            new_name = request.data['new_name']
+            path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{experiment.name}'
+            new_path: str = f'{settings.BASE_USERS_DIR}{username}/{experiment.id}_{new_name}'
+            if exists(path):
+                os.rename(path, new_path)
+            experiment.name = new_name
+            experiment.result_directory_path = new_path
+            experiment.save()
+        if 'new_desc' in request.data:
+            new_desc = request.data['new_desc']
+            experiment.description = new_desc
+            experiment.save()
+        # todo dokonczyc
+        if 'new_config' in request.data:
+            config = request.data['new_config']
+            create_experiment_file_copy(experiment, username, 0)
+            file_name = experiment.config_file_name
+            copy_experiment_file(experiment, username, file_name, 0)
+            experiment.config_file_name = config
+
+        if 'new_data' in request.data:
+            data = request.data['new_data']
+            create_experiment_file_copy(experiment, username, 1)
+            experiment.data_file_name = data
+            new_data_path = settings.BASE_USERS_DIR + username + "/" + data
+            copy_experiment_file(experiment, username, new_data_path, 1)
+
+        if 'new_names' in request.data:
+            names = request.data['new_names']
+            create_experiment_file_copy(experiment, username, 2)
+            experiment.names_file_name = names
+            new_names_path = settings.BASE_USERS_DIR + username + "/" + names
+            copy_experiment_file(experiment, username, new_names_path, 2)
+
+        if 'new_test' in request.data:
+            test = request.data['new_test']
+            create_experiment_file_copy(experiment, username, 3)
+            experiment.test = test
+            new_test_path = settings.BASE_USERS_DIR + username + "/" + test
+            copy_experiment_file(experiment, username, new_test_path, 3)
+
+        return Response(status=status.HTTP_200_OK, data=f'Experiment edit successfully')
 
 
 # EXPERIMENT RESULT API
@@ -176,6 +211,7 @@ class ExperimentProgress(APIView):
         return Response(status=status.HTTP_200_OK, data=data)
 
 
+# EXPERIMENT FILES
 class ExperimentFiles(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -229,19 +265,7 @@ class FileDownloader(APIView):
         return serve(request, os.path.basename(path), os.path.dirname(path))
 
 
-def copy_experiment_files(old_path: str, new_path: str):
-    os.mkdir(new_path)
-    ExperimentUtils.copytree(old_path, new_path)
-
-
-def zipdir(path, ziph):
-    # ziph is zipfile handle
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            ziph.write(os.path.join(root, file))
-
-
-# SHARE EXEPERIMENT WITH OTHER USERS
+# SHARE EXPERIMENT WITH OTHER USERS
 class ExperimentShare(APIView):
     permission_classes = [
         permissions.IsAuthenticated
@@ -349,6 +373,56 @@ def remove_model_files(experiment: Experiment, username: str) -> None:
     rmtree(path)
 
 
+def create_experiment_file_copy(experiment: Experiment, username: str, option: int) -> None:
+    if option == 0:
+        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.config_file_name}'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.config_file_name}'
+        name = ExperimentUtils.generate_file_name(new_path)
+        os.rename(path, name)
+    if option == 1:
+        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.data'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.data'
+        name = ExperimentUtils.generate_file_name(new_path)
+        os.rename(path, name)
+    if option == 2:
+        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.names'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.names'
+        name = ExperimentUtils.generate_file_name(new_path)
+        os.rename(path, name)
+    if option == 3:
+        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.test'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.test'
+        name = ExperimentUtils.generate_file_name(new_path)
+        os.rename(path, name)
+
+
+def copy_experiment_file(experiment: Experiment, username: str, file: str, option: int) -> None:
+    path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
+    # config file
+    #
+    # names_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.names_file_name
+    # test_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.test_file_name
+    if option == 0:
+        config_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
+        experiment.config_file_name = re.sub(r"[\(\[].*?[\)\]]", "", experiment.config_file_name)
+        new_config_path = path + "/" + experiment.config_file_name
+        copyfile(config_file_path, new_config_path)
+    if option == 1:
+        experiment.data_file_name = re.sub(r"[\(\[].*?[\)\]]", "", experiment.data_file_name)
+        data_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.data_file_name
+        new_data_path = path + "/" + experiment.data_file_name
+
+    if option == 2:
+        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.names'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.names'
+        name = ExperimentUtils.generate_file_name(new_path)
+        os.rename(path, name)
+    if option == 3:
+        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.test'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.test'
+        name = ExperimentUtils.generate_file_name(new_path)
+        os.rename(path, name)
+
 def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str,
                   names_file_path: str, test_file_path: str) -> None:
     path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
@@ -364,6 +438,13 @@ def prepare_files(experiment: Experiment, username: str, config_file_path: str, 
     copyfile(data_file_path + ".data", new_data_path + ".data")
     copyfile(test_file_path + ".test", new_test_path + ".test")
     copyfile(names_file_path + ".names", new_names_path + ".names")
+    create_readme_file(experiment, path)
+    experiment.result_directory_path = path
+    experiment.save()
+    experiment.refresh_from_db()
+
+
+def create_readme_file(experiment, path):
     parameters_string = f'Information about created experiment: \n' \
                         f'Experiment id: {experiment.id}\n' \
                         f'Experiment name: {experiment.name}\n' \
@@ -372,12 +453,9 @@ def prepare_files(experiment: Experiment, username: str, config_file_path: str, 
                         f'- data: {experiment.data_file_name}, \n' \
                         f'- test: {experiment.test_file_name}, \n' \
                         f'- names: {experiment.names_file_name}\n'
-    txt_path = path + "/" + "info.txt"
+    txt_path = path + "/" + "readme.txt"
     with open(txt_path, "w") as text_file:
         text_file.write(parameters_string)
-    experiment.result_directory_path = path
-    experiment.save()
-    experiment.refresh_from_db()
 
 
 # todo dokonczyc parsownie i okreslenie sciezek
@@ -429,3 +507,15 @@ def set_new_progress(experiment: Experiment) -> None:
     progress.save()
     experiment.progress = progress
     experiment.save()
+
+
+def copy_experiment_files(old_path: str, new_path: str):
+    os.mkdir(new_path)
+    ExperimentUtils.copytree(old_path, new_path)
+
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
