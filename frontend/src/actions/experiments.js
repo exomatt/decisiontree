@@ -3,7 +3,7 @@ import {createMessage, returnErrors} from "./messages";
 import {tokenConfig} from "./auth";
 import {
     ADD_EXPERIMENTS,
-    CANCEL_TASK, CHANGE_EXPERIMENT_NAME, COPY_EXPERIMENT,
+    CANCEL_TASK, CHANGE_EXPERIMENT_CRUD, CHANGE_EXPERIMENT_NAME, COPY_EXPERIMENT,
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
     GET_EXPERIMENTS,
@@ -62,12 +62,12 @@ export const addExperiment = (experiment) => (dispatch, getState) => {
 };
 
 // CHANGE EXPERIMENT NAME
-export const changeExperimentName = (body) => (dispatch, getState) => {
+export const changeExperimentCrud = (body) => (dispatch, getState) => {
     axios.post(`/api/crud`, body, tokenConfig(getState))
         .then(res => {
-            dispatch(createMessage({changeExperimentName: res.data}));
+            dispatch(createMessage({changeExperimentCrud: res.data}));
             dispatch({
-                type: CHANGE_EXPERIMENT_NAME,
+                type: CHANGE_EXPERIMENT_CRUD,
                 payload: res.data
             });
         })

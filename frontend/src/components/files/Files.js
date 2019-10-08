@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {changeFileName, deleteFiles, getFiles} from "../../actions/files";
 import {Modal} from "react-bootstrap";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 
 class Files extends Component {
@@ -112,7 +113,8 @@ class Files extends Component {
                         </button>
                     </Modal.Footer>
                 </Modal>
-                <h1>XML Files:</h1>
+                <h1>Config xml files:</h1>
+                <Link to={"/createConfigFile"} className={"btn btn-primary"}>Create Config File</Link>
                 <table className="table table-striped">
                     <thead>
                     <tr>

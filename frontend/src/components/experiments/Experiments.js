@@ -22,6 +22,7 @@ class Experiments extends Component {
         return (
             <div>
                 <h1>Experiments:</h1>
+                <Link to={"/newExperiment"} className={"btn btn-primary"}>New Experiment</Link>
                 <table className="table table-striped" datapagesize={5}>
                     <thead>
                     <tr>

@@ -1,7 +1,7 @@
 import {
     ADD_EXPERIMENTS,
     CANCEL_TASK,
-    CHANGE_EXPERIMENT_NAME,
+    CHANGE_EXPERIMENT_CRUD,
     COPY_EXPERIMENT,
     DELETE_EXPERIMENTS,
     GET_EXPERIMENT_ID,
@@ -52,7 +52,7 @@ export default function (state = initialState, action) {
                 ...state,
                 tree: [...state.tree, action.payload]
             };
-        case CHANGE_EXPERIMENT_NAME:
+        case CHANGE_EXPERIMENT_CRUD:
             return {
                 ...state
             };
