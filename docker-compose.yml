@@ -14,7 +14,7 @@ services:
       - users:/app/users
     ports:
       - 8000:8000
-    command: pipenv run gunicorn -w 4 decisionTree.wsgi -b 0.0.0.0:8000
+    command: /bin/bash "sleep 10;  pipenv run gunicorn -w 4 decisionTree.wsgi -b 0.0.0.0:8000"
     #    command: cd /app && pip install pipenv && pipenv shell && python manage.py runserver
     depends_on:
       - rabbitmq
@@ -50,4 +50,4 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - 5552:5432
+      - 5432:5432
