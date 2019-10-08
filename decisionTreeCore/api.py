@@ -86,31 +86,34 @@ class ExperimentCrud(APIView):
         if 'new_config' in request.data:
             config = request.data['new_config']
             create_experiment_file_copy(experiment, username, 0)
-            file_name = experiment.config_file_name
-            copy_experiment_file(experiment, username, file_name, 0)
             experiment.config_file_name = config
+            copy_experiment_file(experiment, username, 0)
+            experiment.save()
 
         if 'new_data' in request.data:
             data = request.data['new_data']
             create_experiment_file_copy(experiment, username, 1)
+            old_file_name = experiment.data_file_name
             experiment.data_file_name = data
-            new_data_path = settings.BASE_USERS_DIR + username + "/" + data
-            copy_experiment_file(experiment, username, new_data_path, 1)
+            copy_experiment_file(experiment, username, 1, old_file_name)
+            rename_files(old_file_name, username, experiment)
 
         if 'new_names' in request.data:
             names = request.data['new_names']
             create_experiment_file_copy(experiment, username, 2)
+            old_file_name = experiment.data_file_name
             experiment.names_file_name = names
-            new_names_path = settings.BASE_USERS_DIR + username + "/" + names
-            copy_experiment_file(experiment, username, new_names_path, 2)
+            copy_experiment_file(experiment, username, 2, old_file_name)
 
         if 'new_test' in request.data:
             test = request.data['new_test']
             create_experiment_file_copy(experiment, username, 3)
-            experiment.test = test
-            new_test_path = settings.BASE_USERS_DIR + username + "/" + test
-            copy_experiment_file(experiment, username, new_test_path, 3)
-
+            old_file_name = experiment.data_file_name
+            experiment.test_file_name = test
+            copy_experiment_file(experiment, username, 3, old_file_name)
+        if 'new_name' not in request.data and 'new_desc' in request.data:
+            copy_out_folder(experiment, username)
+        change_xml_params_and_model(experiment)
         return Response(status=status.HTTP_200_OK, data=f'Experiment edit successfully')
 
 
@@ -173,7 +176,8 @@ class ExperimentTask(APIView):
         progress.last_iter_number = 0
         progress.save()
         path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
-        rmtree(path + '/out')
+        new_out_path = ExperimentUtils.generate_file_name(path + '/out_old')
+        os.rename(path + '/out', new_out_path)
         mkdir(path + '/out')
         config_file_path = experiment.result_directory_path + "/" + experiment.config_file_name
         logger.debug(f'Config file used in celery task run {config_file_path}')
@@ -373,15 +377,23 @@ def remove_model_files(experiment: Experiment, username: str) -> None:
     rmtree(path)
 
 
+def copy_out_folder(experiment: Experiment, username: str) -> None:
+    path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
+    old_out_path = path + '/out_old'
+    new_out_path = ExperimentUtils.generate_file_name(old_out_path)
+    os.rename(old_out_path, new_out_path)
+    mkdir(path + '/out')
+
+
 def create_experiment_file_copy(experiment: Experiment, username: str, option: int) -> None:
     if option == 0:
         path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.config_file_name}'
-        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.config_file_name}'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old_{experiment.config_file_name}'
         name = ExperimentUtils.generate_file_name(new_path)
         os.rename(path, name)
     if option == 1:
         path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.data'
-        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.data'
+        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old_{experiment.data_file_name}.data'
         name = ExperimentUtils.generate_file_name(new_path)
         os.rename(path, name)
     if option == 2:
@@ -396,32 +408,44 @@ def create_experiment_file_copy(experiment: Experiment, username: str, option: i
         os.rename(path, name)
 
 
-def copy_experiment_file(experiment: Experiment, username: str, file: str, option: int) -> None:
+def copy_experiment_file(experiment: Experiment, username: str, option: int, old_file_name: str = "") -> None:
     path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
-    # config file
-    #
-    # names_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.names_file_name
-    # test_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.test_file_name
+    # copy new config file
     if option == 0:
         config_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.config_file_name
         experiment.config_file_name = re.sub(r"[\(\[].*?[\)\]]", "", experiment.config_file_name)
         new_config_path = path + "/" + experiment.config_file_name
+        logger.info(f'Copying file from {config_file_path} to {new_config_path}')
         copyfile(config_file_path, new_config_path)
+        experiment.save()
     if option == 1:
+        data_file_path = f'{settings.BASE_USERS_DIR}{username}/{experiment.data_file_name}.data'
         experiment.data_file_name = re.sub(r"[\(\[].*?[\)\]]", "", experiment.data_file_name)
-        data_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.data_file_name
-        new_data_path = path + "/" + experiment.data_file_name
-
+        new_data_path = f'{path}/{experiment.data_file_name}.data'
+        logger.info(f'Copying file from {data_file_path} to {new_data_path}')
+        copyfile(data_file_path, new_data_path)
+        experiment.save()
     if option == 2:
-        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.names'
-        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.names'
-        name = ExperimentUtils.generate_file_name(new_path)
-        os.rename(path, name)
+        names_file_path = f'{settings.BASE_USERS_DIR}{username}/{experiment.names_file_name}.names'
+        new_names_path = f'{path}/{old_file_name}.names'
+        logger.info(f'Copying file from {names_file_path} to {new_names_path}')
+        copyfile(names_file_path, new_names_path)
     if option == 3:
-        path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/{experiment.data_file_name}.test'
-        new_path = f'{settings.BASE_USERS_DIR}{username}/{str(experiment.id)}_{experiment.name}/old {experiment.data_file_name}.test'
-        name = ExperimentUtils.generate_file_name(new_path)
-        os.rename(path, name)
+        test_file_path = f'{settings.BASE_USERS_DIR}{username}/{experiment.test_file_name}.test'
+        new_test_path = f'{path}/{old_file_name}.test'
+        logger.info(f'Copying file from {test_file_path} to {new_test_path}')
+        copyfile(test_file_path, new_test_path)
+
+
+def rename_files(old_file_name: str, username: str, experiment: Experiment) -> None:
+    path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
+    names_file_path = path + "/" + experiment.data_file_name + '.names'
+    old_names_file_path = path + "/" + old_file_name + '.names'
+    test_file_path = path + "/" + experiment.data_file_name + '.test'
+    old_test_file_path = path + "/" + old_file_name + '.test'
+    os.rename(old_names_file_path, names_file_path)
+    os.rename(old_test_file_path, test_file_path)
+
 
 def prepare_files(experiment: Experiment, username: str, config_file_path: str, data_file_path: str,
                   names_file_path: str, test_file_path: str) -> None:
