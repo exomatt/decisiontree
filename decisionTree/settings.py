@@ -109,7 +109,7 @@ DATABASES = {
         'USER': 'decisionTree',
         'PASSWORD': 'decisionTree',
         'HOST': 'postgres',
-        'PORT': '5552',
+        'PORT': '5432',
     }
 }
 
