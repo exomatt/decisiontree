@@ -225,8 +225,8 @@ class ExperimentFiles(APIView):
     def get(request):
         experiment_id = request.query_params['id']
         experiment = Experiment.objects.get(pk=experiment_id)
-        error = ('Finished', 'Error')
-        if experiment.status not in error:
+        if experiment.status == "Running":
+            logger.error(f'[ExperimentFiles] Status of experiment is {experiment.status}')
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Experiment is not finished yet")
         result_directory_path = settings.BASE_USERS_DIR + request.user.username + "/tmp"
         if not os.path.exists(result_directory_path):
