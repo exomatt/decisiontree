@@ -33,7 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "localhost"
+    "localhost",
+    "vps733855.ovh.net",
+    "145.239.91.137"
 ]
 
 # Application definition
