@@ -1,3 +1,4 @@
+import logging
 from os import listdir, remove, rename
 from os.path import isfile, join
 
@@ -6,9 +7,12 @@ from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth.models import User, Group
 
 from decisionTreeCore.utils import ExperimentUtils
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+
+logger = logging.getLogger(__name__)
 
 
 # Register API
@@ -22,6 +26,11 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        # todo check if ist work
+        role = 'student'
+        my_group = Group.objects.get(name=role)
+        my_group.user_set.add(user)
+        logger.debug(f'Set role for new user: {role} for {user}')
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": Token.objects.get_or_create(user=user)[0].key
@@ -42,7 +51,8 @@ class LoginAPI(generics.GenericAPIView):
         # login(request, user)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": Token.objects.get_or_create(user=user)[0].key
+            "token": Token.objects.get_or_create(user=user)[0].key,
+            "group": list(user.groups.values_list('name', flat=True))
         })
 
 
@@ -56,6 +66,12 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+    @staticmethod
+    def post(request):
+        user = request.user
+        group = list(user.groups.values_list('name', flat=True))
+        return Response(status=status.HTTP_200_OK, data=group)
 
 
 # Get Logout  API
@@ -74,7 +90,10 @@ class UserFiles(APIView):
 
     @staticmethod
     def get(request):
-        user = request.user
+        user: User = request.user
+        groups = list(user.groups.values_list('name', flat=True))
+        if 'normal' not in groups:
+            return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         username = user.username
         path = settings.BASE_USERS_DIR + username + "/"
         files = [f for f in listdir(path) if isfile(join(path, f))]
@@ -84,6 +103,9 @@ class UserFiles(APIView):
     def put(request, format=None):
         user = request.user
         username = user.username
+        groups = list(user.groups.values_list('name', flat=True))
+        if 'normal' not in groups:
+            return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         file_list = request.FILES.getlist('file')
         name_file = list()
         for file in file_list:
@@ -101,6 +123,9 @@ class UserFiles(APIView):
     @staticmethod
     def delete(request):
         user = request.user
+        groups = list(user.groups.values_list('name', flat=True))
+        if 'normal' not in groups:
+            return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         username = user.username
         name = request.query_params['name']
         path = "users/" + username + "/" + name
@@ -114,6 +139,9 @@ class UserFiles(APIView):
     @staticmethod
     def post(request):
         user = request.user
+        groups = list(user.groups.values_list('name', flat=True))
+        if 'normal' not in groups:
+            return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         username: str = user.username
         filename: str = request.data['filename']
         new_name: str = request.data['new_name']

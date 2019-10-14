@@ -5,7 +5,7 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
-    REGISTER_SUCCESS, REGISTER_FAIL
+    REGISTER_SUCCESS, REGISTER_FAIL, USER_GROUP
 } from "../actions/types";
 
 
@@ -13,7 +13,8 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: null,
+    group: null
 };
 
 export default function (state = initialState, action) {
@@ -33,11 +34,17 @@ export default function (state = initialState, action) {
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             localStorage.setItem('token', action.payload.token);
+            localStorage.setItem('group', action.payload.group);
             return {
                 ...state,
                 ...action.payload,
                 isAuthenticated: true,
                 isLoading: false
+            };
+        case USER_GROUP:
+            return {
+                ...state,
+                group: action.payload
             };
         case AUTH_ERROR:
         case LOGIN_FAIL:

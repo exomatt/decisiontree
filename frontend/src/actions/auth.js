@@ -9,7 +9,8 @@ import {
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL,
+    USER_GROUP
 } from "./types";
 
 // CHECK TOKEN & LOAD USER
@@ -21,6 +22,22 @@ export const loadUser = () => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: USER_LOADED,
+                payload: res.data
+            });
+        }).catch(err => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+        dispatch({
+            type: AUTH_ERROR
+        });
+    });
+};
+
+// GET USER GROUP
+export const loadUserGroup = () => (dispatch, getState) => {
+    axios.post('api/auth/user', {}, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: USER_GROUP,
                 payload: res.data
             });
         }).catch(err => {

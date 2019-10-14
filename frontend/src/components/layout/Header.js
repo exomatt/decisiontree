@@ -2,22 +2,36 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {logout} from "../../actions/auth";
+import {loadUserGroup, logout} from "../../actions/auth";
 
 
 export class Header extends Component {
     static propTypes = {
         auth: PropTypes.object.isRequired,
-        logout: PropTypes.func.isRequired
+        logout: PropTypes.func.isRequired,
+        loadUserGroup: PropTypes.func.isRequired
     };
+
+    componentDidMount() {
+        this.props.loadUserGroup();
+    }
+
+    files() {
+        if (this.props.auth.group === null)
+            return;
+        if (this.props.auth.group.includes('normal')) {
+            return <li className="nav-item active">
+                <Link to={"/files"} className={"nav-link"}>Files</Link>
+            </li>
+        }
+
+    }
 
     render() {
         const {isAuthenticated, user} = this.props.auth;
         const authLinks = (
             <ul className="navbar-nav mr-auto">
-                <li className="nav-item active">
-                    <Link to={"/files"} className={"nav-link"}>Files</Link>
-                </li>
+                {this.files()}
                 <span className="navbar-text mr-3">
                                  <strong>{user ? `Welcome ${user.username}` : ""}
                       </strong>
@@ -59,4 +73,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, {logout})(Header);
+export default connect(mapStateToProps, {logout, loadUserGroup})(Header);
