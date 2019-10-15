@@ -17,7 +17,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from decisionTree.celery import app
-from decisionTreeCore.models import Experiment, Progress
+from decisionTreeCore.models import Experiment, Progress, Permissions
 from decisionTreeCore.task import gdt_run
 from decisionTreeCore.utils import ExperimentUtils
 from decisionTreeCore.utils.ExperimentUtils import ConfigFileSerializer, ConfigFile
@@ -26,7 +26,7 @@ from .serializers import ExperimentSerializer
 logger = logging.getLogger(__name__)
 
 
-# Experiments Viewset
+# Experiments CREATE GET DELETE
 class ExperimentViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
@@ -48,6 +48,7 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         prepare_files(experiment, username, config_file_path, data_file_path, names_file_path, test_file_path)
         change_xml_params_and_model(experiment)
         set_new_progress(experiment)
+        set_new_permission(experiment)
         # gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
     def perform_destroy(self, instance):
@@ -275,6 +276,7 @@ class ExperimentShare(APIView):
         permissions.IsAuthenticated
     ]
 
+    # todo change to post request add set permissions at share function
     # share experiment
     def get(self, request):
         user = self.request.user
@@ -530,6 +532,13 @@ def set_new_progress(experiment: Experiment) -> None:
 
     progress.save()
     experiment.progress = progress
+    experiment.save()
+
+
+def set_new_permission(experiment):
+    permission = Permissions(experiment)
+    permission.save()
+    experiment.permissions = permission
     experiment.save()
 
 

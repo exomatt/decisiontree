@@ -31,3 +31,13 @@ class Progress(models.Model):
     iteration = models.IntegerField(blank=True, default=1000)
     last_iter_number = models.IntegerField(blank=True, default=0)
     mean_time = models.FloatField(blank=True, default=0)
+
+
+class Permissions(models.Model):
+    experiment = models.OneToOneField(Experiment, on_delete=models.CASCADE)
+    run = models.BooleanField(default=True)
+    edit = models.BooleanField(default=True)
+    download_output = models.BooleanField(default=True)
+    download_input = models.BooleanField(default=True)
+    share = models.BooleanField(default=True)
+    copy = models.BooleanField(default=True)
