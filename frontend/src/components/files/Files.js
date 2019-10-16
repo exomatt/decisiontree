@@ -86,9 +86,7 @@ class Files extends Component {
     render() {
         const name = this.state.name;
         let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
-        let data_files = this.props.files.filter(function (el) {
-            return xml_files.indexOf(el) < 0;
-        });
+        let data_files = this.props.files.filter(el => xml_files.indexOf(el) < 0);
         return (
             <div>
                 <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>

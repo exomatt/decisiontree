@@ -3,19 +3,19 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {deleteExperiment, getExperimentById, getExperiments} from "../../actions/experiments";
 import {Link} from "react-router-dom";
+import moment from "moment";
 
 class Experiments extends Component {
     static propTypes = {
         experiments: PropTypes.array.isRequired,
         getExperiments: PropTypes.func.isRequired,
         getExperimentById: PropTypes.func.isRequired,
-        deleteExperiment: PropTypes.func.isRequired
+        deleteExperiment: PropTypes.func.isRequired,
     };
 
     componentDidMount() {
         this.props.getExperiments();
     }
-
 
     render() {
         //todo fix input field
@@ -40,10 +40,9 @@ class Experiments extends Component {
                             <td>{experiment.name}</td>
                             <td>{experiment.description}</td>
                             <td>{experiment.status}</td>
-                            <td>{experiment.date}</td>
+                            <td>{moment(experiment.date).format("DD.MM.YYYY hh:mm:ss")}</td>
                             <td>
-                                <Link to={"/showExperiment"} className={"btn btn-primary"}
-                                      onClick={this.props.getExperimentById.bind(this, experiment.id)}>Show</Link>
+                                <Link to={`/showExperiment/${experiment.id}`} className={"btn btn-primary"}>Show</Link>
                             </td>
                             <td>
                                 <button onClick={this.props.deleteExperiment.bind(this, experiment.id)} type="button"

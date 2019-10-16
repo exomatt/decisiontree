@@ -18,8 +18,7 @@ export default function (state = initialState, action) {
             };
         case ADD_FILES:
             return {
-                ...state,
-                files: [...state.files, action.payload]
+                ...state
             };
         case CREATE_CONFIG_FILE:
             return {

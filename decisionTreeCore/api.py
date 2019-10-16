@@ -179,6 +179,7 @@ class ExperimentTask(APIView):
         path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
         new_out_path = ExperimentUtils.generate_file_name(path + '/out_old')
         os.rename(path + '/out', new_out_path)
+
         mkdir(path + '/out')
         config_file_path = experiment.result_directory_path + "/" + experiment.config_file_name
         logger.debug(f'Config file used in celery task run {config_file_path}')

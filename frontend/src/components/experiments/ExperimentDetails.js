@@ -248,6 +248,7 @@ class ExperimentDetails extends Component {
     }
 
     componentDidMount() {
+        this.props.getExperimentById(this.props.match.params.id)
         this.props.getFiles();
         if (this.props.experiment.status === "Running") {
             this.props.getProgress(this.props.experiment.id);
@@ -268,15 +269,16 @@ class ExperimentDetails extends Component {
         let lis = [];
         const runsNumber = this.props.experiment.runs_number;
         for (i = 0; i < runsNumber; i++) {
-            lis.push(<li><Link to={"/showTree"} className={"btn btn-link"}
-                               onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, i)}>Tree from
+            lis.push(<li key={i}><Link to={"/showTree"} className={"btn btn-link"}
+                                       onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, i)}>Tree from
                 run number {i + 1} </Link><br/></li>);
         }
         if (this.props.redirectMe) {
             return <Redirect to='/'/>
         }
+        //todo dodac znaczek ładowania
         if (!this.props.experiment.hasOwnProperty('id'))
-            return (<Redirect to='/'/>);
+            return (<div/>);
 
         if (this.props.experiment.status === "Finished") {
             return (

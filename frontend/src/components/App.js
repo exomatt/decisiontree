@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 
 import Header from "./layout/Header";
@@ -47,7 +47,7 @@ class App extends Component {
                                     <PrivateRoute exact path="/files" component={UserFiles}/>
                                     <Route exact path="/register" component={Register}/>
                                     <Route exact path="/login" component={Login}/>
-                                    <PrivateRoute exact path="/showExperiment" component={ExperimentDetails}/>
+                                    <PrivateRoute exact path="/showExperiment/:id" component={ExperimentDetails}/>
                                     <PrivateRoute exact path="/showTree" component={ShowTree}/>
                                     <PrivateRoute exact path="/createConfigFile" component={FormConfigFile}/>
                                 </Switch>

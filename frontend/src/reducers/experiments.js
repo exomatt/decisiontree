@@ -30,7 +30,8 @@ export default function (state = initialState, action) {
         case GET_EXPERIMENTS:
             return {
                 ...state,
-                experiments: action.payload
+                experiments: action.payload,
+                redirectMe: false
             };
         case GET_EXPERIMENT_ID:
             return {
