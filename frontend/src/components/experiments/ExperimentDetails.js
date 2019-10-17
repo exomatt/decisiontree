@@ -266,7 +266,8 @@ class ExperimentDetails extends Component {
     }
 
     componentDidMount() {
-        this.props.getExperimentById(this.props.match.params.id)
+        // todo   get permissions and block functions
+        this.props.getExperimentById(this.props.match.params.id);
         this.props.getFiles();
         if (this.props.experiment.status === "Running") {
             this.props.getProgress(this.props.experiment.id);
