@@ -277,14 +277,40 @@ class ExperimentShare(APIView):
     ]
 
     # todo change to post request add set permissions at share function
+    # get share permissions
+    @staticmethod
+    def get(request):
+        experiment_id = request.query_params['id']
+        experiment = Experiment.objects.get(pk=experiment_id)
+        if experiment.shared_from is "":
+            return Response(status=status.HTTP_200_OK, data="All true")
+        permission = ""
+        try:
+            permission = Permissions.objects.get(experiment_id=experiment_id)
+        except User.DoesNotExist:
+            logger.error("Cannot found permissions for experiment" + experiment_id)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            data="Problem with getting permissions")
+
+        temp = {}
+        temp['run'] = permission.run
+        temp['edit'] = permission.edit
+        temp['download_in'] = permission.download_input
+        temp['download_out'] = permission.download_output
+        temp['share'] = permission.share
+        json_data = json.loads(json.dumps(temp))
+        return Response(status=status.HTTP_200_OK, data=json_data)
+
     # share experiment
-    def post(self, request):
-        user = self.request.user
+    @staticmethod
+    def post(request):
+        user = request.user
         user_username = user.username
         experiment_id = request.data['id']
         username_to_share = request.data['username']
         download_in = request.data['download_in']
         download_out = request.data['download_out']
+        share = request.data['share']
         run = request.data['run']
         edit = request.data['edit']
         experiment = Experiment.objects.get(pk=experiment_id)
@@ -292,6 +318,7 @@ class ExperimentShare(APIView):
         try:
             user_to_share_with = User.objects.get(username=username_to_share)
         except User.DoesNotExist:
+            logger.error("Cannot found User" + username_to_share)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data="User don't exists with that name:  " + username_to_share)
 
@@ -313,7 +340,7 @@ class ExperimentShare(APIView):
             experiment.id) + "_" + experiment.name
         experiment.result_directory_path = new_path
         permission = Permissions(experiment=experiment, run=run, edit=edit, download_input=download_in,
-                                 download_output=download_out)
+                                 download_output=download_out, share=share)
         permission.save()
         experiment.permissions = permission
         experiment.save()

@@ -53,6 +53,7 @@ class ExperimentDetails extends Component {
         edit: false,
         downloadIn: false,
         downloadOut: false,
+        share: false,
     };
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
@@ -113,6 +114,7 @@ class ExperimentDetails extends Component {
             edit: this.state.edit,
             download_out: this.state.downloadOut,
             download_in: this.state.downloadIn,
+            share: this.state.share,
         };
         this.props.shareExperiment(shareOptions);
         this.setState({
@@ -122,6 +124,7 @@ class ExperimentDetails extends Component {
             edit: false,
             downloadIn: false,
             downloadOut: false,
+            share: false,
         });
         this.props.getExperimentById(this.props.experiment.id);
     };
@@ -347,6 +350,15 @@ class ExperimentDetails extends Component {
                             });
                         }}/>
                         <label className="custom-control-label" htmlFor="customSwitch4">Download output files</label>
+                    </div>
+                    <div className="custom-control custom-switch">
+                        <input type="checkbox" className="custom-control-input" id="customSwitch4"
+                               checked={this.state.share} onChange={() => {
+                            this.setState({
+                                share: !this.state.share
+                            });
+                        }}/>
+                        <label className="custom-control-label" htmlFor="customSwitch4">Share with other users</label>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

@@ -23,6 +23,7 @@ class Experiment(models.Model):
     result_directory_path = models.CharField(max_length=50, blank=True)
     runs_number = models.SmallIntegerField(blank=True, default=1)
     task_id = models.CharField(max_length=250, blank=True)
+    shared_from = models.CharField(max_length=250, default="")
 
 
 class Progress(models.Model):
