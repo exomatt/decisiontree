@@ -75,8 +75,8 @@ export const changeExperimentCrud = (body) => (dispatch, getState) => {
 };
 
 // SHARE EXPERIMENT
-export const shareExperiment = (id, username) => (dispatch, getState) => {
-    axios.get(`/api/share?id=${id}&username=${username}`, tokenConfig(getState))
+export const shareExperiment = (shareOptions) => (dispatch, getState) => {
+    axios.post(`/api/share`, shareOptions, tokenConfig(getState))
         .then(res => {
             dispatch(createMessage({shareExperiment: res.data}));
             dispatch({
@@ -84,7 +84,9 @@ export const shareExperiment = (id, username) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+        .catch(err => {
+            dispatch(createMessage({shareExperimentError: err.response.data}));
+        })
 };
 
 

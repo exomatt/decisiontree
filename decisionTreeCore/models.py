@@ -40,4 +40,3 @@ class Permissions(models.Model):
     download_output = models.BooleanField(default=True)
     download_input = models.BooleanField(default=True)
     share = models.BooleanField(default=True)
-    copy = models.BooleanField(default=True)

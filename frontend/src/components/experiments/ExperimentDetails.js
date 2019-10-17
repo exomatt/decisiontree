@@ -48,7 +48,11 @@ class ExperimentDetails extends Component {
         config_file_name: '',
         data_file_name: '',
         test_file_name: '',
-        names_file_name: ''
+        names_file_name: '',
+        run: false,
+        edit: false,
+        downloadIn: false,
+        downloadOut: false,
     };
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
@@ -84,7 +88,6 @@ class ExperimentDetails extends Component {
         if (this.state.names_file_name !== '') {
             object.new_names = this.state.names_file_name;
         }
-        console.log(object);
         this.props.changeExperimentCrud(object);
         this.setState({
             isShowingModal: false,
@@ -98,21 +101,33 @@ class ExperimentDetails extends Component {
         this.props.getExperimentById(this.props.experiment.id);
     };
     handleSubmitShare = () => {
+        console.log(this.state);
         if (this.state.username === '') {
             this.props.createMessage({emptyField: 'Please fill username field'});
             return;
         }
-        this.props.shareExperiment(this.props.experiment.id, this.state.username);
+        const shareOptions = {
+            id: this.props.experiment.id,
+            username: this.state.username,
+            run: this.state.run,
+            edit: this.state.edit,
+            download_out: this.state.downloadOut,
+            download_in: this.state.downloadIn,
+        };
+        this.props.shareExperiment(shareOptions);
         this.setState({
             isShowingModalShare: false,
-            username: ''
+            username: '',
+            run: false,
+            edit: false,
+            downloadIn: false,
+            downloadOut: false,
         });
         this.props.getExperimentById(this.props.experiment.id);
     };
 
     error() {
         const errorMessage = this.props.experiment.error_message;
-        console.log(errorMessage);
         if (errorMessage) {
             return "Errors: " + errorMessage;
         }
@@ -262,15 +277,100 @@ class ExperimentDetails extends Component {
         }
     }
 
-    render() {
-        // const name = this.state.name;
+    editExperiment() {
+        return <div><Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
+            <Modal.Header closeButton>
+                <Modal.Title>New name form</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{this.renderForm()}</Modal.Body>
+            <Modal.Footer>
+                <button type="button"
+                        className="btn btn-secondary" onClick={this.handleClose}>
+                    Close
+                </button>
+                <button type="button"
+                        className="btn btn-primary" onClick={this.handleSubmit.bind()}>
+                    Save Changes
+                </button>
+            </Modal.Footer>
+        </Modal></div>
+    }
+
+    shareExperiment() {
         const username = this.state.username;
+        return <div>
+            <Modal show={this.state.isShowingModalShare} onHide={this.handleCloseShare} animation={true}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Share experiment with user by username: </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <input type="text"
+                           className="form-control"
+                           name="username"
+                           value={username}
+                           placeholder="Enter username"
+                           onChange={this.onChange}/>
+                    <br/>
+                    <h4>Permissions to: </h4>
+                    <div className="custom-control custom-switch">
+                        <input type="checkbox" className="custom-control-input" id="customSwitch1"
+                               checked={this.state.run} onChange={() => {
+                            this.setState({
+                                run: !this.state.run
+                            });
+                        }}/>
+                        <label className="custom-control-label" htmlFor="customSwitch1">Run experiment</label>
+                    </div>
+                    <div className="custom-control custom-switch">
+                        <input type="checkbox" className="custom-control-input" id="customSwitch2"
+                               checked={this.state.edit} onChange={() => {
+                            this.setState({
+                                edit: !this.state.edit
+                            });
+                        }}/>
+                        <label className="custom-control-label" htmlFor="customSwitch2">Edit experiment</label>
+                    </div>
+                    <div className="custom-control custom-switch">
+                        <input type="checkbox" className="custom-control-input" id="customSwitch3"
+                               checked={this.state.downloadIn} onChange={() => {
+                            this.setState({
+                                downloadIn: !this.state.downloadIn
+                            });
+                        }}/>
+                        <label className="custom-control-label" htmlFor="customSwitch3">Download input files</label>
+                    </div>
+                    <div className="custom-control custom-switch">
+                        <input type="checkbox" className="custom-control-input" id="customSwitch4"
+                               checked={this.state.downloadOut} onChange={() => {
+                            this.setState({
+                                downloadOut: !this.state.downloadOut
+                            });
+                        }}/>
+                        <label className="custom-control-label" htmlFor="customSwitch4">Download output files</label>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="button"
+                            className="btn btn-secondary" onClick={this.handleCloseShare}>
+                        Close
+                    </button>
+                    <button type="button"
+                            className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
+                        Share
+                    </button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+    }
+
+    render() {
         let i;
         let lis = [];
         const runsNumber = this.props.experiment.runs_number;
         for (i = 0; i < runsNumber; i++) {
             lis.push(<li key={i}><Link to={"/showTree"} className={"btn btn-link"}
-                                       onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, i)}>Tree from
+                                       onClick={this.props.getTreeByNumber.bind(this, this.props.experiment.id, i)}>Tree
+                from
                 run number {i + 1} </Link><br/></li>);
         }
         if (this.props.redirectMe) {
@@ -284,45 +384,8 @@ class ExperimentDetails extends Component {
             return (
                 <div>
                     <div className="card border-success mb-3">
-                        <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Edit form</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>{this.renderForm()}</Modal.Body>
-                            <Modal.Footer>
-                                <button type="button"
-                                        className="btn btn-secondary" onClick={this.handleClose}>
-                                    Close
-                                </button>
-                                <button type="submit"
-                                        className="btn btn-primary" onClick={this.handleSubmit.bind()}>
-                                    Save Changes
-                                </button>
-                            </Modal.Footer>
-                        </Modal>
-                        <Modal show={this.state.isShowingModalShare} onHide={this.handleCloseShare} animation={true}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Share experiment: </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>Share experiment with user by username:
-                                <input type="text"
-                                       className="form-control"
-                                       name="username"
-                                       value={username}
-                                       placeholder="Enter username"
-                                       onChange={this.onChange}/>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <button type="button"
-                                        className="btn btn-secondary" onClick={this.handleClose}>
-                                    Close
-                                </button>
-                                <button type="submit"
-                                        className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
-                                    Share
-                                </button>
-                            </Modal.Footer>
-                        </Modal>
+                        {this.editExperiment()}
+                        {this.shareExperiment()}
                         <div className="card-header">{this.renderButton()}
                             <button type="button"
                                     className="btn btn-primary" onClick={this.handleShow.bind()}>
@@ -386,45 +449,8 @@ class ExperimentDetails extends Component {
         if (this.props.experiment.status === "Error") {
             return (
                 <div className="card border-danger mb-3">
-                    <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>New name form</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>{this.renderForm()}</Modal.Body>
-                        <Modal.Footer>
-                            <button type="button"
-                                    className="btn btn-secondary" onClick={this.handleClose}>
-                                Close
-                            </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmit.bind()}>
-                                Save Changes
-                            </button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal show={this.state.isShowingModalShare} onHide={this.handleCloseShare} animation={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Share experiment: </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>Share experiment with user by username:
-                            <input type="text"
-                                   className="form-control"
-                                   name="username"
-                                   value={username}
-                                   placeholder="Enter username"
-                                   onChange={this.onChange}/>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <button type="button"
-                                    className="btn btn-secondary" onClick={this.handleClose}>
-                                Close
-                            </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
-                                Share
-                            </button>
-                        </Modal.Footer>
-                    </Modal>
+                    {this.editExperiment()}
+                    {this.shareExperiment()}
                     <div className="card-header"> {this.renderButton()}
                         <button type="button"
                                 className="btn btn-primary" onClick={this.handleShow.bind()}>
@@ -463,45 +489,8 @@ class ExperimentDetails extends Component {
         if (this.props.experiment.status === "Canceled") {
             return (
                 <div className="card border-danger mb-3">
-                    <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>New name form</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>{this.renderForm()}</Modal.Body>
-                        <Modal.Footer>
-                            <button type="button"
-                                    className="btn btn-secondary" onClick={this.handleClose}>
-                                Close
-                            </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmit.bind()}>
-                                Save Changes
-                            </button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal show={this.state.isShowingModalShare} onHide={this.handleCloseShare} animation={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Share experiment: </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>Share experiment with user by username:
-                            <input type="text"
-                                   className="form-control"
-                                   name="username"
-                                   value={username}
-                                   placeholder="Enter username"
-                                   onChange={this.onChange}/>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <button type="button"
-                                    className="btn btn-secondary" onClick={this.handleClose}>
-                                Close
-                            </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
-                                Share
-                            </button>
-                        </Modal.Footer>
-                    </Modal>
+                    {this.editExperiment()}
+                    {this.shareExperiment()}
                     <div className="card-header">{this.renderButton()}
                         <button type="button"
                                 className="btn btn-primary" onClick={this.handleShow.bind()}>
@@ -539,45 +528,8 @@ class ExperimentDetails extends Component {
         if (this.props.experiment.status === "Created") {
             return (
                 <div className="card border-primary mb-3">
-                    <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>New name form</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>{this.renderForm()}</Modal.Body>
-                        <Modal.Footer>
-                            <button type="button"
-                                    className="btn btn-secondary" onClick={this.handleClose}>
-                                Close
-                            </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmit.bind()}>
-                                Save Changes
-                            </button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal show={this.state.isShowingModalShare} onHide={this.handleCloseShare} animation={true}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Share experiment: </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>Share experiment with user by username:
-                            <input type="text"
-                                   className="form-control"
-                                   name="username"
-                                   value={username}
-                                   placeholder="Enter username"
-                                   onChange={this.onChange}/>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <button type="button"
-                                    className="btn btn-secondary" onClick={this.handleClose}>
-                                Close
-                            </button>
-                            <button type="submit"
-                                    className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
-                                Share
-                            </button>
-                        </Modal.Footer>
-                    </Modal>
+                    {this.editExperiment()}
+                    {this.shareExperiment()}
                     <div className="card-header">
                         {this.renderButton()}
                         <button type="button"

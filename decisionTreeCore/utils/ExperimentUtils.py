@@ -162,6 +162,20 @@ def generate_file_name(file_path) -> str:
     return file_path
 
 
+def generate_dir_name(file_path) -> str:
+    if os.path.isdir(file_path):
+        expand = 0
+        while True:
+            expand += 1
+            new_file_name = f'{file_path.rsplit("/")[3]}({str(expand)})'
+            if os.path.isdir(new_file_name):
+                continue
+            else:
+                file_path = f'{"/".join(file_path.rsplit("/")[:3])}/{new_file_name}'
+                break
+    return file_path
+
+
 def copytree(src, dst, symlinks=False, ignore=None):
     for item in os.listdir(src):
         s = os.path.join(src, item)

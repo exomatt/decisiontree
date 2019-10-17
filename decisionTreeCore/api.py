@@ -177,9 +177,8 @@ class ExperimentTask(APIView):
         progress.last_iter_number = 0
         progress.save()
         path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
-        new_out_path = ExperimentUtils.generate_file_name(path + '/out_old')
+        new_out_path = ExperimentUtils.generate_dir_name(path + '/out_old')
         os.rename(path + '/out', new_out_path)
-
         mkdir(path + '/out')
         config_file_path = experiment.result_directory_path + "/" + experiment.config_file_name
         logger.debug(f'Config file used in celery task run {config_file_path}')
@@ -279,16 +278,26 @@ class ExperimentShare(APIView):
 
     # todo change to post request add set permissions at share function
     # share experiment
-    def get(self, request):
+    def post(self, request):
         user = self.request.user
         user_username = user.username
-        experiment_id = request.query_params['id']
-        username_to_share = request.query_params['username']
+        experiment_id = request.data['id']
+        username_to_share = request.data['username']
+        download_in = request.data['download_in']
+        download_out = request.data['download_out']
+        run = request.data['run']
+        edit = request.data['edit']
         experiment = Experiment.objects.get(pk=experiment_id)
-        user_to_share_with = User.objects.get(username=username_to_share)
-        if user_to_share_with is None:
+        user_to_share_with = ""
+        try:
+            user_to_share_with = User.objects.get(username=username_to_share)
+        except User.DoesNotExist:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data="User don't exists with that name:  " + username_to_share)
+
+        # if user_to_share_with is None:
+        #     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        #                     data="User don't exists with that name:  " + username_to_share)
 
         old_path = settings.BASE_USERS_DIR + user_username + "/" + str(experiment.id) + "_" + experiment.name
         progress = experiment.progress
@@ -300,11 +309,15 @@ class ExperimentShare(APIView):
         progress.experiment = experiment
         progress.save()
         experiment.progress = progress
-        experiment.save()
         new_path = settings.BASE_USERS_DIR + username_to_share + "/" + str(
             experiment.id) + "_" + experiment.name
         experiment.result_directory_path = new_path
+        permission = Permissions(experiment=experiment, run=run, edit=edit, download_input=download_in,
+                                 download_output=download_out)
+        permission.save()
+        experiment.permissions = permission
         experiment.save()
+
         copy_experiment_files(old_path, new_path)
         change_xml_params_and_model(experiment)
         return Response(status=status.HTTP_200_OK, data="Experiment share with " + username_to_share)
@@ -331,10 +344,14 @@ class ExperimentCopy(APIView):
         progress.experiment = experiment
         progress.save()
         experiment.progress = progress
-        experiment.save()
         new_path = settings.BASE_USERS_DIR + user_username + "/" + str(
             experiment.id) + "_" + experiment.name
         experiment.result_directory_path = new_path
+        permissions = experiment.permissions
+        permissions.pk = None
+        permissions.save()
+        # todo check if it worsk permisssions
+        experiment.permissions = permissions
         experiment.save()
         copy_experiment_files(old_path, new_path)
         change_xml_params_and_model(experiment)
@@ -537,7 +554,7 @@ def set_new_progress(experiment: Experiment) -> None:
 
 
 def set_new_permission(experiment):
-    permission = Permissions(experiment)
+    permission = Permissions(experiment=experiment)
     permission.save()
     experiment.permissions = permission
     experiment.save()
