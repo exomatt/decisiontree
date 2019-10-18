@@ -168,7 +168,7 @@ def generate_dir_name(file_path) -> str:
         while True:
             expand += 1
             new_file_name = f'{file_path.rsplit("/")[3]}({str(expand)})'
-            if os.path.isdir(new_file_name):
+            if os.path.isdir(f'{"/".join(file_path.rsplit("/")[:3])}/{new_file_name}'):
                 continue
             else:
                 file_path = f'{"/".join(file_path.rsplit("/")[:3])}/{new_file_name}'

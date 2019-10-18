@@ -5,7 +5,7 @@ import {
     ADD_EXPERIMENTS,
     CANCEL_TASK, CHANGE_EXPERIMENT_CRUD, CHANGE_EXPERIMENT_NAME, COPY_EXPERIMENT,
     DELETE_EXPERIMENTS,
-    GET_EXPERIMENT_ID,
+    GET_EXPERIMENT_ID, GET_EXPERIMENT_PERMISSION,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
     PROGRESS_EXPERIMENT, RERUN_TASK, SHARE_EXPERIMENT, START_TASK
@@ -29,6 +29,18 @@ export const getExperimentById = id => (dispatch, getState) => {
         .then(res => {
             dispatch({
                 type: GET_EXPERIMENT_ID,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+};
+
+// GET EXPERIMENT SHARE PERMISSION BY ID
+export const getExperimentPermission = id => (dispatch, getState) => {
+    axios.get(`/api/share?id=${id}`, tokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: GET_EXPERIMENT_PERMISSION,
                 payload: res.data
             });
         })

@@ -7,7 +7,7 @@ import {Modal} from "react-bootstrap";
 import {
     cancelTask,
     changeExperimentCrud, copyExperiment,
-    getExperimentById,
+    getExperimentById, getExperimentPermission,
     getProgress,
     getTreeByNumber,
     rerunTask,
@@ -35,8 +35,10 @@ class ExperimentDetails extends Component {
         startTask: PropTypes.func.isRequired,
         copyExperiment: PropTypes.func.isRequired,
         shareExperiment: PropTypes.func.isRequired,
+        getExperimentPermission: PropTypes.func.isRequired,
         redirectMe: PropTypes.bool,
         progress: PropTypes.object,
+        permission: PropTypes.object,
     };
 
     state = {
@@ -54,7 +56,36 @@ class ExperimentDetails extends Component {
         downloadIn: false,
         downloadOut: false,
         share: false,
+        owner: false,
     };
+
+    componentDidMount() {
+        // todo   get permissions and block functions
+        this.props.getExperimentById(this.props.match.params.id);
+        this.props.getFiles();
+        console.log(this.props)
+        if (this.props.experiment.status === "Running") {
+            console.log("here")
+            this.props.getProgress(this.props.experiment.id);
+            this.interval = setInterval(() => {
+                if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
+                    this.props.getExperimentById(this.props.experiment.id);
+                if (this.props.experiment.status === "Finished")
+                    clearInterval(this.interval);
+                this.props.getProgress(this.props.experiment.id);
+            }, 5000);
+        }
+        if (this.props.experiment.shared_from === "") {
+            this.setState({
+                    owner: true
+                }
+            )
+        } else {
+            this.props.getExperimentPermission(this.props.match.params.id)
+        }
+
+    }
+
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
     handleShow = () => this.setState({isShowingModal: true});
@@ -174,14 +205,65 @@ class ExperimentDetails extends Component {
             .catch((error) => console.log(error));
     }
 
-    renderButton() {
-        const status = this.props.experiment.status;
-        if (status === "Finished" || status === "Error" || status === "Created" || status === "Canceled") {
-            return <button type="submit" className="btn btn-primary" onClick={() => {
-                this.download()
-            }}>Download File
+    renderDownloadButton() {
+        if (this.props.permission.download_in === true || this.props.permission.download_out === true || this.state.owner === true) {
+            const status = this.props.experiment.status;
+            if (status === "Finished" || status === "Error" || status === "Created" || status === "Canceled") {
+                return <button type="submit" className="btn btn-primary" onClick={() => {
+                    this.download()
+                }}>Download File
+                </button>
+            }
+        }
+    }
+
+    renderShareButton() {
+        if (this.props.permission.share === true || this.state.owner === true) {
+            return <button type="button"
+                           className="btn btn-primary" onClick={this.handleShowShare.bind()}>
+                Share experiment
+            </button>
+
+        }
+    }
+
+    renderEditButton() {
+        if (this.props.permission.edit === true || this.state.owner === true) {
+            return <button type="button"
+                           className="btn btn-primary" onClick={this.handleShow.bind()}>
+                Edit experiment
+            </button>
+
+        }
+    }
+
+    renderRerunButton() {
+        if (this.props.permission.run === true || this.state.owner === true) {
+            return <button type="button"
+                           className="btn btn-primary"
+                           onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
+                Rerun
             </button>
         }
+    }
+
+    renderStartButton() {
+        if (this.props.permission.run === true || this.state.owner === true) {
+            return <button type="button"
+                           className="btn btn-primary"
+                           onClick={this.props.startTask.bind(this, this.props.experiment.id)}>
+                Start
+            </button>
+        }
+    }
+
+    renderCopyButton() {
+        return <button type="button"
+                       className="btn btn-primary"
+                       onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
+            Create copy
+        </button>
+
     }
 
     renderForm() {
@@ -265,22 +347,6 @@ class ExperimentDetails extends Component {
         </fieldset>
     }
 
-    componentDidMount() {
-        // todo   get permissions and block functions
-        this.props.getExperimentById(this.props.match.params.id);
-        this.props.getFiles();
-        if (this.props.experiment.status === "Running") {
-            this.props.getProgress(this.props.experiment.id);
-            this.interval = setInterval(() => {
-                if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
-                    this.props.getExperimentById(this.props.experiment.id);
-                if (this.props.experiment.status === "Finished")
-                    clearInterval(this.interval);
-                this.props.getProgress(this.props.experiment.id);
-            }, 1000);
-        }
-    }
-
     editExperiment() {
         return <div><Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
             <Modal.Header closeButton>
@@ -316,51 +382,12 @@ class ExperimentDetails extends Component {
                            onChange={this.onChange}/>
                     <br/>
                     <h4>Permissions to: </h4>
-                    <div className="custom-control custom-switch">
-                        <input type="checkbox" className="custom-control-input" id="customSwitch1"
-                               checked={this.state.run} onChange={() => {
-                            this.setState({
-                                run: !this.state.run
-                            });
-                        }}/>
-                        <label className="custom-control-label" htmlFor="customSwitch1">Run experiment</label>
-                    </div>
-                    <div className="custom-control custom-switch">
-                        <input type="checkbox" className="custom-control-input" id="customSwitch2"
-                               checked={this.state.edit} onChange={() => {
-                            this.setState({
-                                edit: !this.state.edit
-                            });
-                        }}/>
-                        <label className="custom-control-label" htmlFor="customSwitch2">Edit experiment</label>
-                    </div>
-                    <div className="custom-control custom-switch">
-                        <input type="checkbox" className="custom-control-input" id="customSwitch3"
-                               checked={this.state.downloadIn} onChange={() => {
-                            this.setState({
-                                downloadIn: !this.state.downloadIn
-                            });
-                        }}/>
-                        <label className="custom-control-label" htmlFor="customSwitch3">Download input files</label>
-                    </div>
-                    <div className="custom-control custom-switch">
-                        <input type="checkbox" className="custom-control-input" id="customSwitch4"
-                               checked={this.state.downloadOut} onChange={() => {
-                            this.setState({
-                                downloadOut: !this.state.downloadOut
-                            });
-                        }}/>
-                        <label className="custom-control-label" htmlFor="customSwitch4">Download output files</label>
-                    </div>
-                    <div className="custom-control custom-switch">
-                        <input type="checkbox" className="custom-control-input" id="customSwitch4"
-                               checked={this.state.share} onChange={() => {
-                            this.setState({
-                                share: !this.state.share
-                            });
-                        }}/>
-                        <label className="custom-control-label" htmlFor="customSwitch4">Share with other users</label>
-                    </div>
+
+                    {this.runCheckBox()}
+                    {this.editCheckBox()}
+                    {this.downloadInCheckBox()}
+                    {this.downloadOutCheckBox()}
+                    {this.shareCheckBox()}
                 </Modal.Body>
                 <Modal.Footer>
                     <button type="button"
@@ -374,6 +401,111 @@ class ExperimentDetails extends Component {
                 </Modal.Footer>
             </Modal>
         </div>
+    }
+
+    editCheckBox() {
+        if (this.props.permission.edit === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch2"
+                       checked={this.state.edit} onChange={() => {
+                    this.setState({
+                        edit: !this.state.edit
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch2">Edit experiment</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch2" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch2">Edit experiment (blocked by the
+                    host)</label>
+            </div>
+        }
+    }
+
+    runCheckBox() {
+        if (this.props.permission.run === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch1"
+                       checked={this.state.run} onChange={() => {
+                    this.setState({
+                        run: !this.state.run
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch1">Run experiment</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch1" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch1">Run experiment (blocked by the
+                    host)</label>
+            </div>
+        }
+    }
+
+    downloadInCheckBox() {
+        if (this.props.permission.download_in === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch3"
+                       checked={this.state.downloadIn} onChange={() => {
+                    this.setState({
+                        downloadIn: !this.state.downloadIn
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch3">Download input files</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch3" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch3">Download input files (blocked by the
+                    host)</label>
+            </div>
+        }
+    }
+
+    downloadOutCheckBox() {
+        if (this.props.permission.download_out === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch4"
+                       checked={this.state.downloadOut} onChange={() => {
+                    this.setState({
+                        downloadOut: !this.state.downloadOut
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch4">Download output files</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch4" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch4">Download output files (blocked by the
+                    host)</label>
+            </div>
+        }
+    }
+
+    shareCheckBox() {
+        if (this.props.permission.share === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch5"
+                       checked={this.state.share} onChange={() => {
+                    this.setState({
+                        share: !this.state.share
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch5">Share with other users</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch1" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch5">Share with other users (blocked by the
+                    host)</label>
+            </div>
+        }
     }
 
     render() {
@@ -399,25 +531,13 @@ class ExperimentDetails extends Component {
                     <div className="card border-success mb-3">
                         {this.editExperiment()}
                         {this.shareExperiment()}
-                        <div className="card-header">{this.renderButton()}
-                            <button type="button"
-                                    className="btn btn-primary" onClick={this.handleShow.bind()}>
-                                Edit experiment
-                            </button>
-                            <button type="button"
-                                    className="btn btn-primary"
-                                    onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
-                                Rerun
-                            </button>
-                            <button type="button"
-                                    className="btn btn-primary"
-                                    onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
-                                Create copy
-                            </button>
-                            <button type="button"
-                                    className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                                Share experiment
-                            </button>
+                        <div className="card-header">
+                            {this.renderDownloadButton()}
+                            {this.renderEditButton()}
+                            {this.renderRerunButton()}
+                            {this.renderCopyButton()}
+                            {this.renderShareButton()}
+
                         </div>
                         <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                         <div className="card-body">
@@ -464,25 +584,12 @@ class ExperimentDetails extends Component {
                 <div className="card border-danger mb-3">
                     {this.editExperiment()}
                     {this.shareExperiment()}
-                    <div className="card-header"> {this.renderButton()}
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShow.bind()}>
-                            Edit experiment
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
-                            Rerun
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
-                            Create copy
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                            Share experiment
-                        </button>
+                    <div className="card-header">
+                        {this.renderDownloadButton()}
+                        {this.renderEditButton()}
+                        {this.renderRerunButton()}
+                        {this.renderCopyButton()}
+                        {this.renderShareButton()}
                     </div>
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
@@ -504,25 +611,12 @@ class ExperimentDetails extends Component {
                 <div className="card border-danger mb-3">
                     {this.editExperiment()}
                     {this.shareExperiment()}
-                    <div className="card-header">{this.renderButton()}
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShow.bind()}>
-                            Edit experiment
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.props.rerunTask.bind(this, this.props.experiment.id)}>
-                            Rerun
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
-                            Create copy
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                            Share experiment
-                        </button>
+                    <div className="card-header">
+                        {this.renderDownloadButton()}
+                        {this.renderEditButton()}
+                        {this.renderRerunButton()}
+                        {this.renderCopyButton()}
+                        {this.renderShareButton()}
                     </div>
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
@@ -544,25 +638,11 @@ class ExperimentDetails extends Component {
                     {this.editExperiment()}
                     {this.shareExperiment()}
                     <div className="card-header">
-                        {this.renderButton()}
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShow.bind()}>
-                            Edit experiment
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.props.startTask.bind(this, this.props.experiment.id)}>
-                            Start
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
-                            Create copy
-                        </button>
-                        <button type="button"
-                                className="btn btn-primary" onClick={this.handleShowShare.bind()}>
-                            Share experiment
-                        </button>
+                        {this.renderDownloadButton()}
+                        {this.renderEditButton()}
+                        {this.renderStartButton()}
+                        {this.renderCopyButton()}
+                        {this.renderShareButton()}
                     </div>
                     <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
                     <div className="card-body">
@@ -586,6 +666,7 @@ class ExperimentDetails extends Component {
 const
     mapStateToProps = state => ({
         experiment: state.experiments.experiment,
+        permission: state.experiments.permission,
         token: state.auth.token,
         redirectMe: state.experiments.redirectMe,
         progress: state.experiments.progress,
@@ -603,5 +684,6 @@ export default connect(mapStateToProps, {
     createMessage,
     copyExperiment,
     shareExperiment,
-    getFiles
+    getFiles,
+    getExperimentPermission
 })(ExperimentDetails);

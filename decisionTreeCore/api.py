@@ -115,6 +115,11 @@ class ExperimentCrud(APIView):
         if 'new_name' not in request.data and 'new_desc' in request.data:
             copy_out_folder(experiment, username)
         change_xml_params_and_model(experiment)
+        progress = Progress.objects.get(experiment_id=experiment_id)
+        experiment.progress = None
+        progress.delete()
+        set_new_progress(experiment)
+        # todo test it after changing config file new progress is added to experiment
         return Response(status=status.HTTP_200_OK, data=f'Experiment edit successfully')
 
 
@@ -177,7 +182,8 @@ class ExperimentTask(APIView):
         progress.last_iter_number = 0
         progress.save()
         path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
-        new_out_path = ExperimentUtils.generate_dir_name(path + '/out_old')
+        file_path = path + '/out_old'
+        new_out_path = ExperimentUtils.generate_dir_name(file_path)
         os.rename(path + '/out', new_out_path)
         mkdir(path + '/out')
         config_file_path = experiment.result_directory_path + "/" + experiment.config_file_name
@@ -343,6 +349,7 @@ class ExperimentShare(APIView):
                                  download_output=download_out, share=share)
         permission.save()
         experiment.permissions = permission
+        experiment.shared_from = f'{experiment.shared_from} {user_username}'
         experiment.save()
 
         copy_experiment_files(old_path, new_path)
@@ -374,8 +381,9 @@ class ExperimentCopy(APIView):
         new_path = settings.BASE_USERS_DIR + user_username + "/" + str(
             experiment.id) + "_" + experiment.name
         experiment.result_directory_path = new_path
-        permissions = experiment.permissions
+        permissions = Permissions.objects.get(experiment_id=experiment_id)
         permissions.pk = None
+        permissions.experiment = experiment
         permissions.save()
         # todo check if it worsk permisssions
         experiment.permissions = permissions

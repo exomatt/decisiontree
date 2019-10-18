@@ -4,7 +4,7 @@ import {
     CHANGE_EXPERIMENT_CRUD,
     COPY_EXPERIMENT,
     DELETE_EXPERIMENTS,
-    GET_EXPERIMENT_ID,
+    GET_EXPERIMENT_ID, GET_EXPERIMENT_PERMISSION,
     GET_EXPERIMENTS,
     GET_TREE_BY_NUMBER,
     PROGRESS_EXPERIMENT,
@@ -16,6 +16,7 @@ import {
 const initialState = {
     experiments: [],
     experiment: {},
+    permission: {},
     tree: [],
     file: {},
     redirectMe: false,
@@ -73,6 +74,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 progress: action.payload
+            };
+        case GET_EXPERIMENT_PERMISSION:
+            return {
+                ...state,
+                permission: action.payload
             };
         default:
             return state;
