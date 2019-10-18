@@ -57,24 +57,13 @@ class ExperimentDetails extends Component {
         downloadOut: false,
         share: false,
         owner: false,
+        interval: {}
     };
 
     componentDidMount() {
         // todo   get permissions and block functions
         this.props.getExperimentById(this.props.match.params.id);
         this.props.getFiles();
-        console.log(this.props)
-        if (this.props.experiment.status === "Running") {
-            console.log("here")
-            this.props.getProgress(this.props.experiment.id);
-            this.interval = setInterval(() => {
-                if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
-                    this.props.getExperimentById(this.props.experiment.id);
-                if (this.props.experiment.status === "Finished")
-                    clearInterval(this.interval);
-                this.props.getProgress(this.props.experiment.id);
-            }, 5000);
-        }
         if (this.props.experiment.shared_from === "") {
             this.setState({
                     owner: true
@@ -83,9 +72,19 @@ class ExperimentDetails extends Component {
         } else {
             this.props.getExperimentPermission(this.props.match.params.id)
         }
+        if (this.props.experiment.status === "Running") {
+            console.log("here update ")
+            this.state.interval = setInterval(() => {
+                this.props.getProgress(this.props.experiment.id);
+                if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
+                    this.props.getExperimentById(this.props.experiment.id);
+                if (this.props.experiment.status === "Finished")
+                    clearInterval(this.interval);
+                this.props.getProgress(this.props.experiment.id);
+            }, 5000);
+        }
 
     }
-
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
     handleShow = () => this.setState({isShowingModal: true});
