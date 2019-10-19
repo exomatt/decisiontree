@@ -57,10 +57,11 @@ class ExperimentDetails extends Component {
         downloadOut: false,
         share: false,
         owner: false,
-        interval: {}
+        interval: null
     };
 
     componentDidMount() {
+        console.log("here")
         // todo   get permissions and block functions
         this.props.getExperimentById(this.props.match.params.id);
         this.props.getFiles();
@@ -72,18 +73,28 @@ class ExperimentDetails extends Component {
         } else {
             this.props.getExperimentPermission(this.props.match.params.id);
         }
-        if (this.props.experiment.status === "Running") {
-            console.log("here update ");
-            this.state.interval = setInterval(() => {
-                this.props.getProgress(this.props.experiment.id);
-                if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
-                    this.props.getExperimentById(this.props.experiment.id);
-                if (this.props.experiment.status === "Finished")
-                    clearInterval(this.interval);
-                this.props.getProgress(this.props.experiment.id);
-            }, 5000);
-        }
+        if (this.state.interval)
+            this.state.interval.clear();
+        this.setState({interval: null})
+    }
 
+    componentDidUpdate(nextProps, nextState, nextContext) {
+        console.log("here update");
+        console.log(this.props.experiment);
+        if (this.props.experiment && this.props.experiment.status === "Running") {
+            console.log("here update2 ");
+            if (!this.state.interval) {
+                console.log("tutaj");
+                const interval = setInterval(() => {
+                    this.props.getProgress(this.props.experiment.id);
+                    if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
+                        this.props.getExperimentById(this.props.experiment.id);
+                    if (this.props.experiment.status === "Finished" || this.props.experiment.status === "Canceled")
+                        clearInterval(this.interval);
+                }, 5000)
+                this.setState({interval: interval})
+            }
+        }
     }
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
