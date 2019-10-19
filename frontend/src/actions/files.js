@@ -75,7 +75,9 @@ export const addFiles = (file) => (dispatch, getState) => {
                 payload: res.data
             });
         })
-        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status))
+        });
 };
 
 // CREATE NEW CONFIG FILE

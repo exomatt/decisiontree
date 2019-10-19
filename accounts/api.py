@@ -101,6 +101,7 @@ class UserFiles(APIView):
 
     @staticmethod
     def put(request, format=None):
+        name_list = ["names", "data", "test", "xml"]
         user = request.user
         username = user.username
         groups = list(user.groups.values_list('name', flat=True))
@@ -110,6 +111,11 @@ class UserFiles(APIView):
         name_file = list()
         for file in file_list:
             name = file._name
+            extension = name.rsplit(".")[1]
+            if extension not in name_list:
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                data="Wrong file extension! Page accept only *.xml, *.data, *.test, *.names")
+
             path = "users/" + username + "/" + name
             name = ExperimentUtils.generate_file_name(path)
             name_file.append(name.split("/")[-1])
