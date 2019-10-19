@@ -70,10 +70,10 @@ class ExperimentDetails extends Component {
                 }
             )
         } else {
-            this.props.getExperimentPermission(this.props.match.params.id)
+            this.props.getExperimentPermission(this.props.match.params.id);
         }
         if (this.props.experiment.status === "Running") {
-            console.log("here update ")
+            console.log("here update ");
             this.state.interval = setInterval(() => {
                 this.props.getProgress(this.props.experiment.id);
                 if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
