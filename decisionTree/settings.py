@@ -35,7 +35,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "vps733855.ovh.net",
-    "145.239.91.137"
+    "145.239.91.137",
+    "decisiontree.pl"
 ]
 
 # Application definition
