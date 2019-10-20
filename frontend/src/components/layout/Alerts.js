@@ -25,8 +25,13 @@ class Alerts extends Component {
                 alert.error(`${error.msg.non_field_errors.join()}`);
             if (error.msg.username)
                 alert.error(`${error.msg.username.join()}`);
-            if (error.msg)
-                alert.error(`${error.msg}`);
+            // if (error.msg){
+            //     console.log(error.msg)
+            //     if (error.msg.detail === "Authentication credentials were not provided"){
+            //         return
+            //     }
+            //     alert.error(`${error.msg}`);
+            // };
         }
 
         if (message !== prevProps.message) {

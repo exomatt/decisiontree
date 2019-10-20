@@ -39,6 +39,7 @@ class ExperimentDetails extends Component {
         redirectMe: PropTypes.bool,
         progress: PropTypes.object,
         permission: PropTypes.object,
+        group: PropTypes.array.isRequired,
     };
 
     state = {
@@ -61,17 +62,10 @@ class ExperimentDetails extends Component {
     };
 
     componentDidMount() {
-        console.log("here")
         // todo   get permissions and block functions
         this.props.getExperimentById(this.props.match.params.id);
-        this.props.getFiles();
-        if (this.props.experiment.shared_from === "") {
-            this.setState({
-                    owner: true
-                }
-            )
-        } else {
-            this.props.getExperimentPermission(this.props.match.params.id);
+        if (this.props.group.includes('normal')) {
+            this.props.getFiles();
         }
         if (this.state.interval)
             this.state.interval.clear();
@@ -79,12 +73,16 @@ class ExperimentDetails extends Component {
     }
 
     componentDidUpdate(nextProps, nextState, nextContext) {
-        console.log("here update");
-        console.log(this.props.experiment);
+        if (this.props.experiment.shared_from === '' && this.state.owner === false) {
+            this.setState({
+                    owner: true
+                }
+            )
+        } else if (Object.getOwnPropertyNames(this.props.permission).length == 0) {
+            this.props.getExperimentPermission(this.props.match.params.id);
+        }
         if (this.props.experiment && this.props.experiment.status === "Running") {
-            console.log("here update2 ");
             if (!this.state.interval) {
-                console.log("tutaj");
                 const interval = setInterval(() => {
                     this.props.getProgress(this.props.experiment.id);
                     if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
@@ -143,7 +141,6 @@ class ExperimentDetails extends Component {
         this.props.getExperimentById(this.props.experiment.id);
     };
     handleSubmitShare = () => {
-        console.log(this.state);
         if (this.state.username === '') {
             this.props.createMessage({emptyField: 'Please fill username field'});
             return;
@@ -230,7 +227,7 @@ class ExperimentDetails extends Component {
     renderShareButton() {
         if (this.props.permission.share === true || this.state.owner === true) {
             return <button type="button"
-                           className="btn btn-primary" onClick={this.handleShowShare.bind()}>
+                           className="btn btn-primary" onClick={this.handleShowShare}>
                 Share experiment
             </button>
 
@@ -240,7 +237,7 @@ class ExperimentDetails extends Component {
     renderEditButton() {
         if (this.props.permission.edit === true || this.state.owner === true) {
             return <button type="button"
-                           className="btn btn-primary" onClick={this.handleShow.bind()}>
+                           className="btn btn-primary" onClick={this.handleShow}>
                 Edit experiment
             </button>
 
@@ -405,7 +402,7 @@ class ExperimentDetails extends Component {
                         Close
                     </button>
                     <button type="button"
-                            className="btn btn-primary" onClick={this.handleSubmitShare.bind()}>
+                            className="btn btn-primary" onClick={this.handleSubmitShare.bind(this)}>
                         Share
                     </button>
                 </Modal.Footer>
@@ -680,7 +677,8 @@ const
         token: state.auth.token,
         redirectMe: state.experiments.redirectMe,
         progress: state.experiments.progress,
-        files: state.files.files
+        files: state.files.files,
+        group: state.auth.group
     });
 
 export default connect(mapStateToProps, {

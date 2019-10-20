@@ -238,29 +238,53 @@ class ExperimentFiles(APIView):
         result_directory_path = settings.BASE_USERS_DIR + request.user.username + "/tmp"
         if not os.path.exists(result_directory_path):
             os.mkdir(result_directory_path)
+        permissions = Permissions.objects.get(experiment_id=experiment_id)
+        if permissions.download_output is True and permissions.download_input is True:
+            zip_file_path = result_directory_path + "/" + str(experiment.id) + "_" + experiment.name + ".zip"
+            zipf = zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED)
+            zipdir(experiment.result_directory_path, zipf)
+            zipf.close()
+            return serve(request, os.path.basename(zip_file_path), os.path.dirname(zip_file_path))
 
-        zip_file_path = result_directory_path + "/" + str(experiment.id) + "_" + experiment.name + ".zip"
-        zipf = zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED)
-        zipdir(experiment.result_directory_path, zipf)
-        zipf.close()
+        if permissions.download_output is True and permissions.download_input is False:
+            subfolders = [f.path for f in os.scandir(experiment.result_directory_path) if f.is_dir()]
+            zip_file_path = result_directory_path + "/" + str(experiment.id) + "_" + experiment.name + ".zip"
+            zipf = zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED)
+            for subdir in subfolders:
+                zipdir(subdir, zipf)
+            zipf.close()
+            return serve(request, os.path.basename(zip_file_path), os.path.dirname(zip_file_path))
 
-        # make_archive(zip_file_path, 'zip', experiment.result_directory_path)
+        if permissions.download_output is False and permissions.download_input is True:
+            zip_file_path = result_directory_path + "/" + str(experiment.id) + "_" + experiment.name + ".zip"
 
-        return serve(request, os.path.basename(zip_file_path), os.path.dirname(zip_file_path))
+            with zipfile.ZipFile(zip_file_path, 'w') as zipMe:
+                for file in files(experiment.result_directory_path):
+                    zipMe.write(experiment.result_directory_path + "/" + file, compress_type=zipfile.ZIP_DEFLATED)
+            return serve(request, os.path.basename(zip_file_path), os.path.dirname(zip_file_path))
 
-    def post(self, request):
-        user = self.request.user
-        logger.info("Request data: " + str(request.data))
-        username = user.username
-        config_file_path = settings.BASE_DIR + "/example.xml"
-        user_dir = settings.BASE_USERS_DIR + username
-        serializer = ConfigFileSerializer(data=request.data)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Not enough permission")
 
-        if not serializer.is_valid():
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=serializer.error_messages)
-        config_file_object = serializer.create(serializer.validated_data)
-        message = create_config_file(config_file_object, config_file_path, user_dir)
-        return Response(status=status.HTTP_200_OK, data=message)
+
+def post(self, request):
+    user = self.request.user
+    logger.info("Request data: " + str(request.data))
+    username = user.username
+    config_file_path = settings.BASE_DIR + "/example.xml"
+    user_dir = settings.BASE_USERS_DIR + username
+    serializer = ConfigFileSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=serializer.error_messages)
+    config_file_object = serializer.create(serializer.validated_data)
+    message = create_config_file(config_file_object, config_file_path, user_dir)
+    return Response(status=status.HTTP_200_OK, data=message)
+
+
+def files(path):
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file)):
+            yield file
 
 
 class FileDownloader(APIView):
