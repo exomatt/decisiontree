@@ -50,7 +50,7 @@ class ShowTree extends Component {
             return (
                 <div>
                     <div>
-                        <Link to={"/showExperiment"} className={"btn btn-primary"}
+                        <Link to={`/showExperiment/${this.props.experiment.id}`} className={"btn btn-primary"}
                               onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back
                             to
                             experiment</Link>
@@ -62,12 +62,12 @@ class ShowTree extends Component {
 
                 <div>
                     <div>
-                        <Link to={"/showExperiment"} className={"btn btn-primary"}
+                        <Link to={`/showExperiment/${this.props.experiment.id}`} className={"btn btn-primary"}
                               onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back
                             to
                             experiment</Link>
                     </div>
-                    <div ref={ref} id="treeWrapper" style={{width: '100em', height: '150em'}}>
+                    <div id="treeWrapper" style={{width: '100em', height: '150em'}}>
                         <Tree data={this.props.tree} orientation={'vertical'}
                               separation={{siblings: 2, nonSiblings: 2}}
                               translate={{x: 600, y: 200}} zoom={0.5}/>

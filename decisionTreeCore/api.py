@@ -265,20 +265,19 @@ class ExperimentFiles(APIView):
 
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data="Not enough permission")
 
+    def post(self, request):
+        user = self.request.user
+        logger.info("Request data: " + str(request.data))
+        username = user.username
+        config_file_path = settings.BASE_DIR + "/example.xml"
+        user_dir = settings.BASE_USERS_DIR + username
+        serializer = ConfigFileSerializer(data=request.data)
 
-def post(self, request):
-    user = self.request.user
-    logger.info("Request data: " + str(request.data))
-    username = user.username
-    config_file_path = settings.BASE_DIR + "/example.xml"
-    user_dir = settings.BASE_USERS_DIR + username
-    serializer = ConfigFileSerializer(data=request.data)
-
-    if not serializer.is_valid():
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=serializer.error_messages)
-    config_file_object = serializer.create(serializer.validated_data)
-    message = create_config_file(config_file_object, config_file_path, user_dir)
-    return Response(status=status.HTTP_200_OK, data=message)
+        if not serializer.is_valid():
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data=serializer.error_messages)
+        config_file_object = serializer.create(serializer.validated_data)
+        message = create_config_file(config_file_object, config_file_path, user_dir)
+        return Response(status=status.HTTP_200_OK, data=message)
 
 
 def files(path):
