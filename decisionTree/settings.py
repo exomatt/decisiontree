@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'accounts',
     'reset_migrations',
+    'django_extensions',
 ]
 
 REST_FRAMEWORK = {
