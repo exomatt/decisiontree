@@ -18,6 +18,7 @@ class AddFiles extends Component {
         this.setState({files});
         this.props.addFiles(files);
         this.props.getFiles();
+        this.props.getFiles();
     };
 
     render() {

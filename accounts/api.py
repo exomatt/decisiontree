@@ -27,7 +27,7 @@ class RegisterAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         # todo check if ist work
-        role = 'student'
+        role = '1_default'
         my_group = Group.objects.get(name=role)
         my_group.user_set.add(user)
         logger.debug(f'Set role for new user: {role} for {user}')
@@ -92,7 +92,7 @@ class UserFiles(APIView):
     def get(request):
         user: User = request.user
         groups = list(user.groups.values_list('name', flat=True))
-        if 'normal' not in groups:
+        if '2_exp' not in groups and '3_exp_data' not in groups:
             return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         username = user.username
         path = settings.BASE_USERS_DIR + username + "/"
@@ -105,7 +105,7 @@ class UserFiles(APIView):
         user = request.user
         username = user.username
         groups = list(user.groups.values_list('name', flat=True))
-        if 'normal' not in groups:
+        if '3_exp_data' not in groups:
             return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         file_list = request.FILES.getlist('file')
         name_file = list()
@@ -130,7 +130,7 @@ class UserFiles(APIView):
     def delete(request):
         user = request.user
         groups = list(user.groups.values_list('name', flat=True))
-        if 'normal' not in groups:
+        if '3_exp_data' not in groups:
             return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         username = user.username
         name = request.query_params['name']
@@ -146,7 +146,7 @@ class UserFiles(APIView):
     def post(request):
         user = request.user
         groups = list(user.groups.values_list('name', flat=True))
-        if 'normal' not in groups:
+        if '3_exp_data' not in groups:
             return Response(status=status.HTTP_403_FORBIDDEN, data="Not enough permissions!")
         username: str = user.username
         filename: str = request.data['filename']

@@ -19,7 +19,7 @@ export class Header extends Component {
     files() {
         if (this.props.auth.group === null)
             return;
-        if (this.props.auth.group.includes('normal')) {
+        if (this.props.auth.group.includes('3_exp_data')) {
             return <li className="nav-item active">
                 <Link to={"/files"} className={"nav-link"}>Files</Link>
             </li>

@@ -112,7 +112,7 @@ class ExperimentCrud(APIView):
             old_file_name = experiment.data_file_name
             experiment.test_file_name = test
             copy_experiment_file(experiment, username, 3, old_file_name)
-        if 'new_name' not in request.data and 'new_desc' in request.data:
+        if 'new_name' not in request.data and 'new_desc' not in request.data:
             copy_out_folder(experiment, username)
         change_xml_params_and_model(experiment)
         progress = Progress.objects.get(experiment_id=experiment_id)
@@ -317,7 +317,7 @@ class ExperimentShare(APIView):
         try:
             permission = Permissions.objects.get(experiment_id=experiment_id)
         except User.DoesNotExist:
-            logger.error("Cannot found permissions for experiment" + experiment_id)
+            logger.error("Cannot found permissions for experiment" + experiment.name)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data="Problem with getting permissions")
 
@@ -414,7 +414,7 @@ class ExperimentCopy(APIView):
         copy_experiment_files(old_path, new_path)
         change_xml_params_and_model(experiment)
         return Response(status=status.HTTP_200_OK,
-                        data=f'Create experiment copy with id {experiment.id} and name {experiment.name}')
+                        data=f'Create experiment copy with name {experiment.name}')
 
 
 def create_config_file(data: ConfigFile, config_file_path: str, user_dir: str) -> str:

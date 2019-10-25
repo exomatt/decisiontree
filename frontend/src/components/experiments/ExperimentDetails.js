@@ -64,12 +64,12 @@ class ExperimentDetails extends Component {
     componentDidMount() {
         // todo   get permissions and block functions
         this.props.getExperimentById(this.props.match.params.id);
-        if (this.props.group.includes('normal')) {
+        if (this.props.group.includes('2_exp') || this.props.group.includes('3_exp_data')) {
             this.props.getFiles();
         }
         if (this.state.interval)
             this.state.interval.clear();
-        this.setState({interval: null})
+        this.setState({interval: null});
     }
 
     componentDidUpdate(nextProps, nextState, nextContext) {
@@ -96,7 +96,11 @@ class ExperimentDetails extends Component {
     }
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
-    handleShow = () => this.setState({isShowingModal: true});
+    handleShow = () => this.setState({
+        isShowingModal: true,
+        name: this.props.experiment.name,
+        description: this.props.experiment.description
+    });
     handleShowShare = () => this.setState({isShowingModalShare: true});
 
     handleClose = () => this.setState({isShowingModal: false});
@@ -201,7 +205,7 @@ class ExperimentDetails extends Component {
         axios.get("api/files",
             config)
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -291,6 +295,7 @@ class ExperimentDetails extends Component {
         let optionItemsTest = test_files.map((file) =>
             <option key={file} value={file.substring(0, file.length - 5)}>{file}</option>
         );
+
         return <fieldset>
             <div className="form-group">
                 <label>Experiment name</label>
@@ -312,7 +317,7 @@ class ExperimentDetails extends Component {
                           onChange={this.onChange}/>
             </div>
             <div className="form-group">
-                <label>Config file</label>
+                <label>Choose new config file</label>
                 <select className="form-control"
                         name="config_file_name"
                         value={config_file_name}
@@ -322,7 +327,7 @@ class ExperimentDetails extends Component {
                 </select>
             </div>
             <div className="form-group">
-                <label>Data file</label>
+                <label>Choose new data file</label>
                 <select className="form-control"
                         name="data_file_name"
                         value={data_file_name}
@@ -332,7 +337,7 @@ class ExperimentDetails extends Component {
                 </select>
             </div>
             <div className="form-group">
-                <label>Test file</label>
+                <label>Choose new test file</label>
                 <select className="form-control"
                         name="test_file_name"
                         value={test_file_name}
@@ -342,7 +347,7 @@ class ExperimentDetails extends Component {
                 </select>
             </div>
             <div className="form-group">
-                <label>Names file</label>
+                <label>Choose new names file</label>
                 <select className="form-control"
                         name="names_file_name"
                         value={names_file_name}
@@ -357,7 +362,7 @@ class ExperimentDetails extends Component {
     editExperiment() {
         return <div><Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
             <Modal.Header closeButton>
-                <Modal.Title>New name form</Modal.Title>
+                <Modal.Title>Edit experiment</Modal.Title>
             </Modal.Header>
             <Modal.Body>{this.renderForm()}</Modal.Body>
             <Modal.Footer>
@@ -530,7 +535,9 @@ class ExperimentDetails extends Component {
         }
         //todo dodac znaczek ładowania
         if (!this.props.experiment.hasOwnProperty('id'))
-            return (<div/>);
+            return (<div className="spinner-border text-secondary" role="status">
+                <span className="sr-only">Loading...</span>
+            </div>);
 
         if (this.props.experiment.status === "Finished") {
             return (
@@ -546,9 +553,9 @@ class ExperimentDetails extends Component {
                             {this.renderShareButton()}
 
                         </div>
-                        <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+
+                        <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                         <div className="card-body">
-                            <h4 className="card-title">Name: {this.props.experiment.name}</h4>
                             <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                             <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                             <p className="card-text">Status: {this.props.experiment.status}</p><br/>
@@ -568,9 +575,8 @@ class ExperimentDetails extends Component {
                                 className="btn btn-primary">Cancel Task
                         </button>
                     </div>
-                    <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
-                        <h4 className="card-title">Name: {this.props.experiment.name}</h4>
                         <ProgressBar animated now={parseFloat(this.props.progress.progress_percent) * 100}
                                      label={`${(parseFloat(this.props.progress.progress_percent) * 100).toFixed(2)}%`}/>
                         <p className="card-text">Time
@@ -598,9 +604,8 @@ class ExperimentDetails extends Component {
                         {this.renderCopyButton()}
                         {this.renderShareButton()}
                     </div>
-                    <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
-                        <h4 className="card-title">Name: {this.props.experiment.name}</h4>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
@@ -625,9 +630,8 @@ class ExperimentDetails extends Component {
                         {this.renderCopyButton()}
                         {this.renderShareButton()}
                     </div>
-                    <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
-                        <h4 className="card-title">Name: {this.props.experiment.name}</h4>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
@@ -651,9 +655,8 @@ class ExperimentDetails extends Component {
                         {this.renderCopyButton()}
                         {this.renderShareButton()}
                     </div>
-                    <div className="card-header">Experiment with id: {this.props.experiment.id}</div>
+                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
-                        <h4 className="card-title">Name: {this.props.experiment.name}</h4>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {this.props.experiment.date}</p><br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
