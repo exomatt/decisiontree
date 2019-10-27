@@ -17,6 +17,7 @@ django-rest-swagger = "*"
 gunicorn = "*"
 psycopg2 = "*"
 django-extensions = "*"
+locustio = "*"
 
 [requires]
 python_version = "3.7"
