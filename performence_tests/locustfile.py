@@ -1,27 +1,6 @@
 from locust import HttpLocust, TaskSet, task, seq_task, TaskSequence
 
 
-class UserBehavior(TaskSet):
-    token = ""
-
-    def on_start(self):
-        """ on_start is called when a Locust start before any task is scheduled """
-        self.login()
-
-    def on_stop(self):
-        """ on_stop is called when the TaskSet is stopping """
-        self.logout()
-
-    def login(self):
-        response = self.client.post("/api/auth/login", {"username": "locust", "password": "locust"})
-        json = response.json()
-        self.token = json["token"]
-
-    def logout(self):
-        self.client.headers['Authorization'] = f'Token {self.token}'
-        self.client.post("/api/auth/logout")
-
-
 class ExperimentBehavior(TaskSequence):
     token = ""
     experiments_ids = list()
