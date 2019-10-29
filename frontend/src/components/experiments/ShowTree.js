@@ -4,11 +4,9 @@ import {connect} from "react-redux";
 import Tree from 'react-d3-tree';
 import {Link} from "react-router-dom";
 import {getExperimentById} from "../../actions/experiments";
-import domtoimage from 'dom-to-image';
-import html2canvas from "html2canvas";
-import jsPDF from 'jspdf';
 import htmlToImage from 'html-to-image';
 import download from 'downloadjs'
+import ReactToPrint from 'react-to-print';
 
 class ShowTree extends Component {
     static propTypes = {
@@ -22,13 +20,15 @@ class ShowTree extends Component {
         key: 0
     };
 
+
     saveTree = () => {
         // var style = window.getComputedStyle(treeWrapper);
+        const style = {
+            background: "red"
+        }
         const elementById = document.getElementById('treeWrapper');
         htmlToImage.toPng(document.getElementById('treeWrapper'), {
-            style: {
-                linkBase: {fill: "none", stroke: "#000"}
-            }
+            style: style
         })
             .then(function (dataUrl) {
                 download(dataUrl, 'my-node.png');
@@ -123,18 +123,28 @@ class ShowTree extends Component {
             return (
 
                 <div>
+
                     <div>
-                        <Link to={`/showExperiment/${this.props.experiment.id}`} className={"btn btn-primary"}
-                              onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back to
+                        <img src={this.state.screenCapture}/>
+                        <Link to={`/showExperiment/${this.props.experiment.id}`}
+                              className={"btn btn-primary"}
+                              onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back
+                            to
                             experiment</Link>
-                        <button type="button"
-                                className="btn btn-primary"
-                                onClick={this.saveTree}>
-                            Capture tree
-                        </button>
                     </div>
-                    <div id="treeWrapper" style={{width: '100em', height: '50em'}}>
-                        <Tree data={this.props.tree} orientation={'vertical'} key={this.state.key}
+                    <ReactToPrint
+                        trigger={() => <a className="btn btn-primary" href="#">Print this out!</a>}
+                        content={() => this.componentRef}
+                        pageStyle={"<style type=\"text/css\">\n" +
+                        "  @media print{\n" +
+                        "    @page {\n" +
+                        "      size: landscape;\n" +
+                        "    }\n" +
+                        "  }\n" +
+                        "</style>"}
+                    />
+                    <div id="treeWrapper" style={{width: '150em', height: '50em'}}>
+                        <Tree ref={el => (this.componentRef = el)} data={this.props.tree} orientation={'vertical'}
                               separation={{siblings: 2, nonSiblings: 2}}
                               translate={{x: 600, y: 200}} zoom={0.5}/>
                     </div>
