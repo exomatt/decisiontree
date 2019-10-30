@@ -18,7 +18,9 @@ class AddFiles extends Component {
     handleDrop = (files) => {
         this.setState({files});
         this.props.addFiles(files);
-        this.props.getFiles();
+        setTimeout(function () {
+            this.props.getFiles();
+        }.bind(this), 5000)
     };
 
     render() {

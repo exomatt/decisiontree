@@ -32,7 +32,6 @@ class ShowTree extends Component {
                 <div>
 
                     <div>
-                        <img src={this.state.screenCapture}/>
                         <Link to={`/showExperiment/${this.props.experiment.id}`}
                               className={"btn btn-primary"}
                               onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back
