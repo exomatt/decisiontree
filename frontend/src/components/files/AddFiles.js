@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {addFiles, getFiles} from "../../actions/files";
+import "./index.css"
 
 class AddFiles extends Component {
     static propTypes = {
@@ -18,22 +19,22 @@ class AddFiles extends Component {
         this.setState({files});
         this.props.addFiles(files);
         this.props.getFiles();
-        this.props.getFiles();
     };
 
     render() {
         return (
-
-            <Dropzone onDrop={this.handleDrop}>
-                {({getRootProps, getInputProps}) => (
-                    <section className="container">
-                        <div {...getRootProps({className: 'dropzone'})}>
-                            <input {...getInputProps()} />
-                            <p>Drag 'n' drop some files here, or click to select files</p>
-                        </div>
-                    </section>
-                )}
-            </Dropzone>
+            <div>
+                <Dropzone onDrop={this.handleDrop} style={{width: '50%', height: '50px'}}>
+                    {({getRootProps, getInputProps}) => (
+                        <section className="container">
+                            <div {...getRootProps({className: 'dropzone'})}>
+                                <input {...getInputProps()} />
+                                <h4 className={"dropezone"}>Drag 'n' drop some files here, or click to select files</h4>
+                            </div>
+                        </section>
+                    )}
+                </Dropzone>
+            </div>
         );
     }
 }
