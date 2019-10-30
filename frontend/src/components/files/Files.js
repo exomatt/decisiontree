@@ -64,7 +64,7 @@ class Files extends Component {
 
     onChange = e => this.setState({[e.target.name]: e.target.value});
     handleShow = (file) => {
-        this.setState({isShowingModal: true, filename: file});
+        this.setState({isShowingModal: true, filename: file, name: file});
     };
 
     handleClose = () => this.setState({isShowingModal: false});
@@ -87,21 +87,26 @@ class Files extends Component {
         const name = this.state.name;
         let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
         let data_files = this.props.files.filter(el => xml_files.indexOf(el) < 0);
-        xml_files = xml_files.sort();
-        data_files = data_files.sort();
+        xml_files.sort();
+        data_files.sort();
         return (
             <div>
                 <Modal show={this.state.isShowingModal} onHide={this.handleClose} animation={true}>
                     <Modal.Header closeButton>
                         <Modal.Title>New name form</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>New file name: </Modal.Body>
-                    <input type="text"
-                           className="form-control"
-                           name="name"
-                           value={name}
-                           placeholder="Enter new name"
-                           onChange={this.onChange}/>
+                    <Modal.Body>New file name:
+                        <fieldset>
+                            <div className="form-group">
+                                <input type="text"
+                                       className="form-control"
+                                       name="name"
+                                       value={name}
+                                       placeholder="Enter new name"
+                                       onChange={this.onChange}/>
+                            </div>
+                        </fieldset></Modal.Body>
+
                     <Modal.Footer>
                         <button type="button"
                                 className="btn btn-secondary" onClick={this.handleClose}>
