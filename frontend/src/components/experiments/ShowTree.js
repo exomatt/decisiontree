@@ -30,14 +30,11 @@ class ShowTree extends Component {
             return (
 
                 <div>
-
-                    <div>
-                        <Link to={`/showExperiment/${this.props.experiment.id}`}
-                              className={"btn btn-primary"}
-                              onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back
-                            to
-                            experiment</Link>
-                    </div>
+                    <Link to={`/showExperiment/${this.props.experiment.id}`}
+                          className={"btn btn-primary"}
+                          onClick={this.props.getExperimentById.bind(this, this.props.experiment.id)}>Back
+                        to
+                        experiment</Link>
                     <ReactToPrint
                         trigger={() => <a className="btn btn-primary" href="#">Print this out!</a>}
                         content={() => this.componentRef}

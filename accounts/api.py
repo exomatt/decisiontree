@@ -3,11 +3,11 @@ from os import listdir, remove, rename
 from os.path import isfile, join
 
 from django.conf import settings
+from django.contrib.auth.models import User, Group
 from rest_framework import generics, permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib.auth.models import User, Group
 
 from decisionTreeCore.utils import ExperimentUtils
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer

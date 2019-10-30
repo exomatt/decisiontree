@@ -64,6 +64,7 @@ class ExperimentCrud(APIView):
         permissions.IsAuthenticated
     ]
 
+    # Edit experiment
     @staticmethod
     def post(request):
         user = request.user
@@ -83,7 +84,7 @@ class ExperimentCrud(APIView):
             new_desc = request.data['new_desc']
             experiment.description = new_desc
             experiment.save()
-        # todo dokonczyc
+
         if 'new_config' in request.data:
             config = request.data['new_config']
             create_experiment_file_copy(experiment, username, 0)
@@ -112,13 +113,13 @@ class ExperimentCrud(APIView):
             old_file_name = experiment.data_file_name
             experiment.test_file_name = test
             copy_experiment_file(experiment, username, 3, old_file_name)
-        if 'new_name' not in request.data and 'new_desc' not in request.data:
-            copy_out_folder(experiment, username)
         change_xml_params_and_model(experiment)
         progress = Progress.objects.get(experiment_id=experiment_id)
         experiment.progress = None
         progress.delete()
         set_new_progress(experiment)
+        path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
+        create_readme_file(experiment, path)
         # todo test it after changing config file new progress is added to experiment
         return Response(status=status.HTTP_200_OK, data=f'Experiment edit successfully')
 
@@ -458,7 +459,7 @@ def remove_model_files(experiment: Experiment, username: str) -> None:
 def copy_out_folder(experiment: Experiment, username: str) -> None:
     path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
     old_out_path = path + '/out_old'
-    new_out_path = ExperimentUtils.generate_file_name(old_out_path)
+    new_out_path = ExperimentUtils.generate_dir_name(old_out_path)
     os.rename(old_out_path, new_out_path)
     mkdir(path + '/out')
 

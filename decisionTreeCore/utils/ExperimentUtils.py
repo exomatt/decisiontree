@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import shutil
 from typing import List
 
@@ -153,6 +154,7 @@ def generate_file_name(file_path) -> str:
         while True:
             expand += 1
             file_extension = file_path.rsplit(".", 1)[1]
+            file_path = re.sub(r'\([^)]*\)', '', file_path)
             new_file_name = file_path.rsplit(".")[0] + "(" + str(expand) + ")." + file_extension
             if os.path.isfile(new_file_name):
                 continue
