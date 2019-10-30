@@ -31,6 +31,9 @@ export class Header extends Component {
         const {isAuthenticated, user} = this.props.auth;
         const authLinks = (
             <ul className="navbar-nav mr-auto">
+                <li className="nav-item active">
+                    <Link to={"/"} className={"nav-link"}>Experiments</Link>
+                </li>
                 {this.files()}
                 <span className="navbar-text mr-3">
                                  <strong>{user ? `Welcome ${user.username}` : ""}
@@ -54,10 +57,9 @@ export class Header extends Component {
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
                 <div className="container">
-                    <a className="navbar-brand" href="/">Experiments</a>
+                    <a className="navbar-brand" href="/">Decision tree</a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
                             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
                     </button>
 
                     <div className="collapse navbar-collapse  " id="navbarColor01">
