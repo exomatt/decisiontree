@@ -41,12 +41,11 @@ def gdt_run(self, filename, experiment_id):
         if "loop mean time:" in output_striped:
             set_progress(experiment_id, output_striped)
     # logger.error("Errors" + ",".join(errors))
-    set_status(experiment_id, "Finished")
-    # error = ''.join(process.stderr.readline().decode().strip().split())
-    # if error:
-    #     logger.error("Error to: " + error)
-    #     logger.error("Error to: " + ''.join(process.stdout.readline().decode().strip().split()))
-    #     set_error(experiment_id, "Error", error)
+    if checkIfError(experiment_id):
+        set_status(experiment_id, "Error")
+    else:
+        set_status(experiment_id, "Finished")
+
     return process.stdout
 
 
@@ -54,6 +53,8 @@ def set_status(experiment_id, status: str, task_id: str = None):
     logger.info(f"Change model status {status} and task_id {task_id}")
     experiment = Experiment.objects.all().get(id=experiment_id)
     experiment.status = status
+    if status is "Error":
+        experiment.error_message = "Problem with files. Cannot run experiment instance in worker."
     if task_id is not None:
         experiment.task_id = task_id
     experiment.save()
@@ -89,3 +90,10 @@ def set_progress(experiment_id: str, output_striped: str):
     progress.last_iter_number = iter_number
     progress.save()
     experiment.save()
+
+
+def checkIfError(experiment_id: str) -> bool:
+    experiment = Experiment.objects.all().get(id=experiment_id)
+    progress = experiment.progress
+    logger.info(f'Check if error: {progress.last_iter_number}')
+    return progress.last_iter_number == 0 and progress.mean_time == 0
