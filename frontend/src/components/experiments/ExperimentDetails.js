@@ -594,7 +594,7 @@ class ExperimentDetails extends Component {
                 run number {i + 1} </Link><br/></li>);
         }
         if (this.props.redirectMe) {
-            return <Redirect to='/'/>
+            return <Redirect to='/experiments'/>
         }
         //todo dodac znaczek ładowania
         if (!this.props.experiment.hasOwnProperty('id'))

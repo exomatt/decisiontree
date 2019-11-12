@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {deleteExperiment, getExperimentById, getExperiments} from "../../actions/experiments";
+import {getExperimentById, getExperiments} from "../../actions/experiments";
 import {Link} from "react-router-dom";
 import moment from "moment";
 
@@ -10,7 +10,6 @@ class Experiments extends Component {
         experiments: PropTypes.array.isRequired,
         getExperiments: PropTypes.func.isRequired,
         getExperimentById: PropTypes.func.isRequired,
-        deleteExperiment: PropTypes.func.isRequired,
         group: PropTypes.array.isRequired,
     };
 
@@ -51,12 +50,6 @@ class Experiments extends Component {
                             <td>
                                 <Link to={`/showExperiment/${experiment.id}`} className={"btn btn-primary"}>Show</Link>
                             </td>
-                            <td>
-                                <button onClick={this.props.deleteExperiment.bind(this, experiment.id)} type="button"
-                                        className="btn btn-primary">Delete
-                                </button>
-                            </td>
-
                         </tr>
                     ))}
                     </tbody>
@@ -76,5 +69,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     getExperiments,
     getExperimentById,
-    deleteExperiment,
 })(Experiments);

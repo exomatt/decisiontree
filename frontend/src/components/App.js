@@ -21,6 +21,8 @@ import UserFiles from "./files/UserFiles";
 import ExperimentDetails from "./experiments/ExperimentDetails";
 import ShowTree from "./experiments/ShowTree";
 import FormConfigFile from "./files/FormConfigFile";
+import Footer from "./layout/Footer";
+import Home from "./layout/Home";
 
 const alertOptions = {
     timeout: 3000,
@@ -32,6 +34,7 @@ class App extends Component {
         store.dispatch(loadUser());
     }
 
+    // todo naprwic footer
     render() {
         return (
             <Provider store={store}>
@@ -42,7 +45,8 @@ class App extends Component {
                             <Alerts/>
                             <div className="container">
                                 <Switch>
-                                    <PrivateRoute exact path="/" component={Experiments}/>
+                                    <Route exact path="/" component={Home}/>
+                                    <PrivateRoute exact path="/experiments" component={Experiments}/>
                                     <PrivateRoute exact path="/newExperiment" component={FormExperiment}/>
                                     <PrivateRoute exact path="/files" component={UserFiles}/>
                                     <Route exact path="/register" component={Register}/>
@@ -53,6 +57,7 @@ class App extends Component {
                                 </Switch>
                                 {/*<Experiments/>*/}
                             </div>
+                            {/*<Footer/> */}
                         </Fragment>
                     </Router>
                 </AlertProvider>

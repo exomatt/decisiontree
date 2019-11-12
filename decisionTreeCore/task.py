@@ -95,5 +95,5 @@ def set_progress(experiment_id: str, output_striped: str):
 def checkIfError(experiment_id: str) -> bool:
     experiment = Experiment.objects.all().get(id=experiment_id)
     progress = experiment.progress
-    logger.info(f'Check if error: {progress.last_iter_number}')
+    logger.info(f'Check if error:')
     return progress.last_iter_number == 0 and progress.mean_time == 0

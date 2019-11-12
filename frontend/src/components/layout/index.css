@@ -1,0 +1,17 @@
+.footer {
+    text-align: left;
+    margin-top: 100px !important;
+    position: absolute !important;
+    bottom: 0 !important;
+
+}
+
+.footerText {
+    font-size: x-small !important;
+}
+
+.homeCard {
+    margin-top: 75px !important;
+    margin-bottom: 250px !important;
+}
+

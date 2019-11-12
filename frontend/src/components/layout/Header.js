@@ -30,19 +30,25 @@ export class Header extends Component {
     render() {
         const {isAuthenticated, user} = this.props.auth;
         const authLinks = (
-            <ul className="navbar-nav mr-auto">
-                <li className="nav-item active">
-                    <Link to={"/"} className={"nav-link"}>Experiments</Link>
-                </li>
-                {this.files()}
-                <span className="navbar-text mr-3">
+            <div className={"collapse navbar-collapse"} id="navbarColor01">
+                <ul className="nav navbar-nav mr-auto ">
+                    <li className="nav-item active">
+                        <Link to={"/experiments"} className={"nav-link"}>Experiments</Link>
+                    </li>
+                    {this.files()}
+                </ul>
+
+                <ul className="nav navbar-nav pull-right">
+                <span className="navbar-text ">
                                  <strong>{user ? `Welcome ${user.username}` : ""}
                       </strong>
                 </span>
-                <li className="nav-item active">
-                    <button onClick={this.props.logout} type="button" className="btn btn-primary">Logout</button>
-                </li>
-            </ul>
+                    <li className="nav-item active">
+                        <button onClick={this.props.logout} type="button" className="btn btn-primary">Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
         );
         const guestLinks = (
             <ul className="navbar-nav mr-auto">
@@ -55,7 +61,7 @@ export class Header extends Component {
             </ul>
         );
         return (
-            <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div className="container">
                     <a className="navbar-brand" href="/">Decision tree</a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
