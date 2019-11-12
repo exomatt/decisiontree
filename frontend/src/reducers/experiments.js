@@ -42,6 +42,7 @@ export default function (state = initialState, action) {
         case DELETE_EXPERIMENTS:
             return {
                 ...state,
+                redirectMe: true,
                 experiments: state.experiments.filter(experiment => experiment.id !== action.payload)
             };
         case ADD_EXPERIMENTS:

@@ -32,6 +32,7 @@ class AddFiles extends Component {
                             <div {...getRootProps({className: 'dropzone'})}>
                                 <input {...getInputProps()} />
                                 <h4 className={"dropezone"}>Drag 'n' drop some files here, or click to select files</h4>
+                                <h6 className={"dropezone"}>(Only *.xml, *.data, *.names, *.test files)</h6>
                             </div>
                         </section>
                     )}

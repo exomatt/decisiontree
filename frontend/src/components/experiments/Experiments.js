@@ -38,6 +38,7 @@ class Experiments extends Component {
                         <th>Description</th>
                         <th>Status</th>
                         <th>Date</th>
+                        <th>Option</th>
                     </tr>
                     </thead>
                     <tbody>

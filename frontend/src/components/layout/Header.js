@@ -49,7 +49,7 @@ export class Header extends Component {
                 <li className="nav-item active">
                     <Link to={"/register"} className={"nav-link"}>Register</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item active">
                     <Link to={"/login"} className={"nav-link"}>Login</Link>
                 </li>
             </ul>

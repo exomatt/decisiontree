@@ -328,6 +328,8 @@ class ExperimentShare(APIView):
         temp['download_in'] = permission.download_input
         temp['download_out'] = permission.download_output
         temp['share'] = permission.share
+        temp['copy'] = permission.copy
+        temp['delete'] = permission.delete
         json_data = json.loads(json.dumps(temp))
         return Response(status=status.HTTP_200_OK, data=json_data)
 
@@ -343,6 +345,8 @@ class ExperimentShare(APIView):
         share = request.data['share']
         run = request.data['run']
         edit = request.data['edit']
+        copy = request.data['copy']
+        delete = request.data['delete']
         experiment = Experiment.objects.get(pk=experiment_id)
         user_to_share_with = ""
         try:
@@ -370,7 +374,7 @@ class ExperimentShare(APIView):
             experiment.id) + "_" + experiment.name
         experiment.result_directory_path = new_path
         permission = Permissions(experiment=experiment, run=run, edit=edit, download_input=download_in,
-                                 download_output=download_out, share=share)
+                                 download_output=download_out, share=share, copy=copy, delete=delete)
         permission.save()
         experiment.permissions = permission
         experiment.shared_from = f'{experiment.shared_from} {user_username}'

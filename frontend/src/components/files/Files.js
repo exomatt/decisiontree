@@ -119,6 +119,7 @@ class Files extends Component {
                     </Modal.Footer>
                 </Modal>
                 <h1>Config xml files:</h1>
+                <h6>(Files with *.xml extension)</h6>
                 <Link to={"/createConfigFile"} className={"btn btn-primary"}>Create Config File</Link>
                 <table className="table table-striped">
                     <thead>
@@ -152,6 +153,7 @@ class Files extends Component {
                     </tbody>
                 </table>
                 <h1>Experiment files:</h1>
+                <h6>(Files with *.data, *.test, *.names extension)</h6>
                 <table className="table table-striped">
                     <thead>
                     <tr>

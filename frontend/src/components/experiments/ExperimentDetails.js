@@ -6,7 +6,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import {Modal} from "react-bootstrap";
 import {
     cancelTask,
-    changeExperimentCrud, copyExperiment,
+    changeExperimentCrud, copyExperiment, deleteExperiment,
     getExperimentById, getExperimentPermission,
     getProgress,
     getTreeByNumber,
@@ -40,6 +40,7 @@ class ExperimentDetails extends Component {
         progress: PropTypes.object,
         permission: PropTypes.object,
         group: PropTypes.array.isRequired,
+        deleteExperiment: PropTypes.func.isRequired,
     };
 
     state = {
@@ -57,6 +58,8 @@ class ExperimentDetails extends Component {
         downloadIn: false,
         downloadOut: false,
         share: false,
+        copy: false,
+        delete: false,
         owner: false,
         interval: null
     };
@@ -157,6 +160,8 @@ class ExperimentDetails extends Component {
             download_out: this.state.downloadOut,
             download_in: this.state.downloadIn,
             share: this.state.share,
+            copy: this.state.copy,
+            delete: this.state.delete,
         };
         this.props.shareExperiment(shareOptions);
         this.setState({
@@ -167,6 +172,8 @@ class ExperimentDetails extends Component {
             downloadIn: false,
             downloadOut: false,
             share: false,
+            delete: false,
+            copy: false,
         });
         this.props.getExperimentById(this.props.experiment.id);
     };
@@ -269,15 +276,27 @@ class ExperimentDetails extends Component {
     }
 
     renderCopyButton() {
-        return <button type="button"
-                       className="btn btn-primary"
-                       onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
-            Create copy
-        </button>
+        if (this.props.permission.copy === true || this.state.owner === true) {
+            return <button type="button"
+                           className="btn btn-primary"
+                           onClick={this.props.copyExperiment.bind(this, this.props.experiment.id)}>
+                Create copy
+            </button>
+        }
+    }
 
+    renderDeleteButton() {
+        if (this.props.permission.delete === true || this.state.owner === true) {
+            return <button type="button"
+                           className="btn btn-primary"
+                           onClick={this.props.deleteExperiment.bind(this, this.props.experiment.id)}>
+                Delete
+            </button>
+        }
     }
 
     renderForm() {
+
         const {name, description, config_file_name, data_file_name, test_file_name, names_file_name} = this.state;
         let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
         let data_files = this.props.files.filter(file => file.endsWith(".data"));
@@ -400,6 +419,8 @@ class ExperimentDetails extends Component {
                     {this.downloadInCheckBox()}
                     {this.downloadOutCheckBox()}
                     {this.shareCheckBox()}
+                    {this.copyCheckBox()}
+                    {this.deleteCheckBox()}
                 </Modal.Body>
                 <Modal.Footer>
                     <button type="button"
@@ -520,6 +541,48 @@ class ExperimentDetails extends Component {
         }
     }
 
+    copyCheckBox() {
+        if (this.props.permission.copy === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch6"
+                       checked={this.state.copy} onChange={() => {
+                    this.setState({
+                        copy: !this.state.copy
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch6">Making copy</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch6" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch6">Making copy (blocked by the
+                    host)</label>
+            </div>
+        }
+    }
+
+    deleteCheckBox() {
+        if (this.props.permission.delete === true || this.state.owner) {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch7"
+                       checked={this.state.delete} onChange={() => {
+                    this.setState({
+                        delete: !this.state.delete
+                    });
+                }}/>
+                <label className="custom-control-label" htmlFor="customSwitch7">Delete experiment</label>
+            </div>
+        } else {
+            return <div className="custom-control custom-switch">
+                <input type="checkbox" className="custom-control-input" id="customSwitch7" disabled=""
+                       checked={false}/>
+                <label className="custom-control-label" htmlFor="customSwitch7">Delete experiment (blocked by the
+                    host)</label>
+            </div>
+        }
+    }
+
     render() {
         let i;
         let lis = [];
@@ -551,6 +614,7 @@ class ExperimentDetails extends Component {
                             {this.renderRerunButton()}
                             {this.renderCopyButton()}
                             {this.renderShareButton()}
+                            {this.renderDeleteButton()}
 
                         </div>
 
@@ -603,6 +667,7 @@ class ExperimentDetails extends Component {
                         {this.renderRerunButton()}
                         {this.renderCopyButton()}
                         {this.renderShareButton()}
+                        {this.renderDeleteButton()}
                     </div>
                     <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
@@ -629,6 +694,7 @@ class ExperimentDetails extends Component {
                         {this.renderRerunButton()}
                         {this.renderCopyButton()}
                         {this.renderShareButton()}
+                        {this.renderDeleteButton()}
                     </div>
                     <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
@@ -654,6 +720,7 @@ class ExperimentDetails extends Component {
                         {this.renderStartButton()}
                         {this.renderCopyButton()}
                         {this.renderShareButton()}
+                        {this.renderDeleteButton()}
                     </div>
                     <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
@@ -696,5 +763,6 @@ export default connect(mapStateToProps, {
     copyExperiment,
     shareExperiment,
     getFiles,
+    deleteExperiment,
     getExperimentPermission
 })(ExperimentDetails);

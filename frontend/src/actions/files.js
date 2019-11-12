@@ -76,6 +76,7 @@ export const addFiles = (file) => (dispatch, getState) => {
             });
         })
         .catch(err => {
+            dispatch(createMessage({errorFiles: err.response.data}));
             dispatch(returnErrors(err.response.data, err.response.status))
         });
 };
