@@ -1,4 +1,11 @@
-.linkBase {
-    fill: none;
-    stroke: #000
+.experimentDetailsCard {
+    margin-top: 15px !important;
+}
+
+.formExperimentCard {
+    width: 60% !important;
+    position: center !important;
+    margin: 0 auto !important;
+    float: none !important;
+    margin-top: 15px !important;
 }

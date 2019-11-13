@@ -2,8 +2,7 @@ import React from "react";
 import "./index.css"
 
 export default function Footer() {
-    return <div>
-        <footer className={"navbar-dark bg-primary footer"}>
+    return <footer className={"navbar-dark bg-primary footer"}>
             <div className={"container"}>
            <span className="navbar-text mr-3 footerText">
                <strong>Copyright © 2019 Decision tree</strong>
@@ -13,7 +12,5 @@ export default function Footer() {
                 </span>
             </div>
         </footer>
-
-    </div>
 
 }

@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {createConfigFile} from "../../actions/files";
 import {createMessage} from "../../actions/messages";
+import "./index.css"
 
 class FormConfigFile extends Component {
     static propTypes = {
@@ -73,7 +74,7 @@ class FormConfigFile extends Component {
             selectionpressure, probabilityofcrossover
         } = this.state;
         return (
-            <div className="card border-light mb-3">
+            <div className="card border-light mb-3 formConfigCard shadow p-3 mb-5 bg-white rounded">
                 <h1>Create new config file</h1>
                 <form onSubmit={this.onSubmit}>
                     <fieldset>
@@ -92,6 +93,7 @@ class FormConfigFile extends Component {
                             <input type="number" className="form-control"
                                    name="runs"
                                    value={runs}
+                                   min={"0"}
                                    onChange={this.onChange}/>
                         </div>
                         <div className="form-group">
@@ -139,6 +141,7 @@ class FormConfigFile extends Component {
                             <input type="number" className="form-control"
                                    name="sizeofpopulation"
                                    value={sizeofpopulation}
+                                   min={"0"}
                                    onChange={this.onChange}/>
                         </div>
                         <div className="form-group">
@@ -146,6 +149,7 @@ class FormConfigFile extends Component {
                             <input type="number" className="form-control"
                                    name="maximumiterations"
                                    value={maximumiterations}
+                                   min={"0"}
                                    onChange={this.onChange}/>
                         </div>
                         <div className="form-group">
@@ -153,6 +157,7 @@ class FormConfigFile extends Component {
                             <input type="number" className="form-control"
                                    name="minimumiterations"
                                    value={minimumiterations}
+                                   min={"0"}
                                    onChange={this.onChange}/>
                         </div>
                         <div className="form-group">
@@ -167,6 +172,7 @@ class FormConfigFile extends Component {
                             <input type="number" className="form-control"
                                    name="probabilityofcrossover"
                                    value={probabilityofcrossover}
+                                   min={"0"}
                                    onChange={this.onChange}/>
                         </div>
                         <div className="form-group">
@@ -174,6 +180,7 @@ class FormConfigFile extends Component {
                             <input type="number" className="form-control"
                                    name="selectionpressure"
                                    value={selectionpressure}
+                                   min={"0"}
                                    step="0.01"
                                    onChange={this.onChange}/>
                         </div>

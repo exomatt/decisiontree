@@ -5,6 +5,7 @@ import {changeFileName, deleteFiles, getFiles} from "../../actions/files";
 import {Modal} from "react-bootstrap";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import "./index.css"
 
 
 class Files extends Component {
@@ -121,16 +122,17 @@ class Files extends Component {
                 <h1>Config xml files:</h1>
                 <h6>(Files with *.xml extension)</h6>
                 <Link to={"/createConfigFile"} className={"btn btn-primary"}>Create Config File</Link>
-                <table className="table table-striped">
+                <table className="table table-striped fileTable">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th className={"thName"}>Name</th>
+                        <th colSpan={3}>Options</th>
                     </tr>
                     </thead>
                     <tbody>
                     {xml_files.map(file => (
                         <tr key={file}>
-                            <td>{file}</td>
+                            <td className={"thName"}>{file}</td>
                             <td>
                                 <button onClick={this.props.deleteFiles.bind(this, file)} type="button"
                                         className="btn btn-primary">Delete
@@ -139,7 +141,7 @@ class Files extends Component {
                             <td>
                                 <button type="submit"
                                         className="btn btn-primary" onClick={(event) => this.handleShow(file)}>
-                                    Change name
+                                    Rename
                                 </button>
                             </td>
                             <td>
@@ -154,16 +156,17 @@ class Files extends Component {
                 </table>
                 <h1>Experiment files:</h1>
                 <h6>(Files with *.data, *.test, *.names extension)</h6>
-                <table className="table table-striped">
+                <table className="table table-striped fileTable">
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th className={"thName"} scope="col">Name</th>
+                        <th colSpan={3}>Options</th>
                     </tr>
                     </thead>
                     <tbody>
                     {data_files.map(file => (
                         <tr key={file}>
-                            <td>{file}</td>
+                            <td className={"thName"}>{file}</td>
                             <td>
                                 <button onClick={this.props.deleteFiles.bind(this, file)} type="button"
                                         className="btn btn-primary">Delete
@@ -172,7 +175,7 @@ class Files extends Component {
                             <td>
                                 <button type="submit"
                                         className="btn btn-primary" onClick={(event) => this.handleShow(file)}>
-                                    Change name
+                                    Rename
                                 </button>
                             </td>
                             <td>

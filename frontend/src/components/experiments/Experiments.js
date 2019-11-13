@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {getExperimentById, getExperiments} from "../../actions/experiments";
 import {Link} from "react-router-dom";
 import moment from "moment";
+import "./index.css"
 
 class Experiments extends Component {
     static propTypes = {

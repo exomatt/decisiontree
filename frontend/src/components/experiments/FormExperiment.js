@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {addExperiment} from "../../actions/experiments";
 import {getFiles} from "../../actions/files";
+import "./index.css"
 
 class FormExperiment extends Component {
     static propTypes = {
@@ -59,7 +60,7 @@ class FormExperiment extends Component {
             <option key={file} value={file.substring(0, file.length - 5)}>{file}</option>
         );
         return (
-            <div className="card border-light mb-3">
+            <div className="formExperimentCard card border-light mb-3  shadow p-3 mb-5 bg-white rounded">
                 <form onSubmit={this.onSubmit}>
                     <fieldset>
                         <div className="form-group">

@@ -23,6 +23,7 @@ import ShowTree from "./experiments/ShowTree";
 import FormConfigFile from "./files/FormConfigFile";
 import Footer from "./layout/Footer";
 import Home from "./layout/Home";
+import "./layout/index.css"
 
 const alertOptions = {
     timeout: 3000,
@@ -41,23 +42,27 @@ class App extends Component {
                 <AlertProvider template={AlertTemplate} {...alertOptions}>
                     <Router>
                         <Fragment>
-                            <Header/>
-                            <Alerts/>
-                            <div className="container">
-                                <Switch>
-                                    <Route exact path="/" component={Home}/>
-                                    <PrivateRoute exact path="/experiments" component={Experiments}/>
-                                    <PrivateRoute exact path="/newExperiment" component={FormExperiment}/>
-                                    <PrivateRoute exact path="/files" component={UserFiles}/>
-                                    <Route exact path="/register" component={Register}/>
-                                    <Route exact path="/login" component={Login}/>
-                                    <PrivateRoute exact path="/showExperiment/:id" component={ExperimentDetails}/>
-                                    <PrivateRoute exact path="/showTree" component={ShowTree}/>
-                                    <PrivateRoute exact path="/createConfigFile" component={FormConfigFile}/>
-                                </Switch>
-                                {/*<Experiments/>*/}
+                            <div className="application">
+                                <Header/>
+                                <Alerts/>
+                                <div>
+                                    <div className="container">
+                                        <Switch>
+                                            <Route exact path="/" component={Home}/>
+                                            <PrivateRoute exact path="/experiments" component={Experiments}/>
+                                            <PrivateRoute exact path="/newExperiment" component={FormExperiment}/>
+                                            <PrivateRoute exact path="/files" component={UserFiles}/>
+                                            <Route exact path="/register" component={Register}/>
+                                            <Route exact path="/login" component={Login}/>
+                                            <PrivateRoute exact path="/showExperiment/:id" component={ExperimentDetails}/>
+                                            <PrivateRoute exact path="/showTree" component={ShowTree}/>
+                                            <PrivateRoute exact path="/createConfigFile" component={FormConfigFile}/>
+                                        </Switch>
+                                        {/*<Experiments/>*/}
+                                    </div>
+                                </div>
+                                <Footer/>
                             </div>
-                            {/*<Footer/> */}
                         </Fragment>
                     </Router>
                 </AlertProvider>

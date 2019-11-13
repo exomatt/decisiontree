@@ -6,8 +6,11 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import {Modal} from "react-bootstrap";
 import {
     cancelTask,
-    changeExperimentCrud, copyExperiment, deleteExperiment,
-    getExperimentById, getExperimentPermission,
+    changeExperimentCrud,
+    copyExperiment,
+    deleteExperiment,
+    getExperimentById,
+    getExperimentPermission,
     getProgress,
     getTreeByNumber,
     rerunTask,
@@ -17,6 +20,7 @@ import {
 import {createMessage} from "../../actions/messages";
 import {connect} from "react-redux";
 import {getFiles} from "../../actions/files";
+import "./index.css"
 
 
 class ExperimentDetails extends Component {
@@ -605,7 +609,7 @@ class ExperimentDetails extends Component {
         if (this.props.experiment.status === "Finished") {
             return (
                 <div>
-                    <div className="card border-success mb-3">
+                    <div className="card border-success mb-3 shadow p-3 mb-5 bg-white rounded">
                         {this.editExperiment()}
                         {this.shareExperiment()}
                         <div className="card-header">
@@ -633,7 +637,7 @@ class ExperimentDetails extends Component {
         }
         if (this.props.experiment.status === "Running") {
             return (
-                <div className="card border-primary mb-3">
+                <div className="card border-primary mb-3 shadow p-3 mb-5 bg-white rounded">
                     <div className="card-header">
                         <button onClick={this.props.cancelTask.bind(this, this.props.experiment.id)} type="button"
                                 className="btn btn-primary">Cancel Task
@@ -658,7 +662,7 @@ class ExperimentDetails extends Component {
         }
         if (this.props.experiment.status === "Error") {
             return (
-                <div className="card border-danger mb-3">
+                <div className="card border-danger mb-3 shadow p-3 mb-5 bg-white rounded">
                     {this.editExperiment()}
                     {this.shareExperiment()}
                     <div className="card-header">
@@ -685,7 +689,7 @@ class ExperimentDetails extends Component {
 
         if (this.props.experiment.status === "Canceled") {
             return (
-                <div className="card border-danger mb-3">
+                <div className="card border-danger mb-3 shadow p-3 mb-5 bg-white rounded">
                     {this.editExperiment()}
                     {this.shareExperiment()}
                     <div className="card-header">
@@ -711,7 +715,7 @@ class ExperimentDetails extends Component {
         }
         if (this.props.experiment.status === "Created") {
             return (
-                <div className="card border-primary mb-3">
+                <div className="card border-primary mb-3 shadow p-3 mb-5 bg-white rounded">
                     {this.editExperiment()}
                     {this.shareExperiment()}
                     <div className="card-header">

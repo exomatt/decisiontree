@@ -5,6 +5,7 @@ import Tree from 'react-d3-tree';
 import {Link} from "react-router-dom";
 import {getExperimentById} from "../../actions/experiments";
 import ReactToPrint from 'react-to-print';
+import "./index.css"
 
 class ShowTree extends Component {
     static propTypes = {
