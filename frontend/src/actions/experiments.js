@@ -1,6 +1,6 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
-import {tokenConfig} from "./auth";
+import {logout, tokenConfig} from "./auth";
 import {
     ADD_EXPERIMENTS,
     CANCEL_TASK, CHANGE_EXPERIMENT_CRUD, CHANGE_EXPERIMENT_NAME, COPY_EXPERIMENT,
@@ -11,6 +11,16 @@ import {
     PROGRESS_EXPERIMENT, RERUN_TASK, SHARE_EXPERIMENT, START_TASK
 } from "./types";
 
+
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.request.status === 401) {
+            store.dispatch(logout());
+        }
+        return Promise.reject(error);
+    }
+);
 // GET EXPERIMENTS
 export const getExperiments = () => (dispatch, getState) => {
     axios.get('/api/experiment', tokenConfig(getState))

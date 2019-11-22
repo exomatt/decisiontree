@@ -40,7 +40,6 @@ def gdt_run(self, filename, experiment_id):
         logger.info(output_striped)
         if "loop mean time:" in output_striped:
             set_progress(experiment_id, output_striped)
-    # logger.error("Errors" + ",".join(errors))
     if checkIfError(experiment_id):
         set_status(experiment_id, "Error")
     else:

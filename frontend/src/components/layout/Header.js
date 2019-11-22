@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {loadUserGroup, logout} from "../../actions/auth";
@@ -27,7 +27,9 @@ export class Header extends Component {
 
     }
 
+
     render() {
+
         const {isAuthenticated, user} = this.props.auth;
         const authLinks = (
             <div className={"collapse navbar-collapse"} id="navbarColor01">

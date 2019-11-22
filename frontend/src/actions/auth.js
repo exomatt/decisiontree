@@ -13,6 +13,15 @@ import {
     USER_GROUP
 } from "./types";
 
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.request.status === 401) {
+            store.dispatch(logout());
+        }
+        return Promise.reject(error);
+    }
+);
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
     // User Loading
@@ -66,6 +75,7 @@ export const login = (username, password) => dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
+            localStorage.setItem('token', res.data.token);
         }).catch(err => {
         dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
@@ -82,6 +92,7 @@ export const logout = () => (dispatch, getState) => {
                 type: LOGOUT_SUCCESS,
                 payload: res.data
             });
+            localStorage.removeItem('token');
         }).catch(err => {
         dispatch(returnErrors(err.response.data, err.response.status));
     });
@@ -105,6 +116,7 @@ export const register = ({username, password, email}) => dispatch => {
                 type: REGISTER_SUCCESS,
                 payload: res.data
             });
+            localStorage.setItem('token', res.data.token);
         }).catch(err => {
         dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
@@ -131,3 +143,9 @@ export const tokenConfig = getState => {
     }
     return config;
 };
+
+
+export const checkAuthority = () => {
+    console.log(localStorage.getItem('token'));
+    return localStorage.getItem('token') ? true : false;
+}

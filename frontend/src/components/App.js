@@ -24,6 +24,7 @@ import FormConfigFile from "./files/FormConfigFile";
 import Footer from "./layout/Footer";
 import Home from "./layout/Home";
 import "./layout/index.css"
+import PropTypes from "prop-types";
 
 const alertOptions = {
     timeout: 3000,
@@ -32,10 +33,11 @@ const alertOptions = {
 
 class App extends Component {
     componentDidMount() {
+        // setTimeout( function(){
         store.dispatch(loadUser());
+        // }, 500);
     }
 
-    // todo naprwic footer
     render() {
         return (
             <Provider store={store}>
@@ -46,7 +48,7 @@ class App extends Component {
                                 <Header/>
                                 <Alerts/>
                                 <div>
-                                    <div className="container">
+                                    <div style={{minHeight: '700px'}} className="container">
                                         <Switch>
                                             <Route exact path="/" component={Home}/>
                                             <PrivateRoute exact path="/experiments" component={Experiments}/>
@@ -54,7 +56,8 @@ class App extends Component {
                                             <PrivateRoute exact path="/files" component={UserFiles}/>
                                             <Route exact path="/register" component={Register}/>
                                             <Route exact path="/login" component={Login}/>
-                                            <PrivateRoute exact path="/showExperiment/:id" component={ExperimentDetails}/>
+                                            <PrivateRoute exact path="/showExperiment/:id"
+                                                          component={ExperimentDetails}/>
                                             <PrivateRoute exact path="/showTree" component={ShowTree}/>
                                             <PrivateRoute exact path="/createConfigFile" component={FormConfigFile}/>
                                         </Switch>

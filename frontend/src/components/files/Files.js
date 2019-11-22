@@ -82,6 +82,9 @@ class Files extends Component {
             filename: ''
         });
         this.props.getFiles();
+        setTimeout(function () {
+            this.props.getFiles();
+        }.bind(this), 5000)
     };
 
     render() {

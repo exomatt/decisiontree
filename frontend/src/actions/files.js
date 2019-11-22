@@ -1,8 +1,18 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
-import {tokenConfig} from "./auth";
+import {logout, tokenConfig} from "./auth";
 import {ADD_FILES, CHANGE_FILE_NAME, CREATE_CONFIG_FILE, DELETE_FILES, GET_FILES} from "./types";
 
+
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.request.status === 401) {
+            store.dispatch(logout());
+        }
+        return Promise.reject(error);
+    }
+);
 // GET FILES
 export const getFiles = () => (dispatch, getState) => {
     axios.get('api/auth/userFiles', tokenConfig(getState))

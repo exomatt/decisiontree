@@ -14,7 +14,8 @@ const initialState = {
     isAuthenticated: null,
     isLoading: false,
     user: null,
-    group: null
+    group: null,
+    logout: false
 };
 
 export default function (state = initialState, action) {
@@ -25,6 +26,7 @@ export default function (state = initialState, action) {
                 isLoading: true
             };
         case USER_LOADED:
+            console.log(initialState);
             return {
                 ...state,
                 isAuthenticated: true,
@@ -33,7 +35,6 @@ export default function (state = initialState, action) {
             };
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
-            localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
                 ...action.payload,
@@ -49,13 +50,13 @@ export default function (state = initialState, action) {
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
         case REGISTER_FAIL:
-            localStorage.removeItem('token');
             return {
                 ...state,
                 token: null,
                 isAuthenticated: null,
                 isLoading: false,
-                user: null
+                user: null,
+                logout: true
             };
         default:
             return state;
