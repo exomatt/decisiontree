@@ -27,6 +27,8 @@ class Node:
 
 
 @to_object()
+
+; *
 class ProgressData:
     def __init__(self, time: float, progress_percent: float) -> None:
         self.progress_percent: str = progress_percent
@@ -41,8 +43,9 @@ def read_from_file(file_path) -> List[str]:
         return only_tree
 
 
-def read_tree(tree: List[str]) -> Node:
+def read_tree_new(tree: List[str]) -> Node:
     nodes: List[Node] = list()
+    temp: List[Node] = list()
     stack: List[Node] = list()
     for row in tree:
         if len(stack) > 0:
@@ -54,16 +57,37 @@ def read_tree(tree: List[str]) -> Node:
             nodes.append(parent)
             continue
         elif row.count("|") > stack[-1].name.count("|"):
-            child = Node(row)
-            stack[-1].add_child(child)
-            stack.append(child)
+            if ":" in row:
+                split = row.split(":")
+                child = Node(split[0])
+                stack[-1].add_child(child)
+                stack.append(child)
+                child = Node(row.count("|") * "|" + split[1])
+                stack[-1].add_child(child)
+            else:
+                child = Node(row)
+                stack[-1].add_child(child)
+                stack.append(child)
+
             continue
         elif row.count("|") == stack[-1].name.count("|"):
-            child = Node(row)
-            stack.pop()
-            stack[-1].add_child(child)
-            stack.append(child)
+            if ":" in row:
+                split = row.split(":")
+                child = Node(split[0])
+                stack.pop()
+                stack[-1].add_child(child)
+                stack.append(child)
+                child = Node(row.count("|") * "|" + split[1])
+                stack[-1].add_child(child)
+            else:
+                child = Node(row)
+                stack.pop()
+                stack[-1].add_child(child)
+                stack.append(child)
             continue
+
+    stack.clear()
+
     if len(nodes) > 1:
         root = Node(name="root")
         for node in nodes:
@@ -71,6 +95,90 @@ def read_tree(tree: List[str]) -> Node:
         nodes.clear()
         nodes.append(root)
 
+    first: Node = nodes[0]
+    previous_node: Node = nodes[0]
+    actual_node: Node = nodes[0]
+    temp_node: Node = nodes[0]
+
+    return nodes[0]
+
+
+def read_tree(tree: List[str]) -> Node:
+    nodes: List[Node] = list()
+    temp: List[Node] = list()
+    stack: List[Node] = list()
+    for row in tree:
+        if len(stack) > 0:
+            if stack[-1].name.count("|") > row.count("|"):
+                stack.pop()
+        if row.count("|") == 0:
+            if len(nodes) > 0 and row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == nodes[
+                -1].name.replace("<=", "").replace(
+                    ">", "").replace(" ", "").replace("\n", ""):
+                stack.append(nodes[-1])
+                continue
+            parent = Node(row)
+            stack.append(parent)
+            nodes.append(parent)
+            continue
+        elif row.count("|") > stack[-1].name.count("|"):
+            if row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == stack[-1].name.replace("<=",
+                                                                                                                   "").replace(
+                    ">", "").replace(" ", "").replace("\n", "") and ":" not in row:
+                print("jestem  te same nazwy przy warunku wiecej || i bez : ")
+                continue
+            if ":" in row:
+                if row.split(":")[0].replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == \
+                        stack[-1].name.split(":")[0].replace("<=", "").replace(
+                                ">", "").replace(" ", "").replace("\n", ""):
+                    print("jestem xddd ")
+                    split = row.split(":")
+                    child = Node(split[1])
+                    stack[-1].add_child(child)
+                    continue
+                split = row.split(":")
+                child = Node(split[0])
+                stack[-1].add_child(child)
+                stack.append(child)
+                child = Node(split[1])
+                stack[-1].add_child(child)
+            else:
+                child = Node(row)
+                stack[-1].add_child(child)
+                stack.append(child)
+
+            continue
+        elif row.count("|") == stack[-1].name.count("|"):
+            if row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == stack[-1].name.replace("<=",
+                                                                                                                   "").replace(
+                    ">", "").replace(" ", "").replace("\n", "") and ":" not in row:
+                print("jestem  te same nazwy  i bez : ")
+                continue
+            # else:
+            #     stack.pop()
+
+            if ":" in row:
+                if row.split(":")[0].replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == \
+                        stack[-1].name.split(":")[0].replace("<=", "").replace(
+                                ">", "").replace(" ", "").replace("\n", ""):
+                    print("jestem xddd ")
+                    split = row.split(":")
+                    child = Node(split[1])
+                    stack[-1].add_child(child)
+                    continue
+                print("jestem  te rózne  nazwy  i  : ")
+                split = row.split(":")
+                child = Node(split[0])
+                stack[-1].add_child(child)
+                stack.append(child)
+                child = Node(split[1])
+                stack[-1].add_child(child)
+            else:
+                child = Node(row)
+                stack[-1].add_child(child)
+                stack.append(child)
+            continue
+    print(dumper(nodes[0]))
     return nodes[0]
 
 
@@ -154,8 +262,11 @@ def generate_file_name(file_path) -> str:
         while True:
             expand += 1
             file_extension = file_path.rsplit(".", 1)[1]
-            file_path = re.sub(r'\([^)]*\)', '', file_path)
-            new_file_name = file_path.rsplit(".")[0] + "(" + str(expand) + ")." + file_extension
+            file_name = file_path.split("/")[-1]
+            temp_path = "/".join(file_path.split("/")[0:-1])
+            temp_file_name = re.sub(r'\([^)]*\)', '', file_name)
+            temp_new_path = temp_path + "/" + temp_file_name
+            new_file_name = temp_new_path.rsplit(".")[0] + "(" + str(expand) + ")." + file_extension
             if os.path.isfile(new_file_name):
                 continue
             else:

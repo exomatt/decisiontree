@@ -14,8 +14,7 @@ const initialState = {
     isAuthenticated: null,
     isLoading: false,
     user: null,
-    group: null,
-    logout: false
+    group: []
 };
 
 export default function (state = initialState, action) {
@@ -53,10 +52,9 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 token: null,
-                isAuthenticated: null,
+                isAuthenticated: false,
                 isLoading: false,
-                user: null,
-                logout: true
+                user: null
             };
         default:
             return state;

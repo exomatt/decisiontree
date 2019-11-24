@@ -11,6 +11,18 @@ export class Header extends Component {
         logout: PropTypes.func.isRequired,
         loadUserGroup: PropTypes.func.isRequired
     };
+    state = {
+        navigate: false
+    };
+
+    logout = () => {
+        this.props.logout();
+        this.setState({navigate: true});
+    };
+
+    changeToFalse = () => {
+        this.setState({navigate: false});
+    };
 
     componentDidMount() {
         this.props.loadUserGroup();
@@ -29,7 +41,11 @@ export class Header extends Component {
 
 
     render() {
-
+        const navigate = this.state.navigate;
+        if (navigate) {
+            this.changeToFalse();
+            return <Redirect to="/"/>
+        }
         const {isAuthenticated, user} = this.props.auth;
         const authLinks = (
             <div className={"collapse navbar-collapse"} id="navbarColor01">
@@ -46,14 +62,14 @@ export class Header extends Component {
                       </strong>
                 </span>
                     <li className="nav-item active">
-                        <button onClick={this.props.logout} type="button" className="btn btn-primary">Logout
+                        <button onClick={this.logout} type="button" className="btn btn-primary">Logout
                         </button>
                     </li>
                 </ul>
             </div>
         );
         const guestLinks = (
-            <ul className="navbar-nav mr-auto">
+            <ul className="navbar-nav ml-auto">
                 <li className="nav-item active">
                     <Link to={"/register"} className={"nav-link"}>Register</Link>
                 </li>

@@ -21,12 +21,14 @@ import {createMessage} from "../../actions/messages";
 import {connect} from "react-redux";
 import {getFiles} from "../../actions/files";
 import "./index.css"
+import {loadUserGroup} from "../../actions/auth";
 
 
 class ExperimentDetails extends Component {
     static propTypes = {
         files: PropTypes.array.isRequired,
         getFiles: PropTypes.func.isRequired,
+        loadUserGroup: PropTypes.func.isRequired,
         experiment: PropTypes.object.isRequired,
         token: PropTypes.string.isRequired,
         getTreeByNumber: PropTypes.func.isRequired,
@@ -69,6 +71,7 @@ class ExperimentDetails extends Component {
     };
 
     componentDidMount() {
+        this.props.loadUserGroup();
         // todo   get permissions and block functions
         this.props.getExperimentById(this.props.match.params.id);
         if (this.props.group.includes('2_exp') || this.props.group.includes('3_exp_data')) {
@@ -758,6 +761,7 @@ const
 export default connect(mapStateToProps, {
     getTreeByNumber,
     getExperimentById,
+    loadUserGroup,
     cancelTask,
     rerunTask,
     startTask,

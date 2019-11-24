@@ -46,8 +46,8 @@ class ExperimentViewSet(viewsets.ModelViewSet):
         names_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.names_file_name
         test_file_path = settings.BASE_USERS_DIR + username + "/" + experiment.test_file_name
         prepare_files(experiment, username, config_file_path, data_file_path, names_file_path, test_file_path)
-        change_xml_params_and_model(experiment)
-        set_new_progress(experiment)
+        change_xml_params_and_model(experiment, True)
+        set_new_progress(experiment, True)
         set_new_permission(experiment)
         # gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
 
@@ -113,11 +113,11 @@ class ExperimentCrud(APIView):
             old_file_name = experiment.data_file_name
             experiment.test_file_name = test
             copy_experiment_file(experiment, username, 3, old_file_name)
-        change_xml_params_and_model(experiment)
+        change_xml_params_and_model(experiment, False)
         progress = Progress.objects.get(experiment_id=experiment_id)
         experiment.progress = None
         progress.delete()
-        set_new_progress(experiment)
+        set_new_progress(experiment, False)
         path = settings.BASE_USERS_DIR + username + "/" + str(experiment.id) + "_" + experiment.name
         create_readme_file(experiment, path)
         # todo test it after changing config file new progress is added to experiment
@@ -177,6 +177,7 @@ class ExperimentTask(APIView):
         username = user.username
         experiment_id = request.query_params['id']
         experiment = Experiment.objects.get(pk=experiment_id)
+        change_xml_params_and_model(experiment, True)
         progress = experiment.progress
         progress.mean_time = 0
         progress.run_number = 0
@@ -381,7 +382,7 @@ class ExperimentShare(APIView):
         experiment.save()
 
         copy_experiment_files(old_path, new_path)
-        change_xml_params_and_model(experiment)
+        change_xml_params_and_model(experiment, True)
         return Response(status=status.HTTP_200_OK, data="Experiment share with " + username_to_share)
 
 
@@ -417,7 +418,7 @@ class ExperimentCopy(APIView):
         experiment.permissions = permissions
         experiment.save()
         copy_experiment_files(old_path, new_path)
-        change_xml_params_and_model(experiment)
+        change_xml_params_and_model(experiment, True)
         return Response(status=status.HTTP_200_OK,
                         data=f'Create experiment copy with name {experiment.name}')
 
@@ -557,16 +558,16 @@ def create_readme_file(experiment, path):
                         f'Experiment name: {experiment.name}\n' \
                         f'Files used in experiment: \n' \
                         f'- config: {experiment.config_file_name},\n' \
-                        f'- data: {experiment.data_file_name}, \n' \
-                        f'- test: {experiment.test_file_name}, \n' \
-                        f'- names: {experiment.names_file_name}\n'
+                        f'- data: {experiment.data_file_name}.data, \n' \
+                        f'- test: {experiment.test_file_name}.test, \n' \
+                        f'- names: {experiment.names_file_name}.names\n'
     txt_path = path + "/" + "readme.txt"
     with open(txt_path, "w") as text_file:
         text_file.write(parameters_string)
 
 
 # todo dokonczyc parsownie i okreslenie sciezek
-def change_xml_params_and_model(experiment: Experiment) -> None:
+def change_xml_params_and_model(experiment: Experiment, set_runs: bool) -> None:
     config_file_name = experiment.result_directory_path + "/" + experiment.config_file_name
     with open(config_file_name, "r") as file:
         read_lines = file.read().replace('\n', '')
@@ -577,9 +578,11 @@ def change_xml_params_and_model(experiment: Experiment) -> None:
         '@Path2Stem'] = abspath(experiment.result_directory_path) + '/' + experiment.data_file_name
     # config['MLPExperiment']['MLPClassification']['@Runs'] = experiment.runs_number
     # change model fields base on file
-    runs_ = config['MLPExperiment']['MLPClassification']['@Runs']
+    if set_runs:
+        runs_ = config['MLPExperiment']['MLPClassification']['@Runs']
+        experiment.runs_number = runs_
+        experiment.save()
     # config['MLPExperiment']['MLPClassification']['@Runs'] = 3
-    experiment.runs_number = runs_
     # mlp_param_: List[dict] = config['MLPExperiment']['MLPClassification']['MLPClassifiers']['MLPClassifier']['MLPParam']
     # progress = Progress(experiment=experiment)
     #
@@ -590,19 +593,19 @@ def change_xml_params_and_model(experiment: Experiment) -> None:
     #
     # progress.save()
     # experiment.progress = progress
-    experiment.save()
     unparsed = xmltodict.unparse(config, pretty=True)
     with open(config_file_name, "w") as file:
         file.write(unparsed)
 
 
-def set_new_progress(experiment: Experiment) -> None:
+def set_new_progress(experiment: Experiment, set_runs: bool) -> None:
     config_file_name = experiment.result_directory_path + "/" + experiment.config_file_name
     with open(config_file_name, "r") as file:
         read_lines = file.read().replace('\n', '')
     config = xmltodict.parse(read_lines)
-    runs_ = config['MLPExperiment']['MLPClassification']['@Runs']
-    experiment.runs_number = runs_
+    if set_runs:
+        runs_ = config['MLPExperiment']['MLPClassification']['@Runs']
+        experiment.runs_number = runs_
     mlp_param_: List[dict] = config['MLPExperiment']['MLPClassification']['MLPClassifiers']['MLPClassifier']['MLPParam']
     progress = Progress(experiment=experiment)
 
