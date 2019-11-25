@@ -147,6 +147,7 @@ class ExperimentResult(APIView):
                 filename = name
                 break
         tree = ExperimentUtils.get_tree(path + filename)
+        print(tree)
         tree_without_line = tree.replace("| ", "")
         obj = json.loads(tree_without_line)
 

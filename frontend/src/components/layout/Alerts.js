@@ -67,6 +67,8 @@ class Alerts extends Component {
                 alert.error(message.shareExperimentError);
             if (message.errorFiles)
                 alert.error(message.errorFiles);
+            if (message.problemExperimentID)
+                alert.info(message.problemExperimentID);
         }
     }
 

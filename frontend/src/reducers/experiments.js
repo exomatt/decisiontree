@@ -17,7 +17,7 @@ const initialState = {
     experiments: [],
     experiment: {},
     permission: {},
-    tree: [],
+    tree: {},
     file: {},
     redirectMe: false,
     progress: {
@@ -53,7 +53,7 @@ export default function (state = initialState, action) {
         case GET_TREE_BY_NUMBER:
             return {
                 ...state,
-                tree: [...state.tree, action.payload]
+                tree: action.payload
             };
         case CHANGE_EXPERIMENT_CRUD:
             return {

@@ -27,8 +27,6 @@ class Node:
 
 
 @to_object()
-
-; *
 class ProgressData:
     def __init__(self, time: float, progress_percent: float) -> None:
         self.progress_percent: str = progress_percent
@@ -114,7 +112,7 @@ def read_tree(tree: List[str]) -> Node:
         if row.count("|") == 0:
             if len(nodes) > 0 and row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == nodes[
                 -1].name.replace("<=", "").replace(
-                    ">", "").replace(" ", "").replace("\n", ""):
+                ">", "").replace(" ", "").replace("\n", ""):
                 stack.append(nodes[-1])
                 continue
             parent = Node(row)
@@ -124,13 +122,13 @@ def read_tree(tree: List[str]) -> Node:
         elif row.count("|") > stack[-1].name.count("|"):
             if row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == stack[-1].name.replace("<=",
                                                                                                                    "").replace(
-                    ">", "").replace(" ", "").replace("\n", "") and ":" not in row:
+                ">", "").replace(" ", "").replace("\n", "") and ":" not in row:
                 print("jestem  te same nazwy przy warunku wiecej || i bez : ")
                 continue
             if ":" in row:
                 if row.split(":")[0].replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == \
                         stack[-1].name.split(":")[0].replace("<=", "").replace(
-                                ">", "").replace(" ", "").replace("\n", ""):
+                            ">", "").replace(" ", "").replace("\n", ""):
                     print("jestem xddd ")
                     split = row.split(":")
                     child = Node(split[1])
@@ -151,7 +149,7 @@ def read_tree(tree: List[str]) -> Node:
         elif row.count("|") == stack[-1].name.count("|"):
             if row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == stack[-1].name.replace("<=",
                                                                                                                    "").replace(
-                    ">", "").replace(" ", "").replace("\n", "") and ":" not in row:
+                ">", "").replace(" ", "").replace("\n", "") and ":" not in row:
                 print("jestem  te same nazwy  i bez : ")
                 continue
             # else:
@@ -160,7 +158,7 @@ def read_tree(tree: List[str]) -> Node:
             if ":" in row:
                 if row.split(":")[0].replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == \
                         stack[-1].name.split(":")[0].replace("<=", "").replace(
-                                ">", "").replace(" ", "").replace("\n", ""):
+                            ">", "").replace(" ", "").replace("\n", ""):
                     print("jestem xddd ")
                     split = row.split(":")
                     child = Node(split[1])
@@ -182,8 +180,10 @@ def read_tree(tree: List[str]) -> Node:
     return nodes[0]
 
 
-def get_json_tree(tree: List[Node]) -> str:
-    return dumper(tree)
+def get_json_tree(tree: List[Node], info) -> str:
+    print(info)
+    info['tree'] = tree
+    return dumper(info)
 
 
 def get_json_progress(progress: ProgressData) -> str:
@@ -191,10 +191,33 @@ def get_json_progress(progress: ProgressData) -> str:
 
 
 def get_tree(file_path: str) -> str:
+    info = read_extra_info(file_path)
     tree_from_file = read_from_file(file_path)
     tree_structure = read_tree(tree_from_file)
-    json_tree = get_json_tree(tree_structure)
+    json_tree = get_json_tree(tree_structure, info)
     return json_tree
+
+
+def read_extra_info(file_path: str):
+    floats = re.compile(r'\d+\.\d+')
+    ints = re.compile(r'\d+')
+    with open(file_path, "r") as f:
+        words: List[str] = f.readlines()
+        info = {}
+        for word in words:
+            if "Tree Size:" in word:
+                info['Tree Size'] = float(ints.findall(word)[0])
+            elif "Time:" in word:
+                info['Time'] = float(ints.findall(word)[0])
+            elif "Evaluation on training data" in word:
+                info['Evaluation on training data'] = float(ints.findall(word)[0])
+            elif "Result on training data:" in word:
+                info['Result on training data'] = float(floats.findall(word)[0])
+            elif "Evaluation on test data" in word:
+                info['Evaluation on test data'] = float(ints.findall(word)[0])
+            elif "Result on test data:" in word:
+                info['Result on test data'] = float(floats.findall(word)[0])
+        return info
 
 
 class ConfigFile(object):
