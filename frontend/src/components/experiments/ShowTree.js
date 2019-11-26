@@ -97,19 +97,19 @@ class ShowTree extends Component {
                         </tr>
                         <tr key='ev_train'>
                             <td>Evaluation on training data</td>
-                            <td>{this.props.tree['Evaluation on training data']}</td>
+                            <td>{this.props.tree['Evaluation on training data']} items</td>
                         </tr>
                         <tr key='res_train'>
                             <td>Result on training data</td>
-                            <td>{this.props.tree['Result on training data']}</td>
+                            <td>{this.props.tree['Result on training data']}%</td>
                         </tr>
                         <tr key='ev_test'>
                             <td>Evaluation on test data</td>
-                            <td>{this.props.tree['Evaluation on test data']}</td>
+                            <td>{this.props.tree['Evaluation on test data']} </td>
                         </tr>
                         <tr key='res_test'>
                             <td>Result on test data</td>
-                            <td>{this.props.tree['Result on test data']}</td>
+                            <td>{this.props.tree['Result on test data']}%</td>
                         </tr>
                         </tbody>
                     </table>
