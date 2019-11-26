@@ -146,6 +146,6 @@ export const tokenConfig = getState => {
 
 
 export const checkAuthority = () => {
-    console.log(localStorage.getItem('token'));
+    // console.log(localStorage.getItem('token'));
     return localStorage.getItem('token') ? true : false;
 }

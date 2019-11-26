@@ -43,9 +43,9 @@ export const deleteFiles = name => (dispatch, getState) => {
     if (token) {
         config.headers['Authorization'] = `Token ${token}`;
     }
-    console.log("name " + name);
+    // console.log("name " + name);
     // console.log("config " + config.body.name);
-    console.log("config " + config.headers.toString());
+    // console.log("config " + config.headers.toString());
     axios.delete(`api/auth/userFiles`, config)
         .then(res => {
             dispatch(createMessage({deleteFiles: "File Deleted"}));

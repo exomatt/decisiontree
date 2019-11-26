@@ -33,7 +33,7 @@ class ShowTree extends Component {
     };
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         const navigate = this.state.navigate;
         const back = this.state.back;
         if (navigate) {
@@ -44,7 +44,7 @@ class ShowTree extends Component {
             this.setState({back: false});
             return <Redirect to={`/experiments`}/>
         }
-        console.log(this.props.tree);
+        // console.log(this.props.tree);
         if (Object.keys(this.props.tree).length === 0 && this.props.tree.constructor === Object) {
             return (
                 <div>

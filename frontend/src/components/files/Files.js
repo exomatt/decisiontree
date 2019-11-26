@@ -29,7 +29,7 @@ class Files extends Component {
     download(file) {
         //Get token from state
         const token = this.props.token;
-        console.log(token);
+        // console.log(token);
 
         // Headers and Params
         const config =
@@ -74,7 +74,7 @@ class Files extends Component {
             filename: this.state.filename,
             new_name: this.state.name
         };
-        console.log(object);
+        // console.log(object);
         this.props.changeFileName(object);
         this.setState({
             isShowingModal: false,

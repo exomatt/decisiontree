@@ -25,7 +25,7 @@ class FormExperiment extends Component {
         e.preventDefault();
         const {name, description, config_file_name, data_file_name, test_file_name, names_file_name} = this.state;
         const experiment = {name, description, config_file_name, data_file_name, test_file_name, names_file_name};
-        console.log(experiment);
+        // console.log(experiment);
         this.props.addExperiment(experiment);
         this.setState({
             name: "",

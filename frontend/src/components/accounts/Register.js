@@ -97,7 +97,7 @@ class Register extends Component {
 
                         <div className="form-group">
                             <ReCAPTCHA
-                                sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                sitekey="6LfYqMQUAAAAACi0SDY4GJ19b_OA-715TXSFPQ8F"
                                 onChange={this.onChange2}
                             /></div>
                         <div className="form-group">

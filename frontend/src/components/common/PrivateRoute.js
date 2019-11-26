@@ -8,7 +8,7 @@ const PrivateRoute = ({component: Component, auth, ...rest}) => {
     return (
         <Route {...rest}
                render={props => {
-                   console.log(auth);
+                   // console.log(auth);
                    if (auth.isLoading) {
                        return (
                            <div className="spinner-border text-secondary" role="status">
