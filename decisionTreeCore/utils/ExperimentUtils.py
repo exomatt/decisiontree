@@ -107,7 +107,7 @@ def read_tree(tree: List[str]) -> Node:
     stack: List[Node] = list()
     for row in tree:
         if len(stack) > 0:
-            if stack[-1].name.count("|") > row.count("|"):
+            while stack[-1].name.count("|") > row.count("|"):
                 stack.pop()
         if row.count("|") == 0:
             if len(nodes) > 0 and row.replace("<=", "").replace(">", "").replace(" ", "").replace("\n", "") == nodes[
