@@ -22,6 +22,7 @@ import {connect} from "react-redux";
 import {getFiles} from "../../actions/files";
 import "./index.css"
 import {loadUserGroup} from "../../actions/auth";
+import moment from "moment";
 
 
 class ExperimentDetails extends Component {
@@ -624,11 +625,11 @@ class ExperimentDetails extends Component {
                             {this.renderDeleteButton()}
 
                         </div>
-
-                        <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                         <div className="card-body">
+                            <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                             <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                            <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                            <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                            <br/>
                             <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                             <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                             <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
@@ -646,14 +647,15 @@ class ExperimentDetails extends Component {
                                 className="btn btn-primary">Cancel Task
                         </button>
                     </div>
-                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
+                        <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <ProgressBar animated now={parseFloat(this.props.progress.progress_percent) * 100}
                                      label={`${(parseFloat(this.props.progress.progress_percent) * 100).toFixed(2)}%`}/>
                         <p className="card-text">Time
                             left: ~{(parseFloat(this.props.progress.time) / 60).toFixed()} minutes </p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
@@ -676,10 +678,11 @@ class ExperimentDetails extends Component {
                         {this.renderShareButton()}
                         {this.renderDeleteButton()}
                     </div>
-                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
+                        <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
@@ -703,15 +706,14 @@ class ExperimentDetails extends Component {
                         {this.renderShareButton()}
                         {this.renderDeleteButton()}
                     </div>
-                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
+                        <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                        <p className="card-text">{this.error()}</p><br/>
-
                     </div>
                 </div>
             );
@@ -729,14 +731,14 @@ class ExperimentDetails extends Component {
                         {this.renderShareButton()}
                         {this.renderDeleteButton()}
                     </div>
-                    <div className="card-header">Experiment with name: {this.props.experiment.name}</div>
                     <div className="card-body">
+                        <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {this.props.experiment.date}</p><br/>
+                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
                         <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
-                        <p className="card-text">{this.error()}</p><br/>
 
                     </div>
                 </div>

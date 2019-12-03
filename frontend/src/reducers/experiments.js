@@ -48,6 +48,7 @@ export default function (state = initialState, action) {
         case ADD_EXPERIMENTS:
             return {
                 ...state,
+                redirectMe: true,
                 experiments: [...state.experiments, action.payload]
             };
         case GET_TREE_BY_NUMBER:

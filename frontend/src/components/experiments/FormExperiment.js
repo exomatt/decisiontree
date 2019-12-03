@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 import {addExperiment} from "../../actions/experiments";
 import {getFiles} from "../../actions/files";
 import "./index.css"
+import {Redirect} from "react-router-dom";
 
 class FormExperiment extends Component {
     static propTypes = {
         files: PropTypes.array.isRequired,
         getFiles: PropTypes.func.isRequired,
-        addExperiment: PropTypes.func.isRequired
+        addExperiment: PropTypes.func.isRequired,
+        redirectMe: PropTypes.bool
     };
     state = {
         name: '',
@@ -42,6 +44,9 @@ class FormExperiment extends Component {
     };
 
     render() {
+        if (this.props.redirectMe) {
+            return <Redirect to='/experiments'/>
+        }
         const {name, description, config_file_name, data_file_name, test_file_name, names_file_name} = this.state;
         let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
         let data_files = this.props.files.filter(file => file.endsWith(".data"));
@@ -132,7 +137,8 @@ class FormExperiment extends Component {
 }
 
 const mapStateToProps = state => ({
-    files: state.files.files
+    files: state.files.files,
+    redirectMe: state.experiments.redirectMe
 });
 
 export default connect(mapStateToProps, {getFiles, addExperiment})(FormExperiment);

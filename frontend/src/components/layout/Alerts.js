@@ -21,6 +21,10 @@ class Alerts extends Component {
                 alert.error(`Config file: ${error.msg.config_file_name.join()}`);
             if (error.msg.data_file_name)
                 alert.error(`Data file: ${error.msg.data_file_name.join()}`);
+            if (error.msg.test_file_name)
+                alert.error(`Test file: ${error.msg.test_file_name.join()}`);
+            if (error.msg.names_file_name)
+                alert.error(`Names file: ${error.msg.names_file_name.join()}`);
             if (error.msg.non_field_errors)
                 alert.error(`${error.msg.non_field_errors.join()}`);
             if (error.msg.username)
