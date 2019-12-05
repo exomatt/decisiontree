@@ -191,6 +191,8 @@ class ExperimentTask(APIView):
         mkdir(path + '/out')
         config_file_path = experiment.result_directory_path + "/" + experiment.config_file_name
         logger.debug(f'Config file used in celery task run {config_file_path}')
+        experiment.status = "Running"
+        experiment.save()
         gdt_run.delay(config_file_path, experiment.id)
         return Response(status=status.HTTP_200_OK, data="Successfully rerun experiment")
 
@@ -199,7 +201,8 @@ class ExperimentTask(APIView):
     def put(request):
         experiment_id = request.query_params['id']
         experiment = Experiment.objects.get(pk=experiment_id)
-
+        experiment.status = "Running"
+        experiment.save()
         gdt_run.delay(experiment.result_directory_path + "/" + experiment.config_file_name, experiment.id)
         return Response(status=status.HTTP_200_OK, data="Successfully start experiment")
 

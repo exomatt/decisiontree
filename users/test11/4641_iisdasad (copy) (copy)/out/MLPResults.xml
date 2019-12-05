@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<MLPResults Description="description">
+    <MLPClassification>
+        <MLPClassResult CLName="MLPDT_EA_AP" CLID="21" DSName="chess3x3x10000" DSID="1" ParamListID=""
+                        ParamNamesList="">
+            <MLPTest OutFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN0_.txt"
+                     LogFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN0_.log">
+                <MLPResult Name="size" Value="9"/>
+                <MLPResult Name="time" Value="158"/>
+                <MLPResult Name="quality" Value="98.100000"/>
+                <MLPParams>
+                    <MLPParam Name="fitnesslog" Value="no"/>
+                    <MLPParam Name="sizeofpopulation" Value="64"/>
+                    <MLPParam Name="useofbestindividual" Value="1"/>
+                    <MLPParam Name="fitnessstrategy" Value="0"/>
+                    <MLPParam Name="lexerror" Value="5"/>
+                    <MLPParam Name="lextreesize" Value="20"/>
+                    <MLPParam Name="lexmodelsize" Value="20"/>
+                    <MLPParam Name="leximpact" Value="1"/>
+                    <MLPParam Name="maximumiterations" Value="1000"/>
+                    <MLPParam Name="minimumiterations" Value="1000"/>
+                    <MLPParam Name="selection" Value="ranking linear selection"/>
+                    <MLPParam Name="probabilityofmutation" Value="80"/>
+                    <MLPParam Name="selectionpressure" Value="1.2"/>
+                    <MLPParam Name="probabilityofcrossover" Value="20"/>
+                    <MLPParam Name="maximumofidleiterations" Value="1000"/>
+                    <MLPParam Name="costofattributes" Value="no"/>
+                    <MLPParam Name="costofclassification" Value="no"/>
+                    <MLPParam Name="error" Value="retest"/>
+                    <MLPParam Name="fitnesscalculation" Value="sum"/>
+                    <MLPParam Name="maxtreesize" Value="no"/>
+                    <MLPParam Name="averagetreesize" Value="no"/>
+                    <MLPParam Name="alfa" Value="0.001"/>
+                    <MLPParam Name="pc0" Value="20"/>
+                    <MLPParam Name="pc1" Value="20"/>
+                    <MLPParam Name="pc2" Value="20"/>
+                    <MLPParam Name="pc3" Value="20"/>
+                    <MLPParam Name="pc4" Value="20"/>
+                    <MLPParam Name="pc5" Value="0"/>
+                    <MLPParam Name="pm0" Value="10"/>
+                    <MLPParam Name="pm1" Value="10"/>
+                    <MLPParam Name="pm2" Value="10"/>
+                    <MLPParam Name="pm3" Value="10"/>
+                    <MLPParam Name="pm4" Value="10"/>
+                    <MLPParam Name="pm5" Value="10"/>
+                    <MLPParam Name="pm6" Value="10"/>
+                    <MLPParam Name="pm7" Value="10"/>
+                    <MLPParam Name="pm8" Value="10"/>
+                    <MLPParam Name="pm9" Value="10"/>
+                    <MLPParam Name="pml0" Value="100"/>
+                    <MLPParam Name="pml1" Value="0"/>
+                    <MLPParam Name="maximizefitness" Value="no"/>
+                    <MLPParam Name="mfprobability" Value="0"/>
+                    <MLPParam Name="mutationtype" Value="1"/>
+                    <MLPParam Name="initmaxdepth" Value="3"/>
+                    <MLPParam Name="initmindepth" Value="32631"/>
+                    <MLPParam Name="innercrossvalidation" Value="no"/>
+                    <MLPParam Name="parallelization" Value="no"/>
+                    <MLPParam Name="innerdisjunction" Value="yes"/>
+                    <MLPParam Name="threshold" Value="midpoint"/>
+                    <MLPParam Name="enlargethemargin" Value="no"/>
+                    <MLPParam Name="initializationtype" Value="optimal"/>
+                    <MLPParam Name="localoptimizationprobability" Value="0"/>
+                </MLPParams>
+            </MLPTest>
+        </MLPClassResult>
+        <MLPClassResult CLName="MLPDT_EA_AP" CLID="21" DSName="chess3x3x10000" DSID="1" ParamListID=""
+                        ParamNamesList="">
+            <MLPTest OutFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN1_.txt"
+                     LogFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN1_.log">
+                <MLPResult Name="size" Value="9"/>
+                <MLPResult Name="time" Value="173"/>
+                <MLPResult Name="quality" Value="99.400000"/>
+                <MLPParams>
+                    <MLPParam Name="fitnesslog" Value="no"/>
+                    <MLPParam Name="sizeofpopulation" Value="64"/>
+                    <MLPParam Name="useofbestindividual" Value="1"/>
+                    <MLPParam Name="fitnessstrategy" Value="0"/>
+                    <MLPParam Name="lexerror" Value="5"/>
+                    <MLPParam Name="lextreesize" Value="20"/>
+                    <MLPParam Name="lexmodelsize" Value="20"/>
+                    <MLPParam Name="leximpact" Value="1"/>
+                    <MLPParam Name="maximumiterations" Value="1000"/>
+                    <MLPParam Name="minimumiterations" Value="1000"/>
+                    <MLPParam Name="selection" Value="ranking linear selection"/>
+                    <MLPParam Name="probabilityofmutation" Value="80"/>
+                    <MLPParam Name="selectionpressure" Value="1.2"/>
+                    <MLPParam Name="probabilityofcrossover" Value="20"/>
+                    <MLPParam Name="maximumofidleiterations" Value="1000"/>
+                    <MLPParam Name="costofattributes" Value="no"/>
+                    <MLPParam Name="costofclassification" Value="no"/>
+                    <MLPParam Name="error" Value="retest"/>
+                    <MLPParam Name="fitnesscalculation" Value="sum"/>
+                    <MLPParam Name="maxtreesize" Value="no"/>
+                    <MLPParam Name="averagetreesize" Value="no"/>
+                    <MLPParam Name="alfa" Value="0.001"/>
+                    <MLPParam Name="pc0" Value="20"/>
+                    <MLPParam Name="pc1" Value="20"/>
+                    <MLPParam Name="pc2" Value="20"/>
+                    <MLPParam Name="pc3" Value="20"/>
+                    <MLPParam Name="pc4" Value="20"/>
+                    <MLPParam Name="pc5" Value="0"/>
+                    <MLPParam Name="pm0" Value="10"/>
+                    <MLPParam Name="pm1" Value="10"/>
+                    <MLPParam Name="pm2" Value="10"/>
+                    <MLPParam Name="pm3" Value="10"/>
+                    <MLPParam Name="pm4" Value="10"/>
+                    <MLPParam Name="pm5" Value="10"/>
+                    <MLPParam Name="pm6" Value="10"/>
+                    <MLPParam Name="pm7" Value="10"/>
+                    <MLPParam Name="pm8" Value="10"/>
+                    <MLPParam Name="pm9" Value="10"/>
+                    <MLPParam Name="pml0" Value="100"/>
+                    <MLPParam Name="pml1" Value="0"/>
+                    <MLPParam Name="maximizefitness" Value="no"/>
+                    <MLPParam Name="mfprobability" Value="0"/>
+                    <MLPParam Name="mutationtype" Value="1"/>
+                    <MLPParam Name="initmaxdepth" Value="3"/>
+                    <MLPParam Name="initmindepth" Value="32631"/>
+                    <MLPParam Name="innercrossvalidation" Value="no"/>
+                    <MLPParam Name="parallelization" Value="no"/>
+                    <MLPParam Name="innerdisjunction" Value="yes"/>
+                    <MLPParam Name="threshold" Value="midpoint"/>
+                    <MLPParam Name="enlargethemargin" Value="no"/>
+                    <MLPParam Name="initializationtype" Value="optimal"/>
+                    <MLPParam Name="localoptimizationprobability" Value="0"/>
+                </MLPParams>
+            </MLPTest>
+        </MLPClassResult>
+        <MLPClassResult CLName="MLPDT_EA_AP" CLID="21" DSName="chess3x3x10000" DSID="1" ParamListID=""
+                        ParamNamesList="">
+            <MLPTest OutFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN2_.txt"
+                     LogFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN2_.log">
+                <MLPResult Name="size" Value="9"/>
+                <MLPResult Name="time" Value="167"/>
+                <MLPResult Name="quality" Value="99.800000"/>
+                <MLPParams>
+                    <MLPParam Name="fitnesslog" Value="no"/>
+                    <MLPParam Name="sizeofpopulation" Value="64"/>
+                    <MLPParam Name="useofbestindividual" Value="1"/>
+                    <MLPParam Name="fitnessstrategy" Value="0"/>
+                    <MLPParam Name="lexerror" Value="5"/>
+                    <MLPParam Name="lextreesize" Value="20"/>
+                    <MLPParam Name="lexmodelsize" Value="20"/>
+                    <MLPParam Name="leximpact" Value="1"/>
+                    <MLPParam Name="maximumiterations" Value="1000"/>
+                    <MLPParam Name="minimumiterations" Value="1000"/>
+                    <MLPParam Name="selection" Value="ranking linear selection"/>
+                    <MLPParam Name="probabilityofmutation" Value="80"/>
+                    <MLPParam Name="selectionpressure" Value="1.2"/>
+                    <MLPParam Name="probabilityofcrossover" Value="20"/>
+                    <MLPParam Name="maximumofidleiterations" Value="1000"/>
+                    <MLPParam Name="costofattributes" Value="no"/>
+                    <MLPParam Name="costofclassification" Value="no"/>
+                    <MLPParam Name="error" Value="retest"/>
+                    <MLPParam Name="fitnesscalculation" Value="sum"/>
+                    <MLPParam Name="maxtreesize" Value="no"/>
+                    <MLPParam Name="averagetreesize" Value="no"/>
+                    <MLPParam Name="alfa" Value="0.001"/>
+                    <MLPParam Name="pc0" Value="20"/>
+                    <MLPParam Name="pc1" Value="20"/>
+                    <MLPParam Name="pc2" Value="20"/>
+                    <MLPParam Name="pc3" Value="20"/>
+                    <MLPParam Name="pc4" Value="20"/>
+                    <MLPParam Name="pc5" Value="0"/>
+                    <MLPParam Name="pm0" Value="10"/>
+                    <MLPParam Name="pm1" Value="10"/>
+                    <MLPParam Name="pm2" Value="10"/>
+                    <MLPParam Name="pm3" Value="10"/>
+                    <MLPParam Name="pm4" Value="10"/>
+                    <MLPParam Name="pm5" Value="10"/>
+                    <MLPParam Name="pm6" Value="10"/>
+                    <MLPParam Name="pm7" Value="10"/>
+                    <MLPParam Name="pm8" Value="10"/>
+                    <MLPParam Name="pm9" Value="10"/>
+                    <MLPParam Name="pml0" Value="100"/>
+                    <MLPParam Name="pml1" Value="0"/>
+                    <MLPParam Name="maximizefitness" Value="no"/>
+                    <MLPParam Name="mfprobability" Value="0"/>
+                    <MLPParam Name="mutationtype" Value="1"/>
+                    <MLPParam Name="initmaxdepth" Value="3"/>
+                    <MLPParam Name="initmindepth" Value="32631"/>
+                    <MLPParam Name="innercrossvalidation" Value="no"/>
+                    <MLPParam Name="parallelization" Value="no"/>
+                    <MLPParam Name="innerdisjunction" Value="yes"/>
+                    <MLPParam Name="threshold" Value="midpoint"/>
+                    <MLPParam Name="enlargethemargin" Value="no"/>
+                    <MLPParam Name="initializationtype" Value="optimal"/>
+                    <MLPParam Name="localoptimizationprobability" Value="0"/>
+                </MLPParams>
+            </MLPTest>
+        </MLPClassResult>
+        <MLPClassResult CLName="MLPDT_EA_AP" CLID="21" DSName="chess3x3x10000" DSID="1" ParamListID=""
+                        ParamNamesList="">
+            <MLPTest OutFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN3_.txt"
+                     LogFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN3_.log">
+                <MLPResult Name="size" Value="12"/>
+                <MLPResult Name="time" Value="151"/>
+                <MLPResult Name="quality" Value="99.000000"/>
+                <MLPParams>
+                    <MLPParam Name="fitnesslog" Value="no"/>
+                    <MLPParam Name="sizeofpopulation" Value="64"/>
+                    <MLPParam Name="useofbestindividual" Value="1"/>
+                    <MLPParam Name="fitnessstrategy" Value="0"/>
+                    <MLPParam Name="lexerror" Value="5"/>
+                    <MLPParam Name="lextreesize" Value="20"/>
+                    <MLPParam Name="lexmodelsize" Value="20"/>
+                    <MLPParam Name="leximpact" Value="1"/>
+                    <MLPParam Name="maximumiterations" Value="1000"/>
+                    <MLPParam Name="minimumiterations" Value="1000"/>
+                    <MLPParam Name="selection" Value="ranking linear selection"/>
+                    <MLPParam Name="probabilityofmutation" Value="80"/>
+                    <MLPParam Name="selectionpressure" Value="1.2"/>
+                    <MLPParam Name="probabilityofcrossover" Value="20"/>
+                    <MLPParam Name="maximumofidleiterations" Value="1000"/>
+                    <MLPParam Name="costofattributes" Value="no"/>
+                    <MLPParam Name="costofclassification" Value="no"/>
+                    <MLPParam Name="error" Value="retest"/>
+                    <MLPParam Name="fitnesscalculation" Value="sum"/>
+                    <MLPParam Name="maxtreesize" Value="no"/>
+                    <MLPParam Name="averagetreesize" Value="no"/>
+                    <MLPParam Name="alfa" Value="0.001"/>
+                    <MLPParam Name="pc0" Value="20"/>
+                    <MLPParam Name="pc1" Value="20"/>
+                    <MLPParam Name="pc2" Value="20"/>
+                    <MLPParam Name="pc3" Value="20"/>
+                    <MLPParam Name="pc4" Value="20"/>
+                    <MLPParam Name="pc5" Value="0"/>
+                    <MLPParam Name="pm0" Value="10"/>
+                    <MLPParam Name="pm1" Value="10"/>
+                    <MLPParam Name="pm2" Value="10"/>
+                    <MLPParam Name="pm3" Value="10"/>
+                    <MLPParam Name="pm4" Value="10"/>
+                    <MLPParam Name="pm5" Value="10"/>
+                    <MLPParam Name="pm6" Value="10"/>
+                    <MLPParam Name="pm7" Value="10"/>
+                    <MLPParam Name="pm8" Value="10"/>
+                    <MLPParam Name="pm9" Value="10"/>
+                    <MLPParam Name="pml0" Value="100"/>
+                    <MLPParam Name="pml1" Value="0"/>
+                    <MLPParam Name="maximizefitness" Value="no"/>
+                    <MLPParam Name="mfprobability" Value="0"/>
+                    <MLPParam Name="mutationtype" Value="1"/>
+                    <MLPParam Name="initmaxdepth" Value="3"/>
+                    <MLPParam Name="initmindepth" Value="32631"/>
+                    <MLPParam Name="innercrossvalidation" Value="no"/>
+                    <MLPParam Name="parallelization" Value="no"/>
+                    <MLPParam Name="innerdisjunction" Value="yes"/>
+                    <MLPParam Name="threshold" Value="midpoint"/>
+                    <MLPParam Name="enlargethemargin" Value="no"/>
+                    <MLPParam Name="initializationtype" Value="optimal"/>
+                    <MLPParam Name="localoptimizationprobability" Value="0"/>
+                </MLPParams>
+            </MLPTest>
+        </MLPClassResult>
+        <MLPClassResult CLName="MLPDT_EA_AP" CLID="21" DSName="chess3x3x10000" DSID="1" ParamListID=""
+                        ParamNamesList="">
+            <MLPTest OutFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN4_.txt"
+                     LogFile="__MLPDT_EA_AP_21_chess3x3x10000_1__RUN4_.log">
+                <MLPResult Name="size" Value="9"/>
+                <MLPResult Name="time" Value="121"/>
+                <MLPResult Name="quality" Value="99.700000"/>
+                <MLPParams>
+                    <MLPParam Name="fitnesslog" Value="no"/>
+                    <MLPParam Name="sizeofpopulation" Value="64"/>
+                    <MLPParam Name="useofbestindividual" Value="1"/>
+                    <MLPParam Name="fitnessstrategy" Value="0"/>
+                    <MLPParam Name="lexerror" Value="5"/>
+                    <MLPParam Name="lextreesize" Value="20"/>
+                    <MLPParam Name="lexmodelsize" Value="20"/>
+                    <MLPParam Name="leximpact" Value="1"/>
+                    <MLPParam Name="maximumiterations" Value="1000"/>
+                    <MLPParam Name="minimumiterations" Value="1000"/>
+                    <MLPParam Name="selection" Value="ranking linear selection"/>
+                    <MLPParam Name="probabilityofmutation" Value="80"/>
+                    <MLPParam Name="selectionpressure" Value="1.2"/>
+                    <MLPParam Name="probabilityofcrossover" Value="20"/>
+                    <MLPParam Name="maximumofidleiterations" Value="1000"/>
+                    <MLPParam Name="costofattributes" Value="no"/>
+                    <MLPParam Name="costofclassification" Value="no"/>
+                    <MLPParam Name="error" Value="retest"/>
+                    <MLPParam Name="fitnesscalculation" Value="sum"/>
+                    <MLPParam Name="maxtreesize" Value="no"/>
+                    <MLPParam Name="averagetreesize" Value="no"/>
+                    <MLPParam Name="alfa" Value="0.001"/>
+                    <MLPParam Name="pc0" Value="20"/>
+                    <MLPParam Name="pc1" Value="20"/>
+                    <MLPParam Name="pc2" Value="20"/>
+                    <MLPParam Name="pc3" Value="20"/>
+                    <MLPParam Name="pc4" Value="20"/>
+                    <MLPParam Name="pc5" Value="0"/>
+                    <MLPParam Name="pm0" Value="10"/>
+                    <MLPParam Name="pm1" Value="10"/>
+                    <MLPParam Name="pm2" Value="10"/>
+                    <MLPParam Name="pm3" Value="10"/>
+                    <MLPParam Name="pm4" Value="10"/>
+                    <MLPParam Name="pm5" Value="10"/>
+                    <MLPParam Name="pm6" Value="10"/>
+                    <MLPParam Name="pm7" Value="10"/>
+                    <MLPParam Name="pm8" Value="10"/>
+                    <MLPParam Name="pm9" Value="10"/>
+                    <MLPParam Name="pml0" Value="100"/>
+                    <MLPParam Name="pml1" Value="0"/>
+                    <MLPParam Name="maximizefitness" Value="no"/>
+                    <MLPParam Name="mfprobability" Value="0"/>
+                    <MLPParam Name="mutationtype" Value="1"/>
+                    <MLPParam Name="initmaxdepth" Value="3"/>
+                    <MLPParam Name="initmindepth" Value="32631"/>
+                    <MLPParam Name="innercrossvalidation" Value="no"/>
+                    <MLPParam Name="parallelization" Value="no"/>
+                    <MLPParam Name="innerdisjunction" Value="yes"/>
+                    <MLPParam Name="threshold" Value="midpoint"/>
+                    <MLPParam Name="enlargethemargin" Value="no"/>
+                    <MLPParam Name="initializationtype" Value="optimal"/>
+                    <MLPParam Name="localoptimizationprobability" Value="0"/>
+                </MLPParams>
+            </MLPTest>
+        </MLPClassResult>
+    </MLPClassification>
+</MLPResults>

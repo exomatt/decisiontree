@@ -1,0 +1,43 @@
+\chapter{Rozdzia³ 3}
+
+Prosta tabela \ref{tabela_1}.
+
+\begin{table}[htb]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Kolumna 1 & Kolumna 2 & Kolumna 3 & Kolumna 4 \\\hline
+Kolumna 1 & Kolumna 2 & Kolumna 3 & Kolumna 4 \\\hline
+Kolumna 1 & Kolumna 2 & Kolumna 3 & Kolumna 4 \\\hline
+Kolumna 1 & Kolumna 2 & Kolumna 3 & Kolumna 4 \\\hline
+\end{tabular}
+\caption[Krótki podpis tabeli 1 -- do spisu treœci]{D³ugi podpis tabeli 1, który pojawi siê pod ni¹}
+\label{tabela_1}
+\end{table}
+
+Przyk³adowa tabela \ref{tabela_2}, nieco bardziej skomplikowana.
+
+\begin{table}[htb]
+\centering
+\scalebox{0.6}{
+\begin{tabular}{|>{\bfseries}!a||^c|^c|^c|^c|^c|^c|^c|^c|^c|^c|}
+\hline
+\rowcolor{Gray}
+\rowstyle{\bfseries}
+Kolumna wyró¿niona & \makecell{Kolumna \\ pierwsza} & \makecell{Kolumna \\ druga}& \makecell{Kolumna \\ kolejna \\ d³uga \\ nazwa} & \makecell{Przeno- \\ szenie \\ s³owa} & \makecell{Kolumna \\ kolejna} & \makecell{Kolumna \\ kolejna} & \makecell{Kolumna \\ kolejna} & \makecell{Kolumna \\ kolejna} & \makecell{Kolumna \\ kolejna} & \makecell{Kolumna \\ kolejna} \\\hline
+Wiersz jakiœ tam & 1 & 2 & \cellcolor{LightGray}3 & 4 & 5 & 6 & 7 & \cellcolor{LightGray}8 & 9 & 10 \\\hline \hline
+Wiersz ze statystykami & 11,56 & 92,38 & 827,21 & 41,92 & 29,71 & 28,77 & \cellcolor{LightRed}29,61 & 55,02 & 72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & \textbf{92,38} & 827,21 & 41,92 & 29,71 & \cellcolor{LightGreen}28,77 & 29,61 & 55,02 & 72,33 & \cellcolor{LightRed}95,82 \\\hline
+Wiersz ze statystykami & 11,56 & \textbf{92,38} & 827,21 & 41,92 & 29,71 & 28,77 & 29,61 & 55,02 & \cellcolor{LightGreen}72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & 92,38 & \cellcolor{LightGreen}827,21 & 41,92 & 29,71 & 28,77 & 29,61 & 55,02 & 72,33 & 95,82 \\\hline
+Wiersz ze statystykami & \cellcolor{LightGreen}11,56 & 92,38 & \cellcolor{LightRed}827,21 & 41,92 & 29,71 & 28,77 & 29,61 & 55,02 & 72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & 92,38 & 827,21 & \textbf{41,92} & 29,71 & 28,77 & 29,61 & 55,02 & \cellcolor{LightRed}72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & 92,38 & 827,21 & 41,92 & 29,71 & 28,77 & \cellcolor{LightRed}29,61 & 55,02 & 72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & \cellcolor{LightGreen}92,38 & 827,21 & 41,92 & 29,71 & 28,77 & \cellcolor{LightGreen}29,61 & 55,02 & 72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & \cellcolor{LightRed}92,38 & 827,21 & 41,92 & 29,71 & 28,77 & \textbf{29,61} & 55,02 & 72,33 & 95,82 \\\hline
+Wiersz ze statystykami & 11,56 & 92,38 & 827,21 & 41,92 & \cellcolor{LightRed}29,71 & \cellcolor{LightRed}28,77 & 29,61 & 55,02 & 72,33 & 95,82 \\\hline \hline
+\end{tabular}
+}
+\caption[Krótki podpis tabeli 2 -- do spisu treœci]{D³ugi podpis tabeli 2, który pojawi siê pod ni¹}
+\label{tabela_2}
+\end{table}

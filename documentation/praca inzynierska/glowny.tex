@@ -1,0 +1,62 @@
+\documentclass[oneside,12pt]{wipb}
+\usetikzlibrary{mindmap,trees}%dla diagramu Computer science mindmap
+
+
+\katedra{Oprogramowania}
+\typpracy{ in?ynierska
+           %in¿ynierska
+         }
+\temat{Aplikacja internetowa do obs?ugi systemu
+GDT w technologii Python/Django}
+\autor{Gal Anonim}
+\promotor{Juliusz Cezar}
+\indeks{123456}
+\studia{stacjonarne
+        %niestacjonarne
+       }
+\rokakademicki{2008/2009}
+\profil{studia I stopnia}
+\kierunekstudiow{informatyka}
+%\specjalnosc{In¿ynieria Oprogramowania
+             %In¿ynieria Komputerowa
+             %Systemy Oprogramowania
+             %Metody infnformatyczne w~banknkowoœci i~finansach
+             %Ochrona systemów informatycznych
+ %   }
+\zakres{1. zakres I \newline 2. zakres II \newline 3. zakres III}
+
+\hypersetup{ %wpisy w pdf info
+pdfauthor={ Mateusz Pernal},
+pdftitle={Praca inzynierska},
+pdfsubject={},
+pdfkeywords={Praca inzynierska},
+pdfpagemode=UseNone,
+linkcolor=black,
+citecolor=black
+} 
+
+\begin{document}
+\maketitle
+\tableofcontents
+\thispagestyle{empty}
+\setcounter{page}{0}
+\pagestyle{plain}
+\input{rozdzialiii.tex} % praca moze byc podzielona na pliki
+%\input{rozdzialii.tex}
+%\input{rozdziali.tex}
+\nocite{*} %wszystkie wpisy w bibliografi
+\bibliographystyle{unsrt} %{latex8} posortowane wzgledem wystepowania
+\bibliography{bibliografia}%
+
+\addtocontents{toc}{\contentsline {chapter}{Bibliografia}{\thepage}{}}
+\listoftables
+\addtocontents{toc}{\contentsline {chapter}{Spis tabel}{\thepage}{}}
+\listoffigures
+\addtocontents{toc}{\contentsline {chapter}{Spis rysunków}{\thepage}{}}
+\lstlistoflistings
+\addtocontents{toc}{\contentsline {chapter}{Spis listingów}{\thepage}{}}
+\listofalgorithms % w zaleznosci od kompilatora i wersji klasy moga wystapic bledy przy kompilacji
+\addtocontents{toc}{\contentsline {chapter}{Spis algorytmów}{\thepage}{}}
+
+%\biblioteka{tak} % tak/nie
+\end{document}

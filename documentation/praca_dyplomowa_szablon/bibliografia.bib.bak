@@ -1,0 +1,32 @@
+@ARTICLE{article_1, 
+author={Autor, U. and Kolejny, W.}, 
+journal={Nazwa czasopisma}, 
+title={Tytu³ publikacji}, 
+year={2012}, 
+month={May}, 
+volume={12}, 
+number={2}, 
+pages={132-145},}
+
+@INPROCEEDINGS{inproceedings_1, 
+author={Inny, B.}, 
+booktitle={Tytu³ ksi¹¿ki}, 
+title={Tytu³ publikacji}, 
+year={2011}, 
+month={Feb}, 
+pages={5-32},}
+
+@BOOK{book_1,
+author = {Test, Z. and Nastêpny, K.},
+title = "{Tytu³ ksi¹¿ki}",
+publisher = {Wydawca},
+address = {Adres},
+year  = {1995}
+}
+
+@MISC{misc_1,
+title = {Nazwa strony internetowej},
+author = {Autor, J.},
+howpublished = "\url{http://www.dlugi.adres.url.zlamie.sie.gdzies.w.srodku.com}",
+year = {stan z 01.01.2010 r.} 
+}

@@ -1,0 +1,8 @@
+Information about created experiment: 
+Experiment id: 213
+Experiment name: asd
+Files used in experiment: 
+- config: krotki.xml,
+- data: chess3x3x10000, 
+- test: chess3x3x10000(2), 
+- names: chess3x3x10000(1)

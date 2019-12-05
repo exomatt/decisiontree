@@ -591,6 +591,45 @@ class ExperimentDetails extends Component {
         }
     }
 
+    time() {
+        const time = (parseFloat(this.props.progress.time) / 60).toFixed();
+        const percent = (parseFloat(this.props.progress.progress_percent) * 100).toFixed(2);
+        if (time <= 0 && percent > 0) {
+            return <p>
+                Time left: ~{time} minutes.
+            </p>
+        }
+        if (time <= 0) {
+            return <p>
+                Experiment in queue.
+            </p>
+        } else if (time > 0) {
+            return <p>
+                Time left: ~{time} minutes.
+            </p>
+        }
+
+    }
+
+    percent() {
+        const percent = (parseFloat(this.props.progress.progress_percent) * 100).toFixed(2);
+        if (percent > 100) {
+            return 100;
+        } else {
+            return percent;
+        }
+    }
+
+    animPercent() {
+        const percent = parseFloat(this.props.progress.progress_percent) * 100;
+        if (percent > 100) {
+            return 100;
+        } else {
+            return percent
+        }
+
+    }
+
     render() {
         let i;
         let lis = [];
@@ -649,10 +688,11 @@ class ExperimentDetails extends Component {
                     </div>
                     <div className="card-body">
                         <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
-                        <ProgressBar animated now={parseFloat(this.props.progress.progress_percent) * 100}
-                                     label={`${(parseFloat(this.props.progress.progress_percent) * 100).toFixed(2)}%`}/>
-                        <p className="card-text">Time
-                            left: ~{(parseFloat(this.props.progress.time) / 60).toFixed()} minutes </p><br/>
+                        <ProgressBar animated now={this.animPercent()}
+                                     label={`${this.percent()}%`}/>
+                        {/*<p className="card-text">Time*/}
+                        {/*    left: ~{(parseFloat(this.props.progress.time) / 60).toFixed()} minutes </p><br/>*/}
+                        {this.time()}
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
                         <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                         <br/>

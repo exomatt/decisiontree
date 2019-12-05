@@ -24,7 +24,7 @@ def gdt_run(self, filename, experiment_id):
     task_id = self.request.id
     logger.info(task_id)
     set_task_id(experiment_id, task_id)
-    set_status(experiment_id, "Running")
+    # set_status(experiment_id, "Running")
     filename = os.path.abspath(filename)
     logger.info('Parameters: id: ' + str(experiment_id) + ' filename: ' + filename)
     logger.info(filename)

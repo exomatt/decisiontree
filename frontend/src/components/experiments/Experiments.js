@@ -16,6 +16,9 @@ class Experiments extends Component {
 
     componentDidMount() {
         this.props.getExperiments();
+        setTimeout(function () {
+            this.props.getExperiments();
+        }.bind(this), 10000);
     }
 
     renderButton() {

@@ -1,0 +1,30 @@
+\babel@toc {polish}{}
+\contentsline {chapter}{Spis tre\'sci}{4}
+\contentsline {chapter}{\numberline {1}Wst\IeC {\k e}p}{6}
+\contentsline {chapter}{\numberline {2}Symulacje komputerowe}{7}
+\contentsline {section}{\numberline {2.1}Idea symulacji}{7}
+\contentsline {section}{\numberline {2.2}Bariery symulacji}{7}
+\contentsline {subsection}{\numberline {2.2.1}Moc obliczeniowa}{7}
+\contentsline {subsection}{\numberline {2.2.2}Pami\IeC {\k e}\IeC {\'c} operacyjna}{7}
+\contentsline {section}{\numberline {2.3}Obliczenia r\IeC {\'o}wnolegle}{7}
+\contentsline {section}{\numberline {2.4}Klastry}{7}
+\contentsline {section}{\numberline {2.5}Symulacje z wykorzystaniem procesor\IeC {\'o}w graficznych}{7}
+\contentsline {chapter}{\numberline {3}Procesory graficzne}{8}
+\contentsline {section}{\numberline {3.1}Rozw\IeC {\'o}j technologii GPU}{8}
+\contentsline {section}{\numberline {3.2}Standardowy potok graficzny}{9}
+\contentsline {section}{\numberline {3.3}GPGPU}{9}
+\contentsline {subsection}{\numberline {3.3.1}Pierwsze pr\IeC {\'o}by}{9}
+\contentsline {subsection}{\numberline {3.3.2}OpenCL}{9}
+\contentsline {subsection}{\numberline {3.3.3}CUDA API}{9}
+\contentsline {section}{\numberline {3.4}Architektura CUDA}{9}
+\contentsline {chapter}{\numberline {4}Wybrany algorytm ORM}{10}
+\contentsline {section}{\numberline {4.1}Og\IeC {\'o}lny opis}{10}
+\contentsline {section}{\numberline {4.2}Analiza pod k\IeC {\k a}tem oblicze\IeC {\'n} r\IeC {\'o}wnoleg\IeC {\l }ych}{10}
+\contentsline {section}{\numberline {4.3}Wykonanie algorytmu r\IeC {\'o}wnoleg\IeC {\l }ego}{10}
+\contentsline {chapter}{\numberline {5}Analiza przeprowadzonych test\IeC {\'o}w}{11}
+\contentsline {section}{\numberline {5.1}Test 1}{11}
+\contentsline {section}{\numberline {5.2}Test 2}{11}
+\contentsline {section}{\numberline {5.3}Test 3}{11}
+\contentsline {section}{\numberline {5.4}Test 4}{11}
+\contentsline {chapter}{\numberline {6}Podsumowanie}{12}
+\contentsline {chapter}{Bibliografia}{13}
