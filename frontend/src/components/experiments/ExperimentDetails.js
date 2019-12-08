@@ -106,6 +106,12 @@ class ExperimentDetails extends Component {
         }
     }
 
+    componentWillUnmount() {
+        console.log("Jestem w niszczycielu");
+        clearInterval(this.interval);
+    }
+
+
     onChange = e => this.setState({[e.target.name]: e.target.value});
     handleShow = () => this.setState({
         isShowingModal: true,
@@ -601,7 +607,7 @@ class ExperimentDetails extends Component {
         }
         if (time <= 0) {
             return <p>
-                Experiment in queue.
+                Time left: Calculate Time...
             </p>
         } else if (time > 0) {
             return <p>
@@ -783,6 +789,27 @@ class ExperimentDetails extends Component {
                     </div>
                 </div>
             )
+        }
+        if (this.props.experiment.status === "In queue") {
+            return (
+                <div className="card border-primary mb-3 shadow p-3 mb-5 bg-white rounded">
+                    <div className="card-header">
+                        <button onClick={this.props.cancelTask.bind(this, this.props.experiment.id)} type="button"
+                                className="btn btn-primary">Cancel Task
+                        </button>
+                    </div>
+                    <div className="card-body">
+                        <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
+                        <p className="card-text">Description: {this.props.experiment.description}</p><br/>
+                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <br/>
+                        <p className="card-text">Status: {this.props.experiment.status}</p><br/>
+                        <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
+                        <p className="card-text">Dataset name: {this.props.experiment.data_file_name}</p><br/>
+
+                    </div>
+                </div>
+            );
         }
 
 
