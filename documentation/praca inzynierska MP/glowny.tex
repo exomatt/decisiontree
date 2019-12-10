@@ -1,0 +1,75 @@
+\documentclass[oneside,12pt]{wipb}
+
+\katedra{Katedra Oprogramowania}
+\typpracy{inżynierska}
+%typpracy{magisterska}
+\temat{Aplikacja internetowa do obsługi system gdt w technologii Python/Django.}
+\autor{Mateusz Pernal}
+\promotor{dr inż. Krzysztof Jurczuk}
+\indeks{101420}
+\studia{stacjonarne}
+\rokakademicki{2099/2020}
+\profil{studia I stopnia}
+\kierunekstudiow{informatyka}
+\specjalnosc{Brak}
+\zakres{1. Zakres 1\newline 2. Zakres 2\newline 3. Zakres 3}
+
+\hypersetup{
+pdfauthor={Mateusz Pernal},
+pdftitle={Praca inżynierska},
+pdfsubject={Aplikacja internetowa do obsługi system gdt w technologii Python/Django},
+pdfkeywords={praca inżynierska słowa klucz },
+pdfpagemode=UseNone,
+linkcolor=black,
+citecolor=black,
+urlcolor=black
+} 
+
+\setlength{\epigraphwidth}{1\textwidth}
+
+\begin{document}
+
+\maketitle
+
+\input{summary.tex}
+
+%\biblioteka{}
+
+\pagestyle{plain}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\input{wstep.tex}
+\input{rozdziali.tex}
+\input{rozdzialii.tex}
+% \input{rozdzialiii.tex}
+% \input{rozdzialiv.tex}
+\input{podsumowanie.tex}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografia}
+
+% \listoffigures
+{%
+    \let\oldnumberline\numberline%
+    \renewcommand{\numberline}{\tablename~\oldnumberline}%
+    \listoftables
+}
+\addcontentsline{toc}{chapter}{Spis tabel}
+% \listoffigures
+{
+    \let\oldnumberline\numberline%
+    \renewcommand{\numberline}{\figurename~\oldnumberline}%
+    \listoffigures
+}
+\addcontentsline{toc}{chapter}{Spis rysunków}
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Spis listingów}
+\raggedbottom
+\listofalgorithms
+\addcontentsline{toc}{chapter}{Spis algorytmów}
+
+\end{document}

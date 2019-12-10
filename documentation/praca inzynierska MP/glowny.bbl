@@ -1,0 +1,24 @@
+\begin{thebibliography}{1}
+
+\bibitem{book_1}
+Aurélien Géron.
+\newblock {\em {Uczenie maszynowe z użyciem Scikit-Learn i TensorFlow}}.
+\newblock Helion S.A., 2018.
+
+\bibitem{misc_1}
+Lucid~Software Inc.
+\newblock Lucidchart.
+\newblock \url{https://www.lucidchart.com/pages/decision-tree}, stan z
+  25.11.2019 r.
+
+\bibitem{inproceedings_1}
+B.~Inny.
+\newblock Tytu³ publikacji.
+\newblock In {\em Tytuł książki}, pages 5--32, Feb 2011.
+
+\bibitem{book_2}
+Prateek Joshi.
+\newblock {\em {Artificial Intelligence with Python}}.
+\newblock Packt Publishing, 2017.
+
+\end{thebibliography}

@@ -1,0 +1,26 @@
+\chapter{Przedstawienie problemu}
+
+\section{Drzewa decyzyjne}
+
+Podejmowanie decyzji jest procesem myślowym, który od początku istnienia ludzkości stwarza pewne trudności, a polega on na wybraniu najlepszego rozwiązania z dostępnych. Wpływ na optymalną decyzję mają informacje, które zostaną poddane analizie, ale także sama metoda analizy. Racjonalny wybór może być wspomagany różnymi algorytmami, czy też wizualną reprezentacją możliwych decyzji w postaci diagramu. Sam diagram może przybrać formę graficzną drzewa decyzyjnego.
+
+Podstawowymi elementami drzewa są korzeń, gałęzie, węzły oraz liście. Korzeniem jest decyzja od którego rozpoczyna się budowa całej struktury, której poszczególne węzły, odpowiadające za sprawdzenie pewnego warunku, są połączone gałęziami.\cite{misc_1}  Liście są krańcowymi wierzchołkami drzewa i określają wybraną decyzje. Podczas próby określenia decyzji, należy poddać klasyfikacji posiadane dane. Aby to zrobić konieczne jest przejście całego drzewa od samego korzenia do wynikowego liścia. Rezultatem takiej operacji będzie klasa definiująca decyzję.
+
+\section{Uczenie maszynowe}
+W otaczającym nas świecie ilość informacji produkowanych przez otoczenie oraz zbieranych przez firmy czy instytucje nadal przewyższa ilość danych, które można przeanalizować z użyciem obecnych zasobów. Chcąc choć w jakimś stopniu poddać analizie duże ilości danych, aby na ich podstawie wyciągnąć wnioski używa się licznych rozwiązań technologicznych. Dzięki zastosowaniu różnych algorytmów przetwarzania danych, klasyfikacji oraz predykcji istnieje możliwość umożliwienia uczenia się programowi komputerowemu. Kierunek nauki, który zajmuje się tą dziedziną nazywamy uczeniem maszynowym. W ciągu ostatnich dziesięciu lat entuzjazm związany z wykorzystywaniem tej technologi wzrósł gwałtownie i w dużej mierze 
+zdominował przemysł, ale również przyczynił się do jej rozwoju.\cite{book_1} Uczenie maszynowe stanowi trzon wielu usług, serwisów i aplikacji. Pod względem technologicznym odpowiada za wyniki wyszukiwania w przeglądarkach, za rozpoznawanie mowy przez nasze telefony, ale także jest odpowiedzialne za prowadzenie autonomicznych samochodów.
+
+\section{Drzewa decyzyjne w technikach uczenia maszynowego}
+
+Drzewa decyzyjne stanowią jedne z bardziej wszechstronnych algorytmów w  dziedzinie uczenia maszynowego. Z jednej strony mogą być wykorzystywane w zadaniach z zakresu klasyfikacji, a z drugiej strony również odgrywają ważną rolę w regresji.\cite{book_1} Z ich pomocą możemy uzyskać potężne modele i narzędzia zdolne do uczenia się ze złożonych zbiorów danych. Dodatkowym atutem drzew jest możliwość wizualnego przedstawienia rozwiązania, które będzie zrozumiałe dla osób nie mających do czynienia z uczeniem maszynowym lub ze statystyką. Z racji wzrostu popularności tej technologi zwiększyły się nakłady pracy naukowej w celu osiągnięcia coraz to lepszych i bardziej optymalnych algorytmów pod względem wydajnościowym. 
+
+\subsection{System GDT}
+Pracownicy Politechniki Białostockiej również mają wkład w budowę takich rozwiązań. Autorski system GDT (\textit{Global Decision Trees}), który jest wykorzystywany w aplikacji inżynierskiej, służy do generowania modelu drzewa decyzyjnego na podstawie zbiorów wejściowych. Ten system jest zaimplementowany w języku c++ oraz jest skompilowany do pliku wykonywalnego, aby umożliwić jego uruchomianie z poziomu konsoli systemu operacyjnego. Całe rozwiązanie jest unikalne i nie ma takiego drugiego identycznego, a głównym założeniem jest wykorzystanie algorytmów genetycznych. Z ich pomocą przestrzeń rozwiązań danego problemu jest większa niż w klasycznym podejściu, co skutkuje możliwością osiągnięcia dokładniejszych i lepszych wyników. Metody pracy algorytmów genetycznych w dużej mierze odwzorowują działania samej natury.\cite{book_2} Podczas definiowania pracy algorytmu należy podać takie parametry jak wielkość populacji, prawdopodobieństwo mutacji czy też krzyżowania się danych osobników. Wartości tych parametrów i innych są określane w pliku konfiguracyjnym opartym o strukturę XML, który jest zarazem plikiem wejściowym do aplikacji GDT. System oprócz tego pliku wykorzystuje pliki z konkretnymi rozszerzeniami:
+\begin{itemize}
+	\item *.data - plik zawierający dane treningowe, 
+	\item *.test - plik zawierajacy dane testowymi,
+	\item *.names - plik określających nazwy klas oraz rodzaj zmiennych.
+\end{itemize}
+Na podstawie tych danych aplikacja GDT może stworzyć model drzewa decyzyjnego, którego przedstawienie jest zapisywane w pliku tekstowym. 
+
+\section{Istniejące rozwiązania}
