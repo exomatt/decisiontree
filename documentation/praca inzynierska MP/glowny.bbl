@@ -1,9 +1,56 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{misc_axios}
+Axios.
+\newblock Axios.
+\newblock \url{https://github.com/axios/axios}, stan z 10.12.2019 r.
+
+\bibitem{misc_gunicorn}
+Benoit Chesneau and contributors.
+\newblock Gunicorn.
+\newblock \url{https://gunicorn.org/}, stan z 10.12.2019 r.
+
+\bibitem{misc_django}
+Django~Software Foundation.
+\newblock Django.
+\newblock \url{https://www.djangoproject.com/}, stan z 10.12.2019 r.
+
+\bibitem{misc_python}
+Python~Software Foundation.
+\newblock Python.
+\newblock \url{https://www.python.org/}, stan z 08.12.2019 r.
+
+\bibitem{misc_django_rest}
+Collaboratively funded project.
+\newblock Django rest framework.
+\newblock \url{https://www.django-rest-framework.org/}, stan z 10.12.2019 r.
+
+\bibitem{misc_react_pop}
+Inc. GitHub.
+\newblock Github.
+\newblock
+  \url{https://github.com/search?o=desc&q=stars%3A%3E1&s=stars&type=Repositories},
+  stan z 10.12.2019 r.
+
+\bibitem{misc_postgre}
+The PostgreSQL Global~Development Group.
+\newblock Postgresql.
+\newblock \url{https://www.postgresql.org/}, stan z 10.12.2019 r.
 
 \bibitem{book_1}
 Aurélien Géron.
 \newblock {\em {Uczenie maszynowe z użyciem Scikit-Learn i TensorFlow}}.
 \newblock Helion S.A., 2018.
+
+\bibitem{misc_docker}
+Docker Inc.
+\newblock Docker.
+\newblock \url{https://www.docker.com/}, stan z 10.12.2019 r.
+
+\bibitem{misc_react}
+Facebook Inc.
+\newblock Reactjs.
+\newblock \url{https://reactjs.org/}, stan z 10.12.2019 r.
 
 \bibitem{misc_1}
 Lucid~Software Inc.
@@ -20,5 +67,25 @@ B.~Inny.
 Prateek Joshi.
 \newblock {\em {Artificial Intelligence with Python}}.
 \newblock Packt Publishing, 2017.
+
+\bibitem{book_3}
+Mark Lutz.
+\newblock {\em {Python. Wprowadzenie. Wydanie IV}}.
+\newblock Helion S.A., 2010.
+
+\bibitem{misc_nginx}
+Inc. NGINX.
+\newblock Nginx.
+\newblock \url{https://www.nginx.com/}, stan z 10.12.2019 r.
+
+\bibitem{misc_rabbit}
+Inc. Pivotal~Software.
+\newblock Rabbitmq.
+\newblock \url{https://www.rabbitmq.com/}, stan z 10.12.2019 r.
+
+\bibitem{misc_celery}
+Ask Solem and contributors.
+\newblock Celery project.
+\newblock \url{http://www.celeryproject.org/}, stan z 10.12.2019 r.
 
 \end{thebibliography}

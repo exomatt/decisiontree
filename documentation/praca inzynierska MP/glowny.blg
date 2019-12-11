@@ -3,44 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: glowny.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
-You've used 4 entries,
+You've used 17 entries,
             2118 wiz_defined-function locations,
-            519 strings with 4340 characters,
-and the built_in function-call counts, 998 in all, are:
-= -- 90
-> -- 28
+            572 strings with 5356 characters,
+and the built_in function-call counts, 3783 in all, are:
+= -- 355
+> -- 131
 < -- 1
-+ -- 12
-- -- 8
-* -- 42
-:= -- 169
-add.period$ -- 12
-call.type$ -- 4
-change.case$ -- 14
++ -- 55
+- -- 38
+* -- 130
+:= -- 641
+add.period$ -- 51
+call.type$ -- 17
+change.case$ -- 67
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 50
-empty$ -- 103
-format.name$ -- 8
-if$ -- 220
+cite$ -- 17
+duplicate$ -- 146
+empty$ -- 389
+format.name$ -- 38
+if$ -- 832
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 5
-newline$ -- 23
-num.names$ -- 8
-pop$ -- 31
+int.to.str$ -- 17
+missing$ -- 7
+newline$ -- 88
+num.names$ -- 34
+pop$ -- 137
 preamble$ -- 1
-purify$ -- 12
+purify$ -- 53
 quote$ -- 0
-skip$ -- 33
+skip$ -- 124
 stack$ -- 0
-substring$ -- 35
-swap$ -- 10
+substring$ -- 100
+swap$ -- 23
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
+type$ -- 62
 warning$ -- 0
-while$ -- 10
-width$ -- 5
-write$ -- 43
+while$ -- 36
+width$ -- 19
+write$ -- 173

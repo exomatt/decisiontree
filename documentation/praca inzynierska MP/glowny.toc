@@ -12,9 +12,9 @@
 \contentsline {section}{\numberline {2.1}Wymagania funkcjonalne}{9}{section.2.1}
 \contentsline {section}{\numberline {2.2}Wymagania niefunkcjonalne}{14}{section.2.2}
 \contentsline {section}{\numberline {2.3}Wykorzystane technologie}{14}{section.2.3}
-\contentsline {chapter}{Podsumowanie}{15}{chapter*.9}
-\contentsline {chapter}{Bibliografia}{16}{chapter*.10}
-\contentsline {chapter}{Spis tabel}{17}{chapter*.11}
-\contentsline {chapter}{Spis rysunk\IeC {\'o}w}{18}{chapter*.12}
-\contentsline {chapter}{Spis listing\IeC {\'o}w}{19}{chapter*.13}
-\contentsline {chapter}{Spis algorytm\IeC {\'o}w}{20}{chapter*.14}
+\contentsline {chapter}{Podsumowanie}{19}{chapter*.10}
+\contentsline {chapter}{Bibliografia}{21}{chapter*.11}
+\contentsline {chapter}{Spis tabel}{22}{chapter*.12}
+\contentsline {chapter}{Spis rysunk\IeC {\'o}w}{23}{chapter*.13}
+\contentsline {chapter}{Spis listing\IeC {\'o}w}{24}{chapter*.14}
+\contentsline {chapter}{Spis algorytm\IeC {\'o}w}{25}{chapter*.15}
