@@ -10,11 +10,11 @@
 \contentsline {section}{\numberline {1.4}Istniej\IeC {\k a}ce rozwi\IeC {\k a}zania}{8}{section.1.4}
 \contentsline {chapter}{\numberline {2}Wizja aplikacji}{9}{chapter.2}
 \contentsline {section}{\numberline {2.1}Wymagania funkcjonalne}{9}{section.2.1}
-\contentsline {section}{\numberline {2.2}Wymagania niefunkcjonalne}{10}{section.2.2}
-\contentsline {section}{\numberline {2.3}Wykorzystane technologie}{10}{section.2.3}
-\contentsline {chapter}{Podsumowanie}{11}{chapter*.7}
-\contentsline {chapter}{Bibliografia}{12}{chapter*.8}
-\contentsline {chapter}{Spis tabel}{13}{chapter*.9}
-\contentsline {chapter}{Spis rysunk\IeC {\'o}w}{14}{chapter*.10}
-\contentsline {chapter}{Spis listing\IeC {\'o}w}{15}{chapter*.11}
-\contentsline {chapter}{Spis algorytm\IeC {\'o}w}{16}{chapter*.12}
+\contentsline {section}{\numberline {2.2}Wymagania niefunkcjonalne}{14}{section.2.2}
+\contentsline {section}{\numberline {2.3}Wykorzystane technologie}{14}{section.2.3}
+\contentsline {chapter}{Podsumowanie}{15}{chapter*.9}
+\contentsline {chapter}{Bibliografia}{16}{chapter*.10}
+\contentsline {chapter}{Spis tabel}{17}{chapter*.11}
+\contentsline {chapter}{Spis rysunk\IeC {\'o}w}{18}{chapter*.12}
+\contentsline {chapter}{Spis listing\IeC {\'o}w}{19}{chapter*.13}
+\contentsline {chapter}{Spis algorytm\IeC {\'o}w}{20}{chapter*.14}
