@@ -12,6 +12,8 @@
 
 \LoadClass[oneside,12pt]{mbook}
 \usepackage[OT4,plmath]{polski}
+\usepackage[autostyle]{csquotes}
+\DeclareQuoteAlias{dutch}{polish}
 \usepackage[polish]{babel}
 \selectlanguage{polish}
 \let\lll\undefined
