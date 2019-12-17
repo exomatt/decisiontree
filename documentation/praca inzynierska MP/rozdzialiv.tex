@@ -25,6 +25,8 @@ Użytkownik przechodząc pod adres \enquote{decisontree.pl} w przeglądarce zost
 
 Uwierzytelniony użytkownik w zależności od nadanych mu uprawnień będzie miał możliwe do wykonania inne akcje. 
 Funkcjonalności do których nie będzie miał dostępu nie będą wyświetlane w interfejsie graficznym, na przykład mając uprawnienia z poziomu \enquote{1\_default} na pasku nawigacji nie będzie zakładki \enquote{Files}. Widok przedstawiający wygląd strony dla użytkownika ze wszystkimi prawami został pokazany na Rys. \ref{rys7_home_page}. Przechodząc do zakładki \enquote{Experiments} zostanie wyświetlona lista wszystkich eksperymentów wraz z przyciskiem do tworzenia nowego doświadczenia lub podglądem już istniejącego (Rys. \ref{rys10_experiment_table}). 
+
+Kolejnym elementem na pasku nawigacji jest odnośnik do strony zarządzania plikami użytkownika. Na tym widoku znajduję się drop zone umożliwiający wrzucanie plików niezbędnych do przeprowadzenia doświadczenia(Rys. \ref{rys17_file_page}). W dowolnym momencie osoba używająca aplikacji ma opcję zmiany nazwy(Rys. \ref{rys19_edit_name}), usunięcia oraz pobrania dowolnego pliku . Podczas próby wgrania pliku o rozszerzeniu innym niż tych co znajdują się na liście dozwolonych dla użytkownika pojawi się alert błędu. Dodatkową funkcjonalnością dostępną na tej stronie jest przycisk kierujący do formularza tworzenia nowej konfiguracji. Formularz zawiera podstawowe pola, które są uzupełnione wartościami domyślnymi (Rys. \ref{rys18_config_form}). Stanowi to ułatwienie dla nowych użytkowników, którzy chcieliby zrobić swój pierwszy eksperyment bez zagłębiania się w zaawansowane zagadnienia.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=15cm]{grafika/experiment_table.eps}
@@ -39,7 +41,6 @@ Funkcjonalności do których nie będzie miał dostępu nie będą wyświetlane 
 	\label{rys11_experiment_form}
 \end{figure}
 
-Kolejnym elementem na pasku nawigacji jest odnośnik do strony zarządzania plikami użytkownika. Na tym widoku znajduję się drop zone umożliwiający wrzucanie plików niezbędnych do przeprowadzenia doświadczenia(Rys.\ref{rys17_file_page}). W dowolnym momencie osoba używająca aplikacji ma opcję zmiany nazwy((Rys.\ref{rys19_edit_name})), usunięcia oraz pobrania dowolnego pliku . Podczas próby uploadu pliku o rozszerzeniu innym niż tych co znajdują się na liście dozwolonych, dla użytkownika pojawi się alert błędu. Dodatkową funkcjonalnością dostępną na tej stronie jest przycisk kierujący do formularza tworzenia nowej konfiguracji. Formularz zawiera podstawowe pola, które są uzupełnione parametrami domyślnymi (Rys. \ref{rys18_config_form}). Stanowi to ułatwienie dla nowych użytkowników, którzy chcieliby zrobić swój pierwszy eksperyment bez zagłębiania się w zaawansowane zagadnienia.
 
 
 \begin{figure}[htb]
@@ -63,7 +64,8 @@ Kolejnym elementem na pasku nawigacji jest odnośnik do strony zarządzania plik
 	\label{rys14_share_form}
 \end{figure}
 
-Proces tworzenia nowego eksperymentu rozpoczyna się od wypełnienia formularza informacjami oraz wybraniu plików (Rys. \ref{rys11_experiment_form}). W przypadku zostawienia, któreś wartości pustej zostanie wyświetlony komunikat o błędzie. Jeżeli jednak wszystkie pola będą wypełnione, po zatwierdzeniu wyświetli się alert o sukcesie oraz nastąpi przekierowanie do listy eksperymentów. Nowo stworzone doświadczenia na liście posiadają status \enquote{Created}. Klikając w przycisk \enquote{Show} użytkownik może wyświetlić szczegóły eksperymentu, wraz z paskiem akcji możliwych do wykonania na nim. Po uruchomieniu doświadczenie trafia do kolejki i przyjmuje status \enquote{In queue}. Natomiast zaraz po zaczęciu obliczeń przechodzi w wartość \enquote{Running}, pozwala on na podejrzenie aktualnego postępu zadania w karcie szczegółów eksperymentu (Rys. \ref{rys15_progress_bar}. W dowolnym czasie trwania obliczeń pod doświadczenie wysłać sygnał przerwania, wtedy status zmieni się na \enquote{Cancel}. Kiedy podczas uruchomienia wystąpi błąd oznaczenie ustawi się na \enquote{Error}. W pełni ukończony eksperyment otrzymuje status \enquote{Finished}, a w widoku szczegółów pojawią się odnośniki do powstałych drzew (Rys.\ref{rys12_details_page}). W zależności od stanu doświadczenia ramka karty przyjmie inne kolory. Przechodząc do widoku z wynikami otrzymamy tabele ze statystykami takimi jak rozmiar drzewa, czas wykonania, rezultaty oraz ilość danych treningowych i testowych. Graf drzewa jest w pełni skalowalny przy pomocy kółka myszki, a poszczególne węzły można zwinąć. Dodatkową opcją jest możliwość wydrukowania schematu.
+
+Proces tworzenia nowego eksperymentu rozpoczyna się od wypełnienia formularza informacjami oraz wybraniu plików (Rys. \ref{rys11_experiment_form}). W przypadku zostawienia, któreś wartości pustej zostanie wyświetlony komunikat o błędzie. Jeżeli jednak wszystkie pola będą wypełnione, po zatwierdzeniu wyświetli się alert o sukcesie oraz nastąpi przekierowanie do listy eksperymentów. Nowo stworzone doświadczenia na liście posiadają status \enquote{Created}. Klikając w przycisk \enquote{Show} użytkownik może wyświetlić szczegóły eksperymentu, wraz z paskiem akcji możliwych do wykonania na nim. Po uruchomieniu doświadczenie trafia do kolejki i przyjmuje status \enquote{In queue}. Natomiast zaraz po zaczęciu obliczeń przechodzi w wartość \enquote{Running} oraz użytkownik ma możliwość zobaczenia postępu zadania w karcie szczegółów eksperymentu (Rys. \ref{rys15_progress_bar}. W dowolnym czasie trwania obliczeń istnieje możliwość wysłania sygnału przerwania, wtedy status zmieni się na \enquote{Cancel}. Kiedy podczas uruchomienia wystąpi błąd oznaczenie ustawi się na wartość \enquote{Error}. W pełni ukończony eksperyment otrzymuje status \enquote{Finished}, a w widoku szczegółów pojawią się odnośniki do powstałych drzew (Rys.\ref{rys12_details_page}). W zależności od stanu doświadczenia ramka karty przyjmie inne kolory informując o rezultacie ostatnich akcji. Przechodząc do widoku z wynikami otrzymamy tabele ze statystykami takimi jak rozmiar drzewa, czas wykonania, ilość danych treningowych i testowych poddanych ewaluacji oraz wartości procentowe rezultatów. Graf drzewa jest w pełni skalowalny przy pomocy kółka myszki, a poszczególne węzły można zwinąć. Dodatkową opcją jest możliwość wydrukowania schematu.
 
 
 
@@ -103,20 +105,58 @@ Proces tworzenia nowego eksperymentu rozpoczyna się od wypełnienia formularza 
 	\label{rys19_edit_name}
 \end{figure}
 
-Użytkownik może wykonywać dodatkowe operacje po przez panel wyświetlenia szczegółów doświadczenia. Jedną z nich jest opcja edycji eksperymentu za pomocą formularza (Rys. \ref{rys13_edit_experiment}). Zatwierdzenie zmian jest możliwe tylko wtedy, gdy występuje chociaż jedna zmiana w modelu.  Kolejną funkcjonalnością znajdującą się na pasku akcji stanowi udostępnianie eksperymentu innym osobom. W formularzu wyświetlają się kontrolki do nadawania praw, które zostały przedstawione na Rys. \ref{rys14_share_form}. Eksperyment po udostępnieniu pojawi się na liście wszystkich doświadczeń u drugiej osoby. Natomiast na końcu nazwy w nawiasach zostanie dodana nazwa oryginalnego właściciela. 
+Użytkownik może wykonywać dodatkowe operacje po przez panel wyświetlenia szczegółów doświadczenia. Jedną z nich jest opcja edycji eksperymentu za pomocą formularza (Rys. \ref{rys13_edit_experiment}). Kolejną funkcjonalnością znajdującą się na pasku akcji stanowi udostępnianie eksperymentu innym osobom. W formularzu wyświetlają się kontrolki do nadawania praw, które zostały przedstawione na Rys. \ref{rys14_share_form}. Eksperyment po udostępnieniu pojawi się na liście wszystkich doświadczeń u drugiej osoby. Natomiast na końcu nazwy w nawiasach zostanie dodana nazwa oryginalnego właściciela. 
 
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=15cm]{grafika/admin_exp.eps}
-	\caption{Formularz edycji nazwy pliku.}
+	\caption{Panel modyfikacji praw dostępowych do eksperymentu.}
 	\label{rys20_admin_exp}
 \end{figure}
 
 Aplikacja udostępnia również panel administratora dostępny pod adresem \enquote{decisontree.pl\textbackslash{admin}}. Po autoryzacji admin może zarządzać modelami w bazie, ale także zmieniać role użytkowników. Również w dowolnym momencie ma opcje zmiany uprawnień dostępowych do eksperymentu, przez co może ograniczyć lub nadać prawa. Widok zarządzania eksperymentem został przedstawiony na Rys. \ref{rys20_admin_exp}.
 
-
-
-
-
 \section{Testy aplikacji}
+Nieodłącznym elementem związanym z rozwijaniem aplikacji jest przeprowadzenie testów w celu sprawdzenia poprawności jej działania. Testowanie ma za zadanie zweryfikować czy dany produkt jest zgodny ze specyfikacją, ale także pomóc wykryć na jakie błędy mogą napotkać się osoby korzystające ze strony internetowej. W projekcie aplikacji zostały wykorzystane testy wydajnościowe oraz manualne na grupie kontrolnej.
+ 
+\subsection{Testy wydajnościowe}
+Oprogramowaniem użytym do określenia wydajności poszczególnych enpointów jest framework Locust. Narzędzie te charakteryzuje się prostotą użycia, a przeznaczony jest do testowania obciążenia witryny internetowej. Głównym jego celem jest określenie maksymalnej liczby osób, które w jednym czasie mogą używać aplikacja bez problemów wydajnościowy. Podczas uruchamiania zestawu testowego należy podać co ile sekund pojawi się nowy użytkownik oraz ich łączną liczbę. Na potrzeby testów aplikacji przyjęte wartości to 10, 100, 500 jednoczesnych korzystających kont oraz częstotliwość tworzenia konta 10 na sekundę. Dodatkowo ten sam zestaw został uruchomiony podczas obciążenia serwera obliczeniami w systemie GDT. Wyniki poszczególnych testów zostały przedstawione w Tab. \ref{tabela_4_test_locust}. 
+
+Analizując wartości otrzymane w testach możemy znaleźć zależność, że im większa liczba użytkowników tym dłużej serwer potrzebuje czasu na realizacje zapytania. Przy liczbie kont równej 500 pewna część żądań do aplikacji kończy się błędem oznaczającym zresetowaniem połączenia. Na podstawie wyników można określić, że liczba stu użytkowników na raz może w dość komfortowy sposób korzystać z aplikacji. Ograniczenia wydajnościowe są spowodowane mocą serwera, która jest niewielka. Poprawę wyników można osiągnąć poprzez zwiększenie pojemność pamięci RAM oraz powiększenie ilość rdzeni procesora. Jednoczesna praca nad obliczeniami powoduje spadek wydajności realizowania zapytań. Rozwiązaniem tego problemu może być opcja przeniesienia części kontenerów na oddzielne serwery. Dzięki temu moduły nie zabierałyby mocy obliczeniowej między sobą.  
+
+\begin{table}[htb]
+	\caption{Wyniki testów wydajnościowych z użyciem Locust.}
+	\centering
+	\begin{tabular}{|c|c|c|c|p{9cm}|}
+		\hline
+		\textbf{Liczba użytkowników}  & \textbf{Pod obciążeniem}  & \textbf{Zapytania na sekundę} & \textbf{Średni czas odpowiedzi} \\\hline
+		10 & Nie & 1.5 & 50ms \\\hline
+		100 & Nie & 15.5 & 200ms \\\hline
+		500 & Nie & 6.5 & 25000ms \\\hline
+		10 & Tak & 1.3 & 60ms \\\hline
+		100 & Tak & 8.5 & 11000ms \\\hline
+		500 & Tak & 5.0 & 35000ms \\\hline
+	
+		
+	\end{tabular}
+	\label{tabela_4_test_locust}
+\end{table}
+
+\subsection{Testy manualne}
+Testy manualne przeprowadzane zgodnie ze scenariuszami testowymi sa ważnym aspektem podczas przygotowania się do wdrożenia aplikacji. Za grupę kontrolną zostali obrani studenci Politechniki Białystockiej. Łączna liczba osób, która wzięła udział w testach wynosiła 20. W celu przetestowania najważniejszych funkcjonalności zostały stworzone dwa zestawy testowe opisujące kolejne kroki i oczekiwane rezultaty. Jeden z nich miał za zadanie sprawdzenia następujących funkcjonalności: 
+\begin{itemize}
+	\item Rejestracja,
+	\item Logowanie,
+	\item Uruchomienie eksperymentu,
+	\item Zatrzymanie doświadczenia,
+	\item Ponowne uruchomienie eksperymentu,
+	\item Wyświetlenie wyników.
+\end{itemize}
+Natomiast drugi zestaw testowy wymagał pracy w parach, a jego celem była weryfikacja: 
+\begin{itemize}
+ 	\item Udostępnienie eksperymentu,
+ 	\item Uruchomienie otrzymanego doświadczenia i wyświetlenie wyników.
+\end{itemize}
+
+W początkowej fazie testów zostały wykryte problemy z mechanizmem kolejkowania zadań dla robotnika Celery, ale pozostały naprawione przed dalszymi krokami. W kolejnych etapach nie zlokalizowano poważniejszych błędów, tylko kilka mniejszych związanych z~zachowaniem interfejsu graficznego. Wszystkie problemy, które były opisane i zweryfikowane przez grupę kontrolną zostały rozwiązane.  

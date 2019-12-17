@@ -45,6 +45,7 @@ W celu przechowywania wszelkich informacji została wykorzystana relacyjna baza 
 \end{figure}
 
 \begin{table}[htb]
+	\caption[Opis pól tabeli \enquote{decisionTreeCore\_experiment}]{ Opis pól encji \enquote{decisionTreeCore\_experiment}}
 	\centering
 	\begin{tabular}{|c|c|p{9cm}|}
 		\hline
@@ -65,11 +66,11 @@ W celu przechowywania wszelkich informacji została wykorzystana relacyjna baza 
 		task\_id & varchar(250) & Zawiera id zadania, które trafiło do robotnika Celery. Umożliwia zarządzanie danym zadaniem np. usunięcie z kolejki, lub anulowanie w trakcie trwania\\\hline
 		shared\_from & varchar(250) & Pole pełni rolę zapisu informacji o poprzednich właścicielach. W wartością pola są nazwy użytkowników. Podczas kolejnych udostępnień do pola są dodawane po przecinku następne loginy  \\\hline
 	\end{tabular}
-	\caption[Opis pól encji \enquote{decisionTreeCore\_experiment}]{ Opis pól encji \enquote{decisionTreeCore\_experiment}}
 	\label{tabela_1_schema_experiment}
 \end{table}
 
 \begin{table}[htb]
+	\caption[Opis pól tabeli \enquote{decisionTreeCore\_progress}]{ Opis pól encji \enquote{decisionTreeCore\_progress}}
 	\centering
 	\begin{tabular}{|c|c|p{9cm}|}
 		\hline
@@ -82,11 +83,11 @@ W celu przechowywania wszelkich informacji została wykorzystana relacyjna baza 
 		run\_number & integer & Numer określający, które uruchomienie algorytmu właśnie trwa\\\hline
 		
 	\end{tabular}
-	\caption[Opis pól encji \enquote{decisionTreeCore\_progress}]{ Opis pól encji \enquote{decisionTreeCore\_progress}}
 	\label{tabela_2_schema_progress}
 \end{table}
 
 \begin{table}[htb]
+	\caption[Opis pól tabeli \enquote{decisionTreeCore\_experiment}]{ Opis pól encji \enquote{decisionTreeCore\_permissions}}
 	\centering
 	\begin{tabular}{|c|c|p{9cm}|}
 		\hline
@@ -102,7 +103,6 @@ W celu przechowywania wszelkich informacji została wykorzystana relacyjna baza 
 		experiment\_id & integer & Numer id eksperymentu, do którego są przypisane prawa dostępowe\\\hline
 		
 	\end{tabular}
-	\caption[Opis pól encji \enquote{decisionTreeCore\_experiment}]{ Opis pól encji \enquote{decisionTreeCore\_permissions}}
 	\label{tabela_3_schema_permissions}
 \end{table}
 

@@ -68,6 +68,11 @@ Prateek Joshi.
 \newblock {\em {Artificial Intelligence with Python}}.
 \newblock Packt Publishing, 2017.
 
+\bibitem{misc_locust}
+Locustio.
+\newblock Locust.
+\newblock \url{https://locust.io/}, stan z 17.12.2019 r.
+
 \bibitem{book_3}
 Mark Lutz.
 \newblock {\em {Python. Wprowadzenie. Wydanie IV}}.

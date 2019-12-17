@@ -20,9 +20,11 @@
 \contentsline {chapter}{\numberline {4}Prezentacja aplikacji oraz testy}{29}{chapter.4}
 \contentsline {section}{\numberline {4.1}Przedstawienie wygl\IeC {\k a}du aplikacji}{29}{section.4.1}
 \contentsline {section}{\numberline {4.2}Testy aplikacji}{33}{section.4.2}
-\contentsline {chapter}{Podsumowanie}{38}{chapter*.30}
-\contentsline {chapter}{Bibliografia}{40}{chapter*.31}
-\contentsline {chapter}{Spis tabel}{41}{chapter*.32}
-\contentsline {chapter}{Spis rysunk\IeC {\'o}w}{42}{chapter*.33}
-\contentsline {chapter}{Spis listing\IeC {\'o}w}{43}{chapter*.34}
-\contentsline {chapter}{Spis algorytm\IeC {\'o}w}{44}{chapter*.35}
+\contentsline {subsection}{\numberline {4.2.1}Testy wydajno\IeC {\'s}ciowe}{33}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Testy manualne}{34}{subsection.4.2.2}
+\contentsline {chapter}{Podsumowanie}{40}{chapter*.31}
+\contentsline {chapter}{Bibliografia}{42}{chapter*.32}
+\contentsline {chapter}{Spis tabel}{43}{chapter*.33}
+\contentsline {chapter}{Spis rysunk\IeC {\'o}w}{44}{chapter*.34}
+\contentsline {chapter}{Spis listing\IeC {\'o}w}{45}{chapter*.35}
+\contentsline {chapter}{Spis algorytm\IeC {\'o}w}{46}{chapter*.36}
