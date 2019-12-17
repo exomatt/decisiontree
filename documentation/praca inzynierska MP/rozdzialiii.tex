@@ -2,15 +2,25 @@
 \section{Architektura aplikacji}
 Struktura aplikacji jest oparta na podziale wynikającym z wykorzystania frameworka Django. Zgodnie z tym założeniem projekt dzieli się na poszczególne moduły, które w rozumieniu platformy nazywane są paczkami.  W aplikacji można wyróżnić cztery podstawowe elementy kolejno odpowiadające za zarządzanie eksperymentami i użytkownikami, interfejs graficzny oraz aplikacja zbierająca wszystko w całość. Schemat modułów jest przedstawiony na Rys. \ref{rys4_packages}. 
 
+Aplikacja jest zaimplementowana zgodnie ze stylem architektonicznym REST (\textit{Representational State Transfer}). Architektura ta jest bardzo popularna przy tworzeniu aplikacji internetowych ze względu na swoją lekkość oraz prostotę. Do komunikacji pomiędzy widokami aplikacji, a logiką biznesową znajdującą się na serwerze, wykorzystywany jest protokół http. W tym celu do każdej poszczególnej funkcjonalności działającej w projekcie musiał zostać wystawiony endpoint. Zbiór wszystkich wystawionych serwisów przyjmuje nazwę API \textit{(Application Programming Interface)}. Taki rodzaj rozwiązania zapewnia jasny podział na poszczególne warstwy, które są od siebie niezależne. Dzięki temu część serwerowa aplikacji może działać nie ingerując w część interfejsu graficznego. Mapowaniem poszczególnych modułów aplikacji na endpointy zajmuje się główna aplikacja \enquote{decisionTree}. 
+
+
+Obok plików aplikacji można wyróżnić folder \enquote{users} zawierający foldery użytkowników. Nazwy tych katalgów są tworzone na bazie loginu. Każdy użytkownik może wgrywać dowolną ilość plików o rozszerzeniach \enquote{*.xml}, \enquote{*.data}, \enquote{*.test} oraz \enquote{*.names} do swojego folderu. Podczas tworzenia nowego eksperymentu tworzony jest dla niego katalog o nazwie składającej się z pola  \enquote{id} i \enquote{name}. Tam są przechowywane wszystkie pliki  związane z doświadczeniem. Użytkownik ma możliwość pobrania całego folderu z plikami eksperymentu w postaci archiwum o rozszerzeniu  \enquote{*.zip}. Dodatkowo w aplikacji jest dostępna opcja zarządzania katalogiem głównym użytkownika. Udostępnione są opcje do zmiany nazwy, usunięcia czy też pobrania pliku. 
+
 \begin{figure}[htb]
 	\centering
 	\includegraphics[height=8cm]{grafika/packages.eps}
 	\caption{Podział projektu na moduły, źródło: opracowanie własne}
 	\label{rys4_packages}
 \end{figure}
+%\subsection{Generowanie postępu}
+Użytkownik uruchamiając nowy eksperyment, powinien widzieć jego postęp, jak i średni czas, który pozostał do końca. Zostało to rozwiązane w aplikacji po przez tabelę w bazie pośredniczącą wymianie informacji o progresie doświadczania. Program uruchomiony w robotniku Celery, wypisuje informacje na standardowe wyjście (stdin). W tych danych znajduje się numer iteracji wykonanej oraz średni jej czas. Stosując połączenie za pośrednictwem PIPE, robotnik może przeanalizować te informacje. W celu ograniczenia obciążenia co dziesiąta linia jest poddawana analizie. Na podstawie zawartych tam danych oraz ilości uruchomień algorytmu uzyskanej z pliku konfiguracyjnego można wyliczyć średni czas pozostały do końca obliczeń. Natomiast pasek postępu zostaje wyznaczony poprzez określenie numeru ostatniej iteracji i stwierdzeniu ile wykonań algorytmu jeszcze pozostało. 
+
+%\subsection{Autoryzacja użytkownika}
+Autoryzacja użytkowników jest nieodłącznym elementem aplikacji internetowej. W tym celu został wykorzystany mechanizm tokenów. Taki token jest przyznawany dla użytkownika po zalogowaniu lub samej rejestracji. Umożliwia on autoryzowany dostęp do strony internetowej i jest przekazywany w każdym zapytaniu. Po stronie wizualnej aplikacji jest przechowywany w \textit{local storage} przeglądarki internetowej. Każdy token posiada swój czas aktywności, a po jego wygaśnięciu lub przy dowolnym problemie z jego uwierzytelnieniem użytkownik zostanie przekierowany na stronę główną. 
 
 \section{Przechowywanie danych}
-w celu przechowywania wszelkich informacji została wykorzystana relacyjna baza danych PostgresSQL. Platforma ta jest postawiona na oddzielnym kontenerze w celu uzyskania większej stabilności i nie zależności od głównego modułu aplikacji. Schemat struktury wszystkich tabel został przedstawiony na Rys. \ref{rys5_database_schema}. Większość tabel wynika z samego zastosowania frameworka Django i DjangoRestFramework. Wykorzystując gotowe rozwiązana zostały zapewnione takie modele jak \enquote{auth\_user} odpowiadający za zapisywanie informacji o użytkownikach, czy też \enquote{authtoken\_token} mająca na celu przetrzymywanie tokenów autoryzacji. Do całej struktury zostały dodane dodatkowe tabele:
+W celu przechowywania wszelkich informacji została wykorzystana relacyjna baza danych PostgresSQL. Platforma ta jest postawiona na oddzielnym kontenerze w celu uzyskania większej stabilności i nie zależności od głównego modułu aplikacji. Schemat struktury wszystkich tabel został przedstawiony na Rys. \ref{rys5_database_schema}. Większość tabel wynika z samego zastosowania frameworka Django i DjangoRestFramework. Wykorzystując gotowe rozwiązana zostały zapewnione takie modele jak \enquote{auth\_user} odpowiadający za zapisywanie informacji o użytkownikach, czy też \enquote{authtoken\_token} mająca na celu przetrzymywanie tokenów autoryzacji. Do całej struktury zostały dodane dodatkowe tabele:
 \begin{itemize}
 	\item \enquote{decisionTreeCore\_experiment} przetrzymująca dane o eksperymentach,  
 	\item \enquote{decisionTreeCore\_permissions} zawierająca informacje o prawach dostępowych do eksperymentu,
@@ -22,7 +32,8 @@ w celu przechowywania wszelkich informacji została wykorzystana relacyjna baza 
 	\caption{Schemat bazy danych, źródło: opracowanie własne}
 	\label{rys5_database_schema}
 \end{figure}
-Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstawiona na Rys. \ref{rys6_database_schema}. 
+Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstawiona na Rys. \ref{rys6_database_schema}. Tabela \enquote{decisionTreeCore\_experiment} zawiera informacje o pojedynczym eksperymencie użytkownika, w Tab.\ref{tabela_1_schema_experiment} znajduje się opis jej pól. W celu śledzenia postępu danego doświadczenia została stworzona tabela \enquote{decisionTreeCore\_progress}. Poszczególne pola zostały rozpisane w Tab.\ref{tabela_2_schema_progress}. Dane do tej tabeli są wpisywane prosto z robotnika Celery, przy czym brana jest pod uwagę tylko co dziesiąta iteracja systemu GDT. Ostatnią dodaną tabelą na potrzeby aplikacji jest tabela  \enquote{decisionTreeCore\_permissions} określająca zakres uprawnień do danego eksperymentu. Schemat pól encji został rozpisany w Tab.\ref{tabela_3_schema_permissions}. Prawa dostępowe do doświadczenia są definiowane przez użytkownika przed samym udostępnieniem. Kolejny właściciel nie może rozszerzyć uprawnień uprzednio zablokowanych.  
+
 
 \begin{table}[htb]
 	\centering
@@ -41,7 +52,7 @@ Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstaw
 		names\_file\_name & varchar(50) & Nazwa pliku określającego nazwy klas oraz rodzaj zmiennych \\\hline
 		result\_directory\_path & varchar(50) & Ścieżka do folderu z wynikami eksperymentu\\\hline
 		user\_id & integer & ID użytkownika, który jest właścicielem eksperymentu \\\hline
-		runs\_number & smalli & Pole określające ile przebiegów algorytmu ma się odbyć podczas uruchomienia eksperymentu w systemie GDT. Pełni ważną rolę przy tworzeniu paska postępu\\\hline
+		runs\_number & smallint & Pole określające ile przebiegów algorytmu ma się odbyć podczas uruchomienia eksperymentu w systemie GDT. Pełni ważną rolę przy tworzeniu paska postępu oraz określeniu liczby wyświetlanych drzew\\\hline
 		task\_id & varchar(250) & Zawiera id zadania, które trafiło do robotnika Celery. Umożliwia zarządzanie danym zadaniem np. usunięcie z kolejki, lub anulowanie w trakcie trwania\\\hline
 		shared\_from & varchar(250) & Pole pełni rolę zapisu informacji o poprzednich właścicielach. W wartością pola są nazwy użytkowników. Podczas kolejnych udostępnień do pola są dodawane po przecinku następne loginy  \\\hline
 	\end{tabular}
@@ -49,12 +60,70 @@ Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstaw
 	\label{tabela_1_schema_experiment}
 \end{table}
 
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|c|c|p{9cm}|}
+		\hline
+		\textbf{Nazwa pola} & \textbf{Typ} & \textbf{Opis} \\\hline
+		id & integer & Klucz główny tabeli \\\hline
+		iteration & integer & Liczba iteracji eksperymentu\\\hline
+		last\_iter\_number & integer & Numer ostatniej iteracji\\\hline
+		mean\_time & real & Wiadomość o błędzie, który wystąpił podczas uruchomienia eksperyment\\\hline
+		experiment\_id & integer & Numer id eksperymentu, do którego jest przypisany postęp \\\hline
+		run\_number & integer & Numer określający, które uruchomienie algorytmu właśnie trwa\\\hline
+		
+	\end{tabular}
+	\caption[Opis pól encji \enquote{decisionTreeCore\_progress}]{ Opis pól encji \enquote{decisionTreeCore\_progress}}
+	\label{tabela_2_schema_progress}
+\end{table}
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|c|c|p{9cm}|}
+		\hline
+		\textbf{Nazwa pola} & \textbf{Typ} & \textbf{Opis} \\\hline
+		id & integer & Klucz główny tabeli \\\hline
+		run & bool & Prawo do uruchamiania eksperymentu\\\hline
+		edit & bool & Prawo do edycji\\\hline
+		download\_out & bool & Prawo dające możliwość pobierania plików wyjściowych\\\hline
+		download\_in & bool & Prawo dające możliwość pobierania plików wejściowych\\\hline
+		share & bool & Pozwolenie do dalszego udostępniania eksperymentu\\\hline
+		copy & bool & Prawo do tworzenia kopii\\\hline
+		delete & bool & Prawo do usunięcia eksperymentu\\\hline
+		experiment\_id & integer & Numer id eksperymentu, do którego są przypisane prawa dostępowe\\\hline
+		
+	\end{tabular}
+	\caption[Opis pól encji \enquote{decisionTreeCore\_experiment}]{ Opis pól encji \enquote{decisionTreeCore\_permissions}}
+	\label{tabela_3_schema_permissions}
+\end{table}
+
  
 \begin{figure}[htb]
 	\centering
-	\includegraphics[height=14cm]{grafika/database_schema_2.eps}
+	\includegraphics[height=16cm]{grafika/database_schema_2.eps}
 	\caption{Schemat tabel dodatkowych, źródło: opracowanie własne}
 	\label{rys6_database_schema}
 \end{figure}
 
+
+\subsection{Mechanizm kontroli wersji eksperymentu}
+Użytkownik robiąc doświadczenie będzie chciał otrzymać jak najlepsze wyniki. W tym celu dość często będzie zmieniać parametry w pliku konfiguracyjnym. Innym przypadkiem wymagającym częstego ponownego uruchamiania eksperymentu może być zmiana plików z danymi wejściowymi. Oba ta przypadki wymagają ingerencji w plikach doświadczenia co powoduje problem, z traceniem poprzednich danych. Rozwiązaniem tej kwestii może być na przykład tworzeni kopi eksperymentu za każdym razem, gdy następuje zmiana czegokolwiek. Niesie to niestety ze sobą pewne wady, ponieważ lista eksperymentów rozrośnie się do dużych rozmiarów. W związku z tym został zaimplementowany mechanizm przechowywania poprzednich wersji eksperymentu. Przy każdej zmianie dowolnego pliku wejściowego, stare pliki zostaną zachowane poprzez dodanie na początku nazwy \enquote{\_old}. W przypadku, gdy plik o takiej nazwie już istnieje na koniec nazwy jest dołączany kolejny numer porządkowy w nawiasach. Dzięki temu użytkownik w dowolnym momencie może pobrać archiwum z plikami i zobaczyć stare ustawienia.
+
+Należy przypuścić, że jedno doświadczenie może być przeprowadzane kilka razy, co powoduje kolejny problem z~nadpisywaniem plików wyjściowych. W aplikacji zostało to rozwiązane po przez dodanie do mechanizmu kontroli wersji eksperymentu, dodatkowych funkcjonalności. Z każdym ponownym uruchomieniem doświadczenia automatycznie jest robiona kopia zapasowa poprzedniego folderu wyjściowego. Do nazwy katalogu jest dodawany na końcu przedrostek \enquote{old\_}, w~przypadku gdy już taka nazwa istnieje w systemie plików zostaje dodany numer porządkowy w nawiasach. Tak samo jak w poprzednim przypadku użytkownik po pobraniu plików, może obejrzeć poprzednie pliki wyjściowe. 
+
+Dodatkowym mechanizmem zaimplementowanym w celu dodania niezawodności aplikacji jest tworzenie pliku \enquote{readme.txt}. Zabezpiecza to przed straceniem informacji o eksperymencie w przypadku awarii bazy danych. Przechowuje on informacje takie jak nazwy plików wejściowych czy też nazwę eksperymentu. Na tej podstawie w dowolnej chwili istnieje opcja odtworzenia struktury w bazie danych. Przykład zawartości takiego pliku jest widoczny w List. \ref{list1_readme}.
+
+\begin{lstlisting}[numbers=none,frame=single, caption={Przykład zawartości pliku readme },captionpos=b, label=list1_readme]
+Information about created experiment: 
+Experiment id: 4669
+Experiment name: testowy_eksperyment
+Files used in experiment: 
+- config: test.xml,
+- data: chess3x3x10000.data, 
+- test: chess3x3x10000.test, 
+- names: chess3x3x10000(1).names
+\end{lstlisting}
+
+
 \section{Wdrożenie aplikacji}
+Aplikacja została wdrożona na prywatny serwer posiadający 2 GB RAM, procesor o częstotliwości taktowania 2 GHz oraz dysk SSD. Spełnia to podstawowe wymagania pod względem sprzętowym, przy założeniu na początku mniejszego ruchu na stronie. Do uruchomienia projektu jest potrzebna uprzednio zainstalowana instancja platformy Docker. Dzięki konteneryzacji proces wdrożenia projektu jest bardzo prosty i ogranicza się do pojedynczej komendy aplikacji docker-compose. Po uruchomieniu oprogramowanie działa w tle i jest dostępne dla użytkowników. Dostęp do aplikacji jest możliwy przez dowolną przeglądarkę internetową poprzez przejście pod adres \enquote{decisontree.pl}. 
