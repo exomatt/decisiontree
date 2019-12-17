@@ -26,14 +26,23 @@ W celu przechowywania wszelkich informacji została wykorzystana relacyjna baza 
 	\item \enquote{decisionTreeCore\_permissions} zawierająca informacje o prawach dostępowych do eksperymentu,
 	\item \enquote{decisionTreeCore\_progress} składa się z pól określających postęp wykonywania doświadczenia.
 \end{itemize}
+
+
+
 \begin{figure}[htb]
 	\centering
 	\includegraphics[angle=270, width=16cm]{grafika/database_schema.eps}
 	\caption{Schemat bazy danych, źródło: opracowanie własne}
 	\label{rys5_database_schema}
 \end{figure}
-Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstawiona na Rys. \ref{rys6_database_schema}. Tabela \enquote{decisionTreeCore\_experiment} zawiera informacje o pojedynczym eksperymencie użytkownika, w Tab.\ref{tabela_1_schema_experiment} znajduje się opis jej pól. W celu śledzenia postępu danego doświadczenia została stworzona tabela \enquote{decisionTreeCore\_progress}. Poszczególne pola zostały rozpisane w Tab.\ref{tabela_2_schema_progress}. Dane do tej tabeli są wpisywane prosto z robotnika Celery, przy czym brana jest pod uwagę tylko co dziesiąta iteracja systemu GDT. Ostatnią dodaną tabelą na potrzeby aplikacji jest tabela  \enquote{decisionTreeCore\_permissions} określająca zakres uprawnień do danego eksperymentu. Schemat pól encji został rozpisany w Tab.\ref{tabela_3_schema_permissions}. Prawa dostępowe do doświadczenia są definiowane przez użytkownika przed samym udostępnieniem. Kolejny właściciel nie może rozszerzyć uprawnień uprzednio zablokowanych.  
 
+ 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[height=16cm]{grafika/database_schema_2.eps}
+	\caption{Schemat tabel dodatkowych, źródło: opracowanie własne}
+	\label{rys6_database_schema}
+\end{figure}
 
 \begin{table}[htb]
 	\centering
@@ -97,13 +106,11 @@ Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstaw
 	\label{tabela_3_schema_permissions}
 \end{table}
 
- 
-\begin{figure}[htb]
-	\centering
-	\includegraphics[height=16cm]{grafika/database_schema_2.eps}
-	\caption{Schemat tabel dodatkowych, źródło: opracowanie własne}
-	\label{rys6_database_schema}
-\end{figure}
+
+Relacja pomiędzy nowo stworzonymi tabelami, a użytkownikiem została przedstawiona na Rys. \ref{rys6_database_schema}. Tabela \enquote{decisionTreeCore\_experiment} zawiera informacje o pojedynczym eksperymencie użytkownika, w Tab.\ref{tabela_1_schema_experiment} znajduje się opis jej pól. W celu śledzenia postępu danego doświadczenia została stworzona tabela \enquote{decisionTreeCore\_progress}. Poszczególne pola zostały rozpisane w Tab.\ref{tabela_2_schema_progress}. Dane do tej tabeli są wpisywane prosto z robotnika Celery, przy czym brana jest pod uwagę tylko co dziesiąta iteracja systemu GDT. Ostatnią dodaną tabelą na potrzeby aplikacji jest tabela  \enquote{decisionTreeCore\_permissions} określająca zakres uprawnień do danego eksperymentu. Schemat pól encji został rozpisany w Tab.\ref{tabela_3_schema_permissions}. Prawa dostępowe do doświadczenia są definiowane przez użytkownika przed samym udostępnieniem. Kolejny właściciel nie może rozszerzyć uprawnień uprzednio zablokowanych.  
+
+
+
 
 
 \subsection{Mechanizm kontroli wersji eksperymentu}

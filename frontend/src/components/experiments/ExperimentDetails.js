@@ -310,7 +310,7 @@ class ExperimentDetails extends Component {
     }
 
     renderForm() {
-
+        console.log(this.props.experiment)
         const {name, description, config_file_name, data_file_name, test_file_name, names_file_name} = this.state;
         let xml_files = this.props.files.filter(file => file.endsWith(".xml"));
         let data_files = this.props.files.filter(file => file.endsWith(".data"));
@@ -350,6 +350,7 @@ class ExperimentDetails extends Component {
                           onChange={this.onChange}/>
             </div>
             <div className="form-group">
+                <label>File in use: {this.props.experiment.config_file_name}</label><br/>
                 <label>Choose new config file</label>
                 <select className="form-control"
                         name="config_file_name"
@@ -360,6 +361,7 @@ class ExperimentDetails extends Component {
                 </select>
             </div>
             <div className="form-group">
+                <label>File in use:: {this.props.experiment.data_file_name}</label><br/>
                 <label>Choose new data file</label>
                 <select className="form-control"
                         name="data_file_name"
@@ -370,6 +372,7 @@ class ExperimentDetails extends Component {
                 </select>
             </div>
             <div className="form-group">
+                <label>File in use:: {this.props.experiment.test_file_name}</label><br/>
                 <label>Choose new test file</label>
                 <select className="form-control"
                         name="test_file_name"
@@ -380,6 +383,8 @@ class ExperimentDetails extends Component {
                 </select>
             </div>
             <div className="form-group">
+
+                <label>File in use:: {this.props.experiment.names_file_name}</label><br/>
                 <label>Choose new names file</label>
                 <select className="form-control"
                         name="names_file_name"
