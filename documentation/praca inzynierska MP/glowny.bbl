@@ -1,9 +1,19 @@
 \begin{thebibliography}{10}
 
+\bibitem{misc_weka}
+Machine Learning~Group at~the University~of Waikato.
+\newblock Weka.
+\newblock \url{https://www.cs.waikato.ac.nz/ml/weka/}, stan z 17.12.2019 r.
+
 \bibitem{misc_axios}
 Axios.
 \newblock Axios.
 \newblock \url{https://github.com/axios/axios}, stan z 10.12.2019 r.
+
+\bibitem{misc_canva}
+Canva.
+\newblock Canva.
+\newblock \url{https://www.canva.com/}, stan z 17.12.2019 r.
 
 \bibitem{misc_gunicorn}
 Benoit Chesneau and contributors.
@@ -87,6 +97,11 @@ Inc. NGINX.
 Inc. Pivotal~Software.
 \newblock Rabbitmq.
 \newblock \url{https://www.rabbitmq.com/}, stan z 10.12.2019 r.
+
+\bibitem{misc_smartdraw}
+SmartDraw.
+\newblock Smartdraw.
+\newblock \url{https://www.smartdraw.com/}, stan z 17.12.2019 r.
 
 \bibitem{misc_celery}
 Ask Solem and contributors.

@@ -24,3 +24,57 @@ Pracownicy Politechniki Białostockiej również mają wkład w budowę takich r
 Na podstawie tych danych aplikacja GDT może stworzyć model drzewa decyzyjnego, którego przedstawienie jest zapisywane w pliku tekstowym. 
 
 \section{Istniejące rozwiązania}
+Aktualnie na rynku znajduje się mała liczba rozwiązań oferujących tworzenie drzew decyzyjnych. Aplikacje, które można wyróżnić różnią się między sobą zakresem funkcjonalności. Rozwiązania internetowe głównie są oparte o zarobek pieniężny, ale oferują też darmowe wersje z pewnymi ograniczeniami. Istnieją też liczne rozwiązania dla programistów w postaci paczek możliwych dla każdego z popularniejszych języków. Biblioteki te umożliwiają w prosty sposób stworzenie podstawowych modeli uczenia maszynowego w tym drzew decyzyjnych. Negatywną cechą takiego rozwiązania jest wymagana przynajmniej podstawowa wiedza z zakresu programowania u użytkownika. Dodatkowo chcąc osiągnąć bardzo wydajne modele trzeba dokładnie znać mechanizmy działające pod strukturą biblioteki. Występują również nie liczne rozwiązania desktopowe. W głównej mierze są one rozwijane przez uniwersytety. Do wykonania obliczeń wymagają dość przyzwoitego sprzętu komputerowego, który umożliwi optymalną moc obliczeniową.    
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/smartdraw.eps}
+	\caption{Strona główna aplikacji \textit{SmartDraw}.}
+	\label{rys21_smartdraw}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/smartdraw_tree.eps}
+	\caption{Drzewo stworzone w aplikacji \textit{SmartDraw}.}
+	\label{rys22_smartdraw_tree}
+\end{figure}
+
+
+Aplikacja internetowa \textit{SmartDraw} jest jedną z wygodniejszych platform do tworzenia diagramów \cite{misc_smartdraw}. Dostęp do platformy następuje po przez przeglądarkę internetową. Założenie konta jest darmowe wraz z okresem próbnym. Po pewnym czasie aplikacja wymaga opłacenia miesięcznego abonamentu. Widok strony głównej został przedstawiony na Rys. \ref{rys21_smartdraw}. Platforma ponadto udostępnia funkcjonalność tworzenia innych rodzajów diagramów. Proces budowy nowego schematu przebiega po przez przeciągnie i łączenie bloków. Istnieje również wczytanie struktury drzewa z pliku o rozszerzeniu *csv. Grafy są prezentowane w czytelny i przyjemny dla oka sposób (Rys. \ref{rys22_smartdraw_tree}). Ukończony diagram można wyeksportować do pliku graficznego lub dokumentu programu Word. Aplikacja niestety nie umożliwia analizy informacji przy pomocy jakiegoś algorytmu. Skutkuje to brakiem opcji zbudowania drzewa decyzyjnego w pełni opartego o pliki ze zbiorami danych. 
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/canva.eps}
+	\caption{Strona główna aplikacji \textit{Canva}.}
+	\label{rys23_canva}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/canvas_tree.eps}
+	\caption{Drzewo stworzone w aplikacji \textit{Canva}.}
+	\label{rys24_canva_tree}
+\end{figure}
+
+\textit{Canva} to kolejne narzędzie umożliwiające na tworzenie drzew decyzyjnych przy pomocy przeglądarki internetowej \cite{misc_canva}. Dostęp do platformy wymaga założenia konta i daje możliwość tworzenia projektów graficznych. Aplikacja posiada również rozszerzenia funkcjonalności przy pomocy pakietów płatnych dla firm jak i osób prywatnych. Strona główna aplikacji została przedstawiona na Rys. \ref{rys23_canva}. Użytkownik ma możliwość tworzenia drzewa tylko po przez przeciąganie konkretnych elementów. W aplikacji brakuje opcji wyliczenia drzewa na podstawie zbioru danych i wybranego algorytmu. Tworzone diagramy można wzbogacić o liczne walory wizualne i dostępne gotowe motywy (Rys. \ref{rys24_canva_tree}). Głównymi odbiorcami aplikacji są reklamodawcy oraz osoby prowadzące rozbudowaną działalność w serwisach społecznościowych.  
+ 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[height=7cm]{grafika/weka.eps}
+	\caption{Okno główne aplikacji \textit{Weka}.}
+	\label{rys25_weka}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/weka_tree.eps}
+	\caption{Drzewo stworzone w aplikacji \textit{Weka}.}
+	\label{rys26_weka_tree}
+\end{figure}
+
+\textit{Weka} jest narzędziem desktopowym stworzonym przez pracowników zajmujących się tematami uczenia maszynowego na Uniwersytecie Waikato w Nowej Zelandii. Aplikacja została zaimplementowana przy pomocy języka programowania Java. Dzięki temu platforma natywnie może działać na każdym systemie operacyjnym. Główne okno aplikacji zostało zaprezentowane na Rys. \ref{rys25_weka}. Posiada także liczne wrappery umożliwiające korzystanie z zaimplementowanych mechanizmów za pośrednictwem różnych języków programowania. Przy pomocy aplikacji użytkownika ma dostęp do dużej ilości algorytmów klasyfikacji z wykorzystaniem uczenia maszynowego, łącznie z drzewami decyzyjnymi. Tworzenie nowego eksperymentu zaczyna się od wybrania zestawu danych. Użytkownik początkujący może skorzystać z przykładowych plików. Po wczytaniu zbioru istnieje możliwość podejrzenia wizualizacji danych oraz ich wstępna obróbka. W kolejnym kroku użytkownika musi wybrać interesujący sposób klasyfikacji, do wyboru jest kilka różnych algorytmów związanych z tworzeniem drzew decyzyjnych, ale i nie tylko. Proces obliczeń może zająć chwile czasu i zależy głownie od ilości danych oraz zasobów mocy obliczeniowej. Rezultaty eksperymentu są przedstawione w postaci przedstawionej, ale także istnieje opcja wyświetlenia grafu. Przykładowe drzewo decyzyjne stworzone za pośrednictwem programu zostało przedstawione na Rys. \ref{rys26_weka_tree}. Ponadto poszczególne atrybuty węzłów zostają zobrazowane za pośrednictwem wykresów. Aplikacja umożliwia również liczne modyfikacje w parametrach algorytmów.  
+
+
+
+Rozwiązanie oferowane przez pracę dyplomową jest unikalne nie tylko ze względu na wykorzystany system GDT. Wyróżnia się w pełni niezależnością użytkownika od sprzętu, który posiada, co w przypadku takich rozwiązań jak program \textit{Weka} ma znaczenie. Aktualnie dostępne rozwiązania internetowe nie wyróżniają się miedzy sobą,a dodatkowo umożliwiają ograniczone funkcjonalności co do budowania drzew na podstawie zbiorów danych. 
