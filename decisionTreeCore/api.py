@@ -370,7 +370,7 @@ class ExperimentShare(APIView):
 
         old_path = settings.BASE_USERS_DIR + user_username + "/" + str(experiment.id) + "_" + experiment.name
         progress = experiment.progress
-        experiment.name = experiment.name + " (shared from " + user_username + ")"
+        experiment.name = experiment.name + " (shared by " + user_username + ")"
         experiment.user = user_to_share_with
         experiment.pk = None
         experiment.save()

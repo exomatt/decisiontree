@@ -40,7 +40,7 @@ class Experiments extends Component {
                         <th>Name</th>
                         <th>Description</th>
                         <th>Status</th>
-                        <th>Date</th>
+                        <th>Created at</th>
                         <th>Option</th>
                     </tr>
                     </thead>

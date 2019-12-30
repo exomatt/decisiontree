@@ -21,8 +21,24 @@ class Register extends Component {
     onSubmit = e => {
         e.preventDefault();
         const {username, email, password, password2} = this.state;
+        if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email)) {
+            this.props.createMessage({passwordNotMatch: 'Incorrect email'});
+            return;
+        }
         if (this.captcha === false) {
             this.props.createMessage({passwordNotMatch: 'Please fill captcha input'});
+            return;
+        }
+        if (username.length > 150) {
+            this.props.createMessage({passwordNotMatch: 'Username is too long'});
+            return;
+        }
+        if (password.length <= 5) {
+            this.props.createMessage({passwordNotMatch: 'Password is too short - must be at least 6 characters'});
+            return;
+        }
+        if (password.length >= 50) {
+            this.props.createMessage({passwordNotMatch: 'Password is too long'});
             return;
         }
         if (password !== password2) {
@@ -97,7 +113,8 @@ class Register extends Component {
 
                         <div className="form-group">
                             <ReCAPTCHA
-                                sitekey="6LfYqMQUAAAAACi0SDY4GJ19b_OA-715TXSFPQ8F"
+                                // sitekey="6LfYqMQUAAAAACi0SDY4GJ19b_OA-715TXSFPQ8F"
+                                sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
                                 onChange={this.onChange2}
                             /></div>
                         <div className="form-group">
