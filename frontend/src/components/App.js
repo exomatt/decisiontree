@@ -25,6 +25,7 @@ import Footer from "./layout/Footer";
 import Home from "./layout/Home";
 import "./layout/index.css"
 import PropTypes from "prop-types";
+import NoMatchPage from "./layout/NoMatchPage";
 
 const alertOptions = {
     timeout: 3000,
@@ -60,6 +61,7 @@ class App extends Component {
                                                           component={ExperimentDetails}/>
                                             <PrivateRoute exact path="/showTree" component={ShowTree}/>
                                             <PrivateRoute exact path="/createConfigFile" component={FormConfigFile}/>
+                                            <Route component={NoMatchPage}/>
                                         </Switch>
                                         {/*<Experiments/>*/}
                                     </div>
