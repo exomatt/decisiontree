@@ -68,7 +68,8 @@ class ExperimentDetails extends Component {
         copy: false,
         delete: false,
         owner: false,
-        interval: null
+        interval: null,
+        intervalIQ: null,
     };
 
     componentDidMount() {
@@ -81,6 +82,9 @@ class ExperimentDetails extends Component {
         if (this.state.interval)
             this.state.interval.clear();
         this.setState({interval: null});
+        if (this.state.intervalIQ)
+            this.state.intervalIQ.clear();
+        this.setState({intervalIQ: null});
     }
 
     componentDidUpdate(nextProps, nextState, nextContext) {
@@ -99,16 +103,28 @@ class ExperimentDetails extends Component {
                     if ((parseFloat(this.props.progress.progress_percent) * 100) >= parseFloat("95"))
                         this.props.getExperimentById(this.props.experiment.id);
                     if (this.props.experiment.status === "Finished" || this.props.experiment.status === "Canceled")
-                        clearInterval(this.interval);
+                        clearInterval(this.state.interval);
                 }, 5000)
                 this.setState({interval: interval})
+            }
+        } else {
+            if (this.props.experiment && this.props.experiment.status === "In queue") {
+                if (!this.state.intervalIQ) {
+                    console.log("jestem w IQ");
+                    const interval = setInterval(() => {
+                        this.props.getExperimentById(this.props.experiment.id);
+                    }, 15000);
+                    this.setState({intervalIQ: interval})
+                }
+
             }
         }
     }
 
     componentWillUnmount() {
         console.log("Jestem w niszczycielu");
-        clearInterval(this.interval);
+        clearInterval(this.state.interval);
+        clearInterval(this.state.intervalIQ);
     }
 
 
@@ -678,7 +694,8 @@ class ExperimentDetails extends Component {
                         <div className="card-body">
                             <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                             <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                            <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                            <p className="card-text">Created
+                                at: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                             <br/>
                             <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                             <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
@@ -705,7 +722,8 @@ class ExperimentDetails extends Component {
                         {/*    left: ~{(parseFloat(this.props.progress.time) / 60).toFixed()} minutes </p><br/>*/}
                         {this.time()}
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <p className="card-text">Created
+                            at: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                         <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
@@ -732,7 +750,8 @@ class ExperimentDetails extends Component {
                     <div className="card-body">
                         <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <p className="card-text">Created
+                            at: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                         <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
@@ -760,7 +779,8 @@ class ExperimentDetails extends Component {
                     <div className="card-body">
                         <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <p className="card-text">Created
+                            at: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                         <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
@@ -785,7 +805,8 @@ class ExperimentDetails extends Component {
                     <div className="card-body">
                         <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <p className="card-text">Created
+                            at: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                         <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>
@@ -806,7 +827,8 @@ class ExperimentDetails extends Component {
                     <div className="card-body">
                         <p className="card-text"><b>Experiment with name: {this.props.experiment.name}</b></p><br/>
                         <p className="card-text">Description: {this.props.experiment.description}</p><br/>
-                        <p className="card-text">Date: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
+                        <p className="card-text">Created
+                            at: {moment(this.props.experiment.date).format("DD.MM.YYYY hh:mm:ss")}</p>
                         <br/>
                         <p className="card-text">Status: {this.props.experiment.status}</p><br/>
                         <p className="card-text">Config file: {this.props.experiment.config_file_name}</p><br/>

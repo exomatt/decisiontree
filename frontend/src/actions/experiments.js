@@ -23,7 +23,7 @@ axios.interceptors.response.use(
 );
 // GET EXPERIMENTS
 export const getExperiments = () => (dispatch, getState) => {
-    axios.get('/api/experiment', tokenConfig(getState))
+    axios.get('/api/experiment/', tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: GET_EXPERIMENTS,
@@ -35,7 +35,7 @@ export const getExperiments = () => (dispatch, getState) => {
 
 // GET EXPERIMENT WITH ID
 export const getExperimentById = id => (dispatch, getState) => {
-    axios.get(`/api/experiment/${id}`, tokenConfig(getState))
+    axios.get(`/api/experiment/${id}/`, tokenConfig(getState))
         .then(res => {
             dispatch({
                 type: GET_EXPERIMENT_ID,

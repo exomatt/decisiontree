@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {loadUserGroup, logout} from "../../actions/auth";
+import "./index.css"
 
 
 export class Header extends Component {

@@ -14,11 +14,32 @@ class Experiments extends Component {
         group: PropTypes.array.isRequired,
     };
 
+    state = {
+        interval: null
+    };
+
     componentDidMount() {
-        this.props.getExperiments();
-        setTimeout(function () {
+        if (this.props.experiments) {
             this.props.getExperiments();
-        }.bind(this), 10000);
+        }
+        if (this.state.interval)
+            this.state.interval.clear();
+        this.setState({interval: null});
+    }
+
+    componentDidUpdate(nextProps, nextState, nextContext) {
+        if (!this.state.interval) {
+            const interval = setInterval(() => {
+                this.props.getExperiments();
+            }, 15000);
+            this.setState({interval: interval})
+        }
+
+    }
+
+    componentWillUnmount() {
+        console.log("Jestem w niszczycielu experymetny");
+        clearInterval(this.state.interval);
     }
 
     renderButton() {

@@ -19,12 +19,39 @@ class Files extends Component {
     state = {
         isShowingModal: false,
         name: '',
-        filename: ''
+        filename: '',
+        interval: null
     };
 
     componentDidMount() {
         this.props.getFiles();
     }
+
+
+    componentDidMount() {
+        if (this.props.files) {
+            this.props.getFiles();
+        }
+        if (this.state.interval)
+            this.state.interval.clear();
+        this.setState({interval: null});
+    }
+
+    componentDidUpdate(nextProps, nextState, nextContext) {
+        if (!this.state.interval) {
+            const interval = setInterval(() => {
+                this.props.getFiles();
+            }, 20000);
+            this.setState({interval: interval})
+        }
+
+    }
+
+    componentWillUnmount() {
+        console.log("Jestem w niszczycielu experymetny");
+        clearInterval(this.state.interval);
+    }
+
 
     download(file) {
         //Get token from state
