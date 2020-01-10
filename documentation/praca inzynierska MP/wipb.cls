@@ -177,7 +177,7 @@ Ja, \@autor, \ifthenelse{\equal{nie}{#1}}{nie wyrażam zgody}{wyrażam zgodę} n
       \vspace{\stretch{.3}}
       {\Large\textsc{Wydział Informatyki}\par}
       \vspace{\stretch{.3}}
-      {\large\textsc{Katedra \@katedra}\par}
+     % {\large\textsc{Katedra \@katedra}\par}
       \vspace{\stretch{1}}
       {\Large\textsc{Praca dyplomowa \@typpracy}\par}
       \vspace{\stretch{2}}

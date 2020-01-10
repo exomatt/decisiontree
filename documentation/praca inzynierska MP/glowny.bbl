@@ -1,5 +1,10 @@
 \begin{thebibliography}{10}
 
+\bibitem{sgdt_1}
+Kretowski M.
+\newblock {\em Evolutionary Decision Trees in Large-Scale Data Mining}.
+\newblock Studies in Big Data, vol. 59, Springer.
+
 \bibitem{misc_1}
 Lucid~Software Inc.
 \newblock Lucidchart.
@@ -11,15 +16,10 @@ Aurélien Géron.
 \newblock {\em {Uczenie maszynowe z użyciem Scikit-Learn i TensorFlow}}.
 \newblock Helion S.A., 2018.
 
-\bibitem{sgdt_1}
-Kretowski M.
-\newblock {\em Evolutionary Decision Trees in Large-Scale Data Mining}.
-\newblock Studies in Big Data, vol. 59, Springer.
-
 \bibitem{sgdt_2}
 Kretowski~M. Jurczuk~K., Czajkowski~M.
 \newblock {\em Evolutionary Induction of Decision Tree for Large Scale Data}.
-\newblock Studies in Big Data, vol. 59, Springer.
+\newblock Soft Computing, vol. 21: 7363-79.
 
 \bibitem{book_2}
 Prateek Joshi.
