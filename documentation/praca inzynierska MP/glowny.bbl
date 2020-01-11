@@ -41,6 +41,17 @@ Mark Lutz.
 \newblock {\em {Python. Wprowadzenie. Wydanie IV}}.
 \newblock Helion S.A., 2010.
 
+\bibitem{misc_js}
+Mozilla and individual contributors.
+\newblock Javascript.
+\newblock \url{https://developer.mozilla.org/pl/docs/Web/JavaScript}, stan z
+  10.12.2019 r.
+
+\bibitem{misc_react}
+Facebook Inc.
+\newblock Reactjs.
+\newblock \url{https://reactjs.org/}, stan z 10.12.2019 r.
+
 \bibitem{misc_python}
 Python~Software Foundation.
 \newblock Python.
@@ -55,11 +66,6 @@ Django~Software Foundation.
 Collaboratively funded project.
 \newblock Django rest framework.
 \newblock \url{https://www.django-rest-framework.org/}, stan z 10.12.2019 r.
-
-\bibitem{misc_react}
-Facebook Inc.
-\newblock Reactjs.
-\newblock \url{https://reactjs.org/}, stan z 10.12.2019 r.
 
 \bibitem{misc_react_pop}
 Inc. GitHub.
