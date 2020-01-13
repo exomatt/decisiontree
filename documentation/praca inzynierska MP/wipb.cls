@@ -21,6 +21,7 @@
 \usepackage[table]{xcolor}
 \RequirePackage{graphicx}
 \RequirePackage[colorlinks,plainpages=false,
+ breaklinks=true,
  pdfpagelabels,
  naturalnames=true,
   dvips]{hyperref}
