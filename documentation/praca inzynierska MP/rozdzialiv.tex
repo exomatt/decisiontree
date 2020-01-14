@@ -1,6 +1,6 @@
 \chapter{Prezentacja aplikacji oraz testy}
 \section{Przedstawienie aplikacji}
-Użytkownik przechodząc pod adres \enquote{http://decisiontree.pl} w przeglądarce zostanie przekierowany na stronę główną projektu (Rys. \ref{rys7_home_page} ). Zobaczy tam krótki opis aplikacji. W celu korzystania z systemu wymagana jest autoryzacja użytkownika. Osoba nowa może założyć konto przy pomocy formularza rejestracji (Rys. \ref{rys8_registery_form}). Wypełniając pola użytkownik musi zaakceptować pole \enquote{\textit{recaptcha}}, pełniącą role zabezpieczenie przed botami w internecie. Po zatwierdzeniu formularza osoba zostanie automatycznie zalogowana. Użytkownicy, którzy już posiadają konto w aplikacji mogą skorzystać z pola logowania przedstawionego na Rys. \ref{rys9_login_form}.
+Użytkownik przechodząc pod adres \enquote{http://decisiontree.pl} w przeglądarce zostanie przekierowany na stronę główną projektu (Rys. \ref{rys7_home_page} ). Zobaczy tam krótki opis aplikacji. W celu korzystania z systemu wymagana jest autoryzacja użytkownika. Osoba nowa może założyć konto przy pomocy formularza rejestracji (Rys. \ref{rys8_registery_form}). Wypełniając pola użytkownik musi zaakceptować pole \enquote{\textit{recaptcha}}, pełniące role upewnienia się, czy użytkownik jest na pewno człowiekiem. Po zatwierdzeniu formularza osoba zostanie automatycznie zalogowana. Użytkownicy, którzy już posiadają konto w aplikacji mogą skorzystać z pola logowania przedstawionego na Rys. \ref{rys9_login_form}.
 
 \begin{figure}[htb]
 	\centering
@@ -75,7 +75,7 @@ Proces tworzenia nowego eksperymentu rozpoczyna się od wypełnienia formularza 
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=17cm]{grafika/tree_veiw.eps}
+	\includegraphics[angle=270, width=8cm]{grafika/tree_veiw.eps}
 	\caption{Widok stworzonego drzewa decyzyjnego, źródło: opracowanie własne.}
 	\label{rys16_tree_veiw}
 \end{figure}
@@ -83,7 +83,7 @@ Proces tworzenia nowego eksperymentu rozpoczyna się od wypełnienia formularza 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=15cm]{grafika/tree_stat.eps}
-	\caption{Tabela ze statystykami algorytmu, źródło: opracowanie własne.}
+	\caption{Tabela ze statystykami zadania, źródło: opracowanie własne.}
 	\label{rys22_tree_stat}
 \end{figure}
 
@@ -113,12 +113,12 @@ Użytkownik może wykonywać dodatkowe operacje po przez panel wyświetlenia szc
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=15cm]{grafika/admin_exp.eps}
+	\includegraphics[angle=270, width=10cm]{grafika/admin_exp.eps}
 	\caption{Panel modyfikacji praw dostępowych do eksperymentu, źródło: opracowanie własne.}
 	\label{rys20_admin_exp}
 \end{figure}
 
-Aplikacja udostępnia również panel administratora dostępny pod adresem \enquote{decisontree.pl\textbackslash{admin}}. Po autoryzacji, administrator może zarządzać modelami w bazie, ale także zmieniać role użytkowników. Również w dowolnym momencie może modyfikować ograniczenia dostępu do eksperymentu, przez co może ograniczyć lub nadać prawa. Widok zarządzania eksperymentem został przedstawiony na Rys. \ref{rys20_admin_exp}.
+Aplikacja udostępnia również panel administratora dostępny pod adresem \enquote{http://decisontree.pl\textbackslash{admin}}. Po autoryzacji, administrator może zarządzać modelami w bazie, ale także zmieniać role użytkowników. Również w dowolnym momencie może modyfikować ograniczenia dostępu do eksperymentu, przez co może ograniczyć lub nadać prawa. Widok zarządzania eksperymentem został przedstawiony na Rys. \ref{rys20_admin_exp}.
 
 \section{Testy aplikacji}
 Nieodłącznym elementem związanym z tworzeniem aplikacji jest przeprowadzenie testów w celu sprawdzenia poprawności jej działania. Testowanie ma za zadanie zweryfikować czy dany produkt jest zgodny ze specyfikacją oraz wykryć błędy w kodzie. W projekcie aplikacji zostały wykorzystane testy wydajnościowe oraz manualne na grupie kontrolnej.
@@ -147,26 +147,26 @@ Analizując wartości otrzymane w testach możemy znaleźć zależność, że im
 \end{table}
 
 \subsection{Testy manualne}
-Testy manualne przeprowadzane zgodnie ze scenariuszami testowymi sa ważnym aspektem podczas przygotowania się do wdrożenia aplikacji. Za grupę kontrolną zostali wybrani studenci Politechniki Białystockiej. Łączna liczba osób, która wzięła udział w testach wynosiła 20. W celu przetestowania najważniejszych funkcjonalności zostały stworzone dwa zestawy testowe opisujące kolejne kroki i oczekiwane rezultaty. Przykładowy uzupełniony zestaw testowy został przedstawiony na Rys. \ref{rys21_test_case}. Jeden z nich miał za zadanie sprawdzenia następujących funkcjonalności: 
+Testy manualne przeprowadzane zgodnie ze scenariuszami testowymi sa ważnym aspektem podczas przygotowania się do wdrożenia aplikacji. Za grupę kontrolną zostali wybrani studenci Politechniki Białystockiej. Łączna liczba osób, która wzięła udział w testach wynosiła 20. W celu przetestowania najważniejszych funkcjonalności zostały stworzone dwa zestawy testowe opisujące kolejne kroki i oczekiwane rezultaty. Przykładowy uzupełniony zestaw testowy został przedstawiony na Rys. \ref{rys21_test_case}. Jeden z zestawów miał za zadanie sprawdzenia następujących funkcjonalności: 
 \begin{itemize}
 	\item Rejestracja,
 	\item Logowanie,
 	\item Uruchomienie eksperymentu,
-	\item Zatrzymanie doświadczenia,
+	\item Zatrzymanie zadania,
 	\item Ponowne uruchomienie eksperymentu,
 	\item Wyświetlenie wyników.
 \end{itemize}
 Natomiast drugi zestaw testowy wymagał pracy w parach, a jego celem była weryfikacja: 
 \begin{itemize}
- 	\item Udostępnienie eksperymentu,
- 	\item Uruchomienie otrzymanego doświadczenia i wyświetlenie wyników.
+ 	\item Udostępnienia eksperymentu,
+ 	\item Uruchomienia otrzymanego eksperymentu i wyświetlenie wyników.
 \end{itemize}
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=17cm]{grafika/test_case.eps}
-	\caption{Przykładowy wypełniony zestaw testowy, źródło: opracowanie własne.}
+	\caption{Przykładowy zestaw testowy, źródło: opracowanie własne.}
 	\label{rys21_test_case}
 \end{figure}
 
-W początkowej fazie testów zostały wykryte problemy z mechanizmem kolejkowania zadań dla robotnika Celery, które zostały rozwiązane po przez zmianę konfiguracji w metodzie zadania. W kolejnych etapach nie zlokalizowano poważniejszych błędów, tylko kilka mniejszych związanych z~zachowaniem interfejsu graficznego. Wszystkie problemy, które były opisane i zweryfikowane przez grupę kontrolną zostały rozwiązane.
+W początkowej fazie testów zostały wykryte problemy z mechanizmem kolejkowania zadań dla robotnika Celery, które zostały rozwiązane poprzez zmianę konfiguracji w metodzie odpowiadającej za uruchomienie zadania. W kolejnych etapach nie zlokalizowano poważniejszych błędów, tylko kilka mniejszych związanych z~zachowaniem interfejsu graficznego. Wszystkie problemy, które były opisane i zweryfikowane przez grupę kontrolną, zostały rozwiązane.

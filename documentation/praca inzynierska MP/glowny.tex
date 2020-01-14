@@ -31,14 +31,19 @@ urlcolor=black
 
 \maketitle
 
+\pagenumbering{gobble}
 \input{summary.tex}
-
+\pagenumbering{gobble}
 %\biblioteka{}
 
 \pagestyle{plain}
 
 \setcounter{tocdepth}{1}
+%\setcounter{page}{4}
 \tableofcontents
+\pagenumbering{arabic}
+\setcounter{page}{5}
+%\setcounter{tocdepth}{1}
 
 \input{wstep.tex}
 \input{rozdziali.tex}
