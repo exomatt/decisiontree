@@ -1,0 +1,78 @@
+\documentclass[twoside,12pt]{wipb}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\katedra{Nazwa katedry}
+\typpracy{inynierska}
+%typpracy{magisterska}
+\temat{Temat pracy inżynierskiej.}
+\autor{Gal Anonim}
+\promotor{dr in. Doktor Inynier}
+\indeks{12345}
+\studia{stacjonarne}
+\rokakademicki{2013/2014}
+\profil{studia II stopnia}
+\kierunekstudiow{informatyka}
+\specjalnosc{In¿ynieria Oprogramowania}
+\zakres{1. Zakres 1\newline 2. Zakres 2\newline 3. Zakres 3}
+
+\hypersetup{
+pdfauthor={Gal Anonim},
+pdftitle={Praca inynierska},
+pdfsubject={Temat pracy},
+pdfkeywords={praca magisterska jakie inne sowa kluczowe},
+pdfpagemode=UseNone,
+linkcolor=black,
+citecolor=black,
+urlcolor=black
+} 
+
+\setlength{\epigraphwidth}{1\textwidth}
+
+\begin{document}
+
+\maketitle
+
+\input{summary.tex}
+
+%\biblioteka{}
+
+\pagestyle{plain}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\input{wstep.tex}
+\input{rozdziali.tex}
+\input{rozdzialii.tex}
+\input{rozdzialiii.tex}
+\input{rozdzialiv.tex}
+\input{rozdzialv.tex}
+\input{rozdzialvi.tex}
+\input{podsumowanie.tex}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografia}
+
+% \listoffigures
+{%
+    \let\oldnumberline\numberline%
+    \renewcommand{\numberline}{\tablename~\oldnumberline}%
+    \listoftables
+}
+\addcontentsline{toc}{chapter}{Spis tabel}
+% \listoffigures
+{
+    \let\oldnumberline\numberline%
+    \renewcommand{\numberline}{\figurename~\oldnumberline}%
+    \listoffigures
+}
+\addcontentsline{toc}{chapter}{Spis rysunków}
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Spis listingów}
+\raggedbottom
+\listofalgorithms
+\addcontentsline{toc}{chapter}{Spis algorytmów}
+
+\end{document}

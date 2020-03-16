@@ -1,0 +1,81 @@
+\chapter[Inny tytu³ do spisu treæi]{Inne przyk³ady}
+\section{Cytowania}
+Literature cytujemy przez $\backslash cite\{nazwa1,nazwa2\}$ przyk³adowo $\backslash cite{NagraTC02}$ da w efekcie \cite{NagraTC02} lub $\backslash cite\{NagraTC02,iso9126\}$ - \cite{NagraTC02,iso9126}.
+\section{Wypunktowania}
+Wypunktowanie stosujemy 
+\begin{verbatim}
+    \begin{enumerate}
+    \item pierwsze
+    \item drugie
+    \end{enumerate}
+\end{verbatim}
+co daje efekt jako:
+    \begin{enumerate}
+    \item pierwsze
+    \item drugie
+    \end{enumerate}
+lub te¿ jako
+\begin{verbatim}
+    \begin{itemize}
+    \item jeden
+    \item dwa
+    \end{itemize}
+\end{verbatim}
+co daje efekt jako:
+    \begin{itemize}
+    \item jeden
+    \item dwa
+    \end{itemize}
+\subsection{Wypunktowania mieszane}
+\begin{verbatim}
+\begin{enumerate}
+    \item 1
+    \begin{itemize}
+        \item 1.1
+        \item 1.2
+    \end{itemize}
+    \item 2
+    \begin{itemize}
+        \item 2.1
+        \item 2.2
+\end{itemize}
+\end{enumerate}
+\end{verbatim}
+efekt koñcowy
+\begin{enumerate}
+    \item 1
+    \begin{itemize}
+        \item 1.1
+        \item 1.2
+    \end{itemize}
+    \item 2
+    \begin{itemize}
+        \item 2.1
+        \item 2.2
+\end{itemize}
+\end{enumerate}
+\section{Tabele}
+Tabele wstawiamy przez
+\begin{verbatim}
+\begin{table}[t]
+\centering
+\begin{tabular}{|ccc|}%rodzaj kolumn
+\hline
+1 kolumna & 2 kolumna & 3 kolumna \\
+\hline
+\end{tabular}
+\caption{Opis tabeli}
+\label{tab:p1}%referencja
+\end{table}
+\end{verbatim}
+\begin{table}[t]
+\centering
+\begin{tabular}{|ccc|}%rodzaj kolumn
+\hline
+1 kolumna & 2 kolumna & 3 kolumna \\
+\hline
+\end{tabular}
+\caption{Opis tabeli}
+\label{tab:p1}%referencja
+\end{table}
+Do tebeli odwo³ujemy siê przez

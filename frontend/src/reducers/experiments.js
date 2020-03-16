@@ -1,25 +1,86 @@
-import {ADD_EXPERIMENTS, DELETE_EXPERIMENTS, GET_EXPERIMENTS} from "../actions/types";
+import {
+    ADD_EXPERIMENTS,
+    CANCEL_TASK,
+    CHANGE_EXPERIMENT_CRUD,
+    COPY_EXPERIMENT,
+    DELETE_EXPERIMENTS,
+    GET_EXPERIMENT_ID, GET_EXPERIMENT_PERMISSION,
+    GET_EXPERIMENTS,
+    GET_TREE_BY_NUMBER,
+    PROGRESS_EXPERIMENT,
+    RERUN_TASK,
+    SHARE_EXPERIMENT,
+    START_TASK
+} from "../actions/types";
 
 const initialState = {
-    experiments: []
-}
+    experiments: [],
+    experiment: {},
+    permission: {},
+    tree: {},
+    file: {},
+    redirectMe: false,
+    progress: {
+        "progress_percent": 0,
+        "time": 0
+    },
+};
 
 export default function (state = initialState, action) {
     switch (action.type) {
         case GET_EXPERIMENTS:
             return {
                 ...state,
-                experiments: action.payload
+                experiments: action.payload,
+                redirectMe: false
+            };
+        case GET_EXPERIMENT_ID:
+            return {
+                ...state,
+                experiment: action.payload
             };
         case DELETE_EXPERIMENTS:
             return {
                 ...state,
+                redirectMe: true,
                 experiments: state.experiments.filter(experiment => experiment.id !== action.payload)
             };
         case ADD_EXPERIMENTS:
             return {
                 ...state,
+                redirectMe: true,
                 experiments: [...state.experiments, action.payload]
+            };
+        case GET_TREE_BY_NUMBER:
+            return {
+                ...state,
+                tree: action.payload
+            };
+        case CHANGE_EXPERIMENT_CRUD:
+            return {
+                ...state
+            };
+        case SHARE_EXPERIMENT:
+        case COPY_EXPERIMENT:
+            return {
+                ...state
+            };
+        case START_TASK:
+        case RERUN_TASK:
+        case CANCEL_TASK:
+            return {
+                ...state,
+                redirectMe: true
+            };
+        case PROGRESS_EXPERIMENT:
+            return {
+                ...state,
+                progress: action.payload
+            };
+        case GET_EXPERIMENT_PERMISSION:
+            return {
+                ...state,
+                permission: action.payload
             };
         default:
             return state;

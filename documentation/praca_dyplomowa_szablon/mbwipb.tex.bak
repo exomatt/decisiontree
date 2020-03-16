@@ -1,0 +1,78 @@
+\documentclass[magisterium,oneside,10pt]{wipb}
+
+%\hypersetup{
+%pdfauthor={Imiê i Nazwisko},
+%pdftitle={BLE, BLE, BLE, BLE},
+%pdfsubject={ble, ble, ble, ble},
+%pdfkeywords={s³owo 1, s³owa2, s³o...}
+%}
+
+%%%%%For Listenings
+%\lstset{float, language=C++, basicstyle=\normalsize, 
+%stringstyle=\ttfamily, lineskip=5pt, captionpos=b,aboveskip=1.9\medskipamount}
+%\lstset{frameround=ftft, frame=tRBl}
+%\lstset{numbers=left, numberstyle=\large, stepnumber=1, numbersep=5pt}
+%
+%%%%%%
+
+
+%\newtheorem{defi}{Definicja}[chapter]
+
+
+%\autor{Imiê i Nazwisko}
+%\indexnumm{7771010}
+
+%\katedra{Katedra Systemów Komputerowych}
+
+%\title[tytu³]{Tytu³  pracy}
+
+%\supervisor{prof dr. hab. promotor nazwizko i imiê}
+
+%\hoffset -1 cm
+%\textwidth 14.5 cm
+%\voffset -1 cm
+%\textheight 24 cm
+%\oddsidemargin = 1cm
+%\evensidemargin = 2cm
+
+\begin{document}
+%\lstlistlistingname{Listings} %Nag³ówek spisu listingów
+%\lstlistingname{Listing} %Nag³ówek listingu
+
+\maketitle
+
+\tableofcontents
+\thispagestyle{empty}
+
+\setcounter{page}{0}
+
+\input{testowy.tex}
+
+\bibliographystyle{unsrt} %{latex8}
+\bibliography{bibliografia}
+
+\lstlistoflistings
+\thispagestyle{empty}
+
+\listoffigures
+\listoftables
+
+\pagebreak
+\pagestyle{empty}
+~\\ \vspace{2cm}
+\begin{center}
+{\Large    \textsc{Oœwiadczenie}}
+\end{center}
+\vspace{2cm}
+Ja, ni¿ej podpisany, wyra¿am / nie wyra¿am zgody na udostêpnienie mojej pracy dyplomowej,  pt: ,,Tytu³  pracy''
+w Bibliotece  Politechniki Bia³ostockiej
+
+
+
+\begin{flushright}
+...................................
+
+data,  podpis czytelny 
+\end{flushright}
+
+\end{document}

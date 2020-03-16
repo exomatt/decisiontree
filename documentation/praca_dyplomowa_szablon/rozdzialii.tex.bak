@@ -1,0 +1,11 @@
+\chapter{Za¿ó³æ gêœl¹ jaŸñ}
+Przyk³adowy obrazek i odniesienie do niego: \ref{rys1_label}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=11cm]{grafika/rys1.eps}
+\caption{Podpis pod rysunkiem, Ÿród³o: \cite{inproceedings_1}}
+\label{rys1_label}
+\end{figure}
+
+Tekst po obrazku \cite{book_1}.

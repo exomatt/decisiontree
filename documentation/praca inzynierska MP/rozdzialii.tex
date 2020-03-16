@@ -1,0 +1,186 @@
+\chapter{Wizja aplikacji}
+
+\section{Wymagania funkcjonalne}
+Tworzenie aplikacji należało zacząć od nakreślenia zakresu funkcjonalności, które aplikacja będzie udostępniać użytkownikom. Podstawowym zadaniem, budowanej aplikacji jest możliwość przeprowadzania eksperymentów przy pomocy systemu GDT z poziomu aplikacji internetowej. Kolejnym ważnym aspektem jest wariant zarządzania, wyświetlania, udostępniania oraz edycji poszczególnych eksperymentów (zadań). Każdy z użytkowników powinien widzieć poszczególne zadania, które zostały ukończone, są w trakcie wykonywania lub czekają w kolejce. Aplikacja powinna również w przejrzysty sposób wyświetlać wyniki, zarówno wynikowe drzewo decyzyjne oraz statystyki obliczeń. Po uruchomieniu zadania, użytkownikowi zostanie wyświetlony pasek postępu oraz oszacowana długość trwania całego zadania. Zadanie będzie można anulować w dowolnym momencie.  Użytkownik będzie posiadać możliwość zarządzania plikami wejściowymi do zadania oraz plikami z wynikami. Dla użytkowników początkujących zostanie stworzona opcja budowy podstawowych plików konfiguracyjnych, bez wgłębiania się w bardziej zaawansowane parametry eksperymentu. Dostęp do funkcji aplikacji będzie wymagał założenia konta. Nowo założone konto będzie miało domyślnie ograniczone możliwości. Natomiast możliwość rejestracji oraz logowania będzie ogólnodostępna.
+
+Użytkownik będzie mógł posiadać jedną z dostępnych ról. Role będą definiowały dostęp do poszczególnych funkcjonalności aplikacji. Zarządzanie tymi uprawnieniami będzie się odbywać poprzez panel administratora. Administrator aplikacji dodatkowo może modyfikować oraz usuwać konta użytkowników. Co więcej z interfejsu admina będzie istniała możliwość edycji rekordów bazy danych oraz edycja uprawnień do poszczególnych eksperymentów. 
+
+Biorąc pod uwagę perspektywę udostępniania przez użytkownika eksperymentów innemu użytkownikowi, ważnym aspektem będzie możliwość ograniczenia części akcji wykonywanych na eksperymencie. Aplikacja nie pozwoli na zablokowanie wyświetlania drzewa wraz z wynikami. Natomiast reszta funkcjonalności możliwych do wykonania na zadaniu, takich jak uruchamianie, kopiowanie, edycja, usuwanie czy też pobieranie plików wejściowych lub wyjściowych może zostać ograniczona. Użytkownik posiadający udostępniony eksperyment z pewnymi ograniczeniami, może udostępnić go dalej jeśli posiada nadane prawa do udostępniania. Przy czym nie może rozszerzyć uprawnień uprzednio zablokowanych.
+
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=11cm]{grafika/diagram_przypadkow_uzycia.eps}
+\caption{Diagram przypadków użycia, źródło: opracowanie własne.}
+\label{rys1_diagram_przypadkow}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/diagram_przebiegu_tworzenia_eksperymentu.eps}
+	\caption{Diagram czynności tworzenia i uruchomiania eksperymentu, źródło: opracowanie własne.}
+	\label{rys2_diagram_czynności}
+\end{figure}
+
+Na rysunku \ref{rys1_diagram_przypadkow} przedstawiono funkcjonalności w postaci diagramu przypadków użycia. W aplikacji zostały wyszczególnione trzy role dostępne do uzyskania dla użytkownika oraz rola administratora systemu. Wszystkie przypadki użycia oprócz logowania i rejestracji są dostępne tylko dla użytkowników zalogowanych. Każdy nowy użytkownik musi założyć konto, aby mieć dostęp do aplikacji. Nowo powstałe konta otrzymują uprawnienia na domyślnym poziomie \enquote{1\_default}, a wyższe poziomy uprawnień mogą zostać nadane przez administratora. Kolejne role rozszerzają możliwości użytkownika pod względem ilości akcji do wykonania. Poziom \enquote{2\_exp} pozwala na tworzenie nowych eksperymentów, przy czym tylko najwyższy poziom uprawnień \enquote{3\_exp\_data}  może autoryzować do wgrywania plików do aplikacji. Przebieg czynności związanych ze stworzeniem nowego eksperymentu oraz wyświetleniem wyników został przedstawiony na Rys. \ref{rys2_diagram_czynności}. W dalszej części tego podrozdziału przedstawione zostały opisy trzech wybranych przypadków użycia.
+
+Opis przypadku użycia \enquote{Tworzenie nowego eksperymentu}:
+\begin{enumerate}
+\item  Aktor
+	\begin{itemize}
+		\item Użytkownik. 
+	\end{itemize}
+\item Warunki początkowe
+	\begin{itemize}
+		\item Aktor jest zalogowany oraz posiada uprawnienia przynajmniej na poziomie \enquote{2\_exp}.
+	\end{itemize}
+\item Zdarzenie inicjujące
+	\begin{itemize}
+		\item Naciśnięcie przycisku \enquote{New experiment} nad listą wszystkich eksperymentów użytkownika.
+	\end{itemize}
+\item Przebieg w krokach
+	\begin{itemize}
+		\item Aplikacja przechodzi do formularza tworzenia nowego eksperymentu,
+		\item Użytkownik wypełnia i zatwierdza formularz.
+	\end{itemize}
+\item Przebiegi alternatywne
+	\begin{itemize}
+		\item  Użytkownik nie uzupełnia wszystkich pól formularza, aplikacja wyświetla powiadomienie o pustych polach.
+	\end{itemize}
+\item Sytuacje wyjątkowe
+	\begin{itemize}
+		\item  Użytkownik nie posiada żadnych plików wgranych do aplikacji. Powoduje to, że pola formularza zawierające pliki są puste. Uniemożliwia to stworzenie nowego eksperymentu, a aplikacja wyświetla powiadomienie o pustych polach przy podjętej próbie zatwierdzenia.
+	\end{itemize}
+\item Warunki końcowe
+	\begin{itemize}
+		\item  System przekierowuje użytkownika do listy z eksperymentami, a na liście znajduje się nowo utworzony eksperyment.
+	\end{itemize}
+\item Zależności czasowe
+	\begin{itemize}
+		\item  Częstotliwość wykonywania: Około 20 razy dziennie na każdego użytkownika,
+		\item Typowy czas realizacji: 8 sekund.
+	\end{itemize}
+\end{enumerate}
+\vspace*{\baselineskip}
+
+Opis przypadku użycia \enquote{Wystartowanie eksperymentu}:
+\begin{enumerate}
+	\item  Aktor
+	\begin{itemize}
+		\item Użytkownik. 
+	\end{itemize}
+	\item Warunki początkowe
+	\begin{itemize}
+		\item Aktor jest zalogowany oraz posiada stworzony eksperyment.
+	\end{itemize}
+	\item Zdarzenie inicjujące
+	\begin{itemize}
+		\item Naciśnięcie przycisku \enquote{Show} w liście eksperymentów na elemencie, którego status to \enquote{Created}.
+	\end{itemize}
+	\item Przebieg w krokach
+	\begin{itemize}
+		\item Aplikacja przechodzi do podglądu szczegółów wybranego eksperymentu,
+		\item Użytkownik klika przycisk \enquote{Start} znajdujący się na pasku możliwych czynności,
+		\item Aplikacja przekierowuje użytkownika do listy eksperymentów.
+	\end{itemize}
+	\item Przebiegi alternatywne
+	\begin{itemize}
+		\item  Po wystartowaniu eksperymentu nastąpił błąd i jest to sygnalizowane zmianą statusu na \enquote{Error}, a w szczegółach eksperymentu można podejrzeć wiadomość z błędem.
+	\end{itemize}
+	\item Sytuacje wyjątkowe
+	\begin{itemize}
+		\item  Użytkownikowi nie posiada praw do wystartowania konkretnego eksperymentu i w panelu akcji nie wyświetla się przycisk \enquote{Start}.
+	\end{itemize}
+	\item Warunki końcowe
+	\begin{itemize}
+		\item  Eksperyment zmienił swój status na \enquote{In queue} lub \enquote{Running}, a po przejściu do szczegółów wyświetla się pasek postępu oraz szacowany czas oczekiwania na zakończenie.
+	\end{itemize}
+	\item Zależności czasowe
+	\begin{itemize}
+		\item Częstotliwość wykonywania: Około 20 razy dziennie na każdego użytkownika,
+		\item Typowy czas realizacji: 8 sekund.
+	\end{itemize}
+\end{enumerate}
+\vspace*{\baselineskip}
+
+Opis przypadku użycia \enquote{Wyświetlenie drzewa wynikowego}:
+\begin{enumerate}
+	\item  Aktor
+	\begin{itemize}
+		\item Użytkownik. 
+	\end{itemize}
+	\item Warunki początkowe
+	\begin{itemize}
+		\item Aktor jest zalogowany oraz posiada ukończony eksperyment.
+	\end{itemize}
+	\item Zdarzenie inicjujące
+	\begin{itemize}
+		\item Naciśnięcie przycisku \enquote{Show} w liście eksperymentów na elemencie, którego status to \enquote{Finished}.
+	\end{itemize}
+	\item Przebieg w krokach
+	\begin{itemize}
+		\item Aplikacja przechodzi do podglądu szczegółów wybranego eksperymentu, a na samym dole karty wyświetlają się linki do drzew decyzyjnych,
+		\item Użytkownik klika w link do drzewa decyzyjnego.
+	\end{itemize}
+	\item Przebiegi alternatywne
+	\begin{itemize}
+		\item  Brak.
+	\end{itemize}
+	\item Sytuacje wyjątkowe
+	\begin{itemize}
+		\item  Brak.
+	\end{itemize}
+	\item Warunki końcowe
+	\begin{itemize}
+	\item  Aplikacja wyświetliła drzewo decyzyjne wraz ze statystykami.
+	\end{itemize}
+	\item Zależności czasowe
+	\begin{itemize}
+		\item Częstotliwość wykonywania: Około 30 razy dziennie na każdego użytkownika,
+		\item Typowy czas realizacji: 10 sekund.
+	\end{itemize}
+\end{enumerate}
+
+\section{Wymagania niefunkcjonalne}
+Aplikacja zostanie podzielona na dwa oddzielne komponenty: jeden odpowiadający za aplikację internetową, drugi natomiast za zarządzanie zadaniami na serwerze: kolejkowanie i uruchamianie zadań w systemie GDT. Stworzone oprogramowanie powinno pozwolić na zarządzanie całością aplikacji z poziomu przeglądarki internetowej. Poszczególne elementy części serwerowej aplikacji powinny być odporne na błędy, umożliwiać łatwy mechanizm wdrożenia oraz restartu modułów w przypadku takiej potrzeby. Zostanie to zapewnione poprzez konteneryzacje aplikacji. Zależności pomiędzy konkretnymi kontenerami utworzonymi przy pomocy oprogramowania Docker zostały przedstawione na Rys. \ref{rys3_architektura_systemu}. Dzięki takiemu rozwiązaniu wdrożenie aplikacji, czy też zmiana któregoś z komponentów na przykład serwera bazy danych, wymaga małego pokładu pracy i może zostać wykonana półautomatycznie. Aby uruchomić aplikację na serwerze niezbędna będzie platforma Docker. Wykorzystane technologie zostaną opisane w kolejnym podrozdziale.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{grafika/architektura_systemu.eps}
+	\caption{Architektura systemu, źródło: opracowanie własne.}
+	\label{rys3_architektura_systemu}
+\end{figure}
+
+\section{Wykorzystane technologie}
+Aplikacja zostanie zaimplementowana z użyciem języka programowania Python (wersja 3.7.2), który jest rozpowszechnioną technologią wśród aplikacji internetowych. Wspiera on kilka różnych paradygmatów programowania takich jak programowanie funkcyjne, proceduralne i obiektowe \cite{book_3}. Po stronie serwera będzie udostępniony interfejs programistyczny (ang. \textit{API}) w architekturze REST (\textit{Representational State Transfer}) z~wykorzystaniem Django oraz Django REST Framework. Natomiast interfejs graficzny strony będzie zaprojektowany przy pomocy JavaScriptu \cite{misc_js} oraz biblioteki ReactJS \cite{misc_react}.
+
+Jedną z najważniejszych cech języka Python jest interpretowalność kodu źródłowego zamiast jego kompilacja \cite{misc_python}. Umożliwia on pisanie zarówno skryptów systemowych, jak i pełnoprawnych programów. Kolejną jego charakterystyczną cechą jest dynamiczne typowanie czyli tak zwany \textit{duck typing}. Określa to sposób przypisywania typów do wartości przechowywanych w zmiennych. Typy te są określane dynamicznie podczas działania programu, w odróżnieniu od typowania statycznego, gdy wartości poszczególnych zmiennych muszą być jasno podane przed procesem kompilacji. Takie podejście do przypisywania rodzajów na pewno przyśpiesza pracę, ale może też powodować pewne problemy. W trakcie implementacji, programista musi sam pamiętać jaki typ w danym momencie ma zmienna. Proces ten ułatwia biblioteka wbudowana w język o nazwie \enquote{Typing}. Umożliwia ona w prosty sposób wprowadzenie namiastki typowania statycznego w postaci sprawdzania i podpowiedzi.
+
+Do implementacji części biznesowej aplikacji (czyli stronie serwera) zostanie wykorzystany framework Django (wersja 2.2.6), który jest jednym z najbardziej popularnych rozwiązań webowych w języku Python. Charakteryzuje się on prostotą implementacji (przynajmniej w początkowej fazie aplikacji) oraz podziałem aplikacji na komponenty. Zarazem narzuca on pewną strukturę projektu, która zapewnia czystość kodu oraz możliwość ponownego użycia wcześniej opracowanych modułów \cite{misc_django}. Społeczność zebrana wokół tej platformy, dynamicznie rozwija nowe rozwiązania, które są udostępniane dla szerszego grona odbiorców. Dzięki temu istnieje łatwy dostęp do wysokiej jakości modułów bezpieczeństwa, czy też wsparcie techniczne przy występujących problemach. Kolejnym argumentem, który przemawiał za wybraniem tej technologi był wbudowany panel administratora, dostarczany wraz z całą platformą. Po konfiguracji umożliwia on nie tylko zarządzanie użytkownikami, ale także edycję rekordów w bazie danych z poziomu przeglądarki internetowej. 
+
+W celu udostępnienia REST API (ang. \textit{Representational State Transfer Application Programming Interface}) dla interfejsu graficznego został użyty Django REST Framework (\textit{DRF}), który wraz z podstawową wersją Django stanowi trzon aplikacji. DRF jest narzędziem używanym oraz rozwijanym przez takie rozpoznawalne marki jak  Mozilla, Red Hat, Heroku \cite{misc_django_rest}. Świadczy to nie tylko o popularności tego rozwiązania, ale też o jakości jego wykonania. Cały framework skupia się na dostarczeniu programiście zestawu narzędzi do budowy interfejsu restowego. W skład takiej paczki wchodzą serializatory (\textit{serializers}), widoki (\textit{views}), rutery (\textit{router}) oraz wiele innych pomocniczych obiektów. Komunikacja z takim interfejsem programistycznym odbywa się za pomocą metod protokołu HTTP (\textit{Hypertext Transfer Protocol}. Kolejność kroków pracy API możemy określić w następujący sposób:
+\begin{enumerate}
+	\item Klient tworzy zapytanie i uzupełnia je o potrzebne dane, 
+	\item Następnie wysłane jest zapytanie pod konkretny adres,
+	\item Serwer przetwarza żądanie klienta oraz wysyła odpowiedź,
+	\item Klient otrzymuje rezultat.
+\end{enumerate}
+
+Do zapisu informacji związanych z działaniem aplikacji zostanie wykorzystana relacyjna baza danych PostgreSQL (wersja 10.3). Jest to rozwiązanie pod licencją \textit{Open Source} i szeroko stosowane również z aplikacjami opartymi o technologie Django. Bazę danych można w łatwy sposób podpiąć pod panel administratora, ale także uzyskać dostęp z poziomu kodu aplikacji. W bazie danych będą gromadzone konta użytkowników oraz informacje o stworzonych eksperymentach wraz ze ścieżkami do plików. 
+
+Biblioteka ReactJS łącznie z JavaScriptem pozwoli na zaimplementowanie funkcjonalności po stronie klienta. Zapewnią one strukturę projektu, która oferuje czystość kodu, czytelność oraz wygodę użytkowania. Umożliwią one na wstawianie fragmentów kodu hmtl do kodu JavaScript za pośrednictwem języka JSX. Początkowo biblioteka ReactJS została stworzona dla potrzeb wewnętrznych firmy Facebook, ale z czasem została udostępniona innym twórcom \cite{misc_react}. ReactJS jest aktualnie wykorzystywany przez wielkie korporacje takie jak Netflix czy Uber, a sam projekt jest czwartym najpopularniejszym repozytorium na GitHub \cite{misc_react_pop}. W celu połączenia interfejsu graficznego z logiką biznesową zostanie wykorzystana biblioteka Axios \cite{misc_axios}. Cechuje się kompatybilnością wsteczną ze starszymi wersjami przeglądarek internetowych. Umożliwia ona budowę zapytań http oraz ich realizację. Aktualnie jest to najpopularniejsze rozwiązanie w języku JavaScript. 
+
+W celu uzyskania pełnej asynchroniczności podczas uruchamiania eksperymentów w systemie GDT, do obsługi kolejki zadań zostanie wykorzystana biblioteka Celery \cite{misc_celery}. Takie rozwiązanie jest łatwe w integracji z innymi platformami programistycznymi. Głównym założeniem działania tej biblioteki polega na stworzeniu kolejki z zadaniami, które następnie zostaną przypisane i wykonane przez wolnego \enquote{robotnika}. Liczba \enquote{robotników} działających w aplikacji może zostać określona jako jeden z parametrów uruchomienia. Komunikacja pomiędzy Celery, a aplikacją w technologi Django odbywa się przy pomocy brokera wiadomości (ang. \textit{message broker}), który odpowiada za przesył informacji pomiędzy dwoma komponentami. Przykładem takiego oprogramowania może być broker RabbitMQ i on zostanie wykorzystany podczas implementacji aplikacji w ramach pracy dyplomowej~\cite{misc_rabbit}. Oprogramowanie te osiąga bardzo dobre wyniki wydajnościowe w~porównaniu z~produktami konkurencyjnymi.
+
+Gunicorn jest serwerem HTTP aplikacji Django, umożliwiającym zdefiniowanie liczby \enquote{robotników}  realizujących zapytania. Jego głównym założeniem jest realizacja wszystkiego co się dzieje pomiędzy serwerem, a aplikacją webową. Dodatkowym atutem jest minimalna ilość zasobów, które zużywa oraz duża szybkość działania \cite{misc_gunicorn}. Będzie on wykorzystywany jako serwer produkcyjny. Gunicorn dobrze współpracuje z Nginx i umożliwi łatwe wdrożenie aplikacji. Nginx jest serwerem WWW i posłuży do przekierowania przychodzących pod adres domeny \enquote{decisiontree.pl} żądań prosto do aplikacji działającej pod serwerem Gunicorn.
+
+Jedną z najważniejszych części całej architektury jest konteneryzacja poszczególnych elementów. W tym celu zostaną wykorzystane kontenery stworzone przy pomocy platformy Docker. Jest to oprogramowanie umożliwiający wirtualizacje oraz podział projektu na oddzielne komponenty \cite{misc_docker}. Stosując takie rozwiązanie w dowolnej chwili można podmieniać kontenery aplikacji, zmieniając dynamicznie ich wersje oraz łatwo restartować tylko te elementy, które tego wymagają. Cały system zostanie podzielony na pięć pracujących obok siebie instancji tworzących wspólnie całość. Podział ten jest przedstawiony na Rys. \ref{rys3_architektura_systemu}.
+
+
+ 
+ 
+
+
+
+
+

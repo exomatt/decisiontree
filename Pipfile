@@ -9,6 +9,15 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 django-rest-knox = "*"
+xmltodict = "*"
+flower = "*"
+jsonweb = "*"
+django-reset-migrations = "*"
+django-rest-swagger = "*"
+gunicorn = "*"
+psycopg2 = "*"
+django-extensions = "*"
+locustio = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MLPExperiment Description="description">
+    <MLPClassification OutputFolder="/home/exomat/Pulpit/decisionTree/users/test11/4662_test (copy)/out" Runs="1"
+                       LogLevel="-4">
+        <MLPDatasets>
+            <MLPDataset DSFormat="C4.5" DSID="1" Name="chess3x3x10000"
+                        Path2Stem="/home/exomat/Pulpit/decisionTree/users/test11/4662_test (copy)/chess3x3x10000">
+                <MLPExperimentType Type="test"></MLPExperimentType>
+                <MLPDSParam Name="costofattributes" Value="no"></MLPDSParam>
+                <MLPDSParam Name="costofclassification" Value="no"></MLPDSParam>
+            </MLPDataset>
+        </MLPDatasets>
+        <MLPClassifiers>
+            <MLPClassifier CLID="21" Name="MLPDT_EA_AP">
+                <MLPParam Name="parallelizationOMP" Value="no">
+                    <MLPSubParam Name="mutationOMP" Value="yes"></MLPSubParam>
+                    <MLPSubParam Name="crossoverOMP" Value="yes"></MLPSubParam>
+                    <MLPSubParam Name="selectionOMP" Value="yes"></MLPSubParam>
+                    <MLPSubParam Name="postEAOMP" Value="yes"></MLPSubParam>
+                    <MLPSubParam Name="threadsOMP" Value="1"></MLPSubParam>
+                </MLPParam>
+                <MLPParam Name="parallelization" Value="no">
+                    <MLPSubParam Name="type" Value="standard"></MLPSubParam>
+                    <MLPSubParam Name="selectiontype" Value="normal"></MLPSubParam>
+                    <MLPSubParam Name="sendbesttype" Value="normal"></MLPSubParam>
+                    <MLPSubParam Name="init" Value="normal"></MLPSubParam>
+                    <MLPSubParam Name="synchronization" Value="1"></MLPSubParam>
+                </MLPParam>
+                <MLPParam Name="initializationtype" Value="dipolar"></MLPParam>
+                <MLPParam Name="innerdisjunction" Value="yes"></MLPParam>
+                <MLPParam Name="fitnesslog" Value="no"></MLPParam>
+                <MLPParam Name="sizeofpopulation" Value="64"></MLPParam>
+                <MLPParam Name="maximumiterations" Value="1000"></MLPParam>
+                <MLPParam Name="minimumiterations" Value="1000"></MLPParam>
+                <MLPParam Name="selection" Value="ranking linear selection"></MLPParam>
+                <MLPParam Name="probabilityofmutation" Value="80"></MLPParam>
+                <MLPParam Name="selectionpressure" Value="1.2"></MLPParam>
+                <MLPParam Name="probabilityofcrossover" Value="20"></MLPParam>
+                <MLPParam Name="maximumofidleiterations" Value="1000"></MLPParam>
+                <MLPParam Name="costofattributes" Value="no"></MLPParam>
+                <MLPParam Name="costofclassification" Value="no"></MLPParam>
+                <MLPParam Name="error" Value="retest"></MLPParam>
+                <MLPParam Name="fitnesscalculation" Value="sum"></MLPParam>
+                <MLPParam Name="maxtreesize" Value="no"></MLPParam>
+                <MLPParam Name="averagetreesize" Value="no"></MLPParam>
+                <MLPParam Name="alfa" Value="0.001"></MLPParam>
+                <MLPParam Name="maximizefitness" Value="no"></MLPParam>
+                <MLPParam Name="mfprobability" Value="0"></MLPParam>
+                <MLPParam Name="mutationtype" Value="1"></MLPParam>
+                <MLPParam Name="initmaxdepth" Value="3"></MLPParam>
+                <MLPParam Name="innercrossvalidation" Value="no">
+                    <MLPSubParam Name="folds" Value="2"></MLPSubParam>
+                    <MLPSubParam Name="re-runs" Value="5"></MLPSubParam>
+                    <MLPSubParam Name="param" Value="alfa"></MLPSubParam>
+                    <MLPSubParam Name="lvalue" Value="0.001"></MLPSubParam>
+                    <MLPSubParam Name="rvalue" Value="0.1"></MLPSubParam>
+                    <MLPSubParam Name="steps" Value="10"></MLPSubParam>
+                </MLPParam>
+                <MLPParam Name="threshold" Value="midpoint"></MLPParam>
+                <MLPParam Name="enlargethemargin" Value="no"></MLPParam>
+                <MLPParam Name="pc0" Value="20"></MLPParam>
+                <MLPParam Name="pc1" Value="20"></MLPParam>
+                <MLPParam Name="pc2" Value="20"></MLPParam>
+                <MLPParam Name="pc3" Value="20"></MLPParam>
+                <MLPParam Name="pc4" Value="20"></MLPParam>
+                <MLPParam Name="pc5" Value="0"></MLPParam>
+                <MLPParam Name="pm0" Value="10"></MLPParam>
+                <MLPParam Name="pm1" Value="10"></MLPParam>
+                <MLPParam Name="pm2" Value="10"></MLPParam>
+                <MLPParam Name="pm3" Value="10"></MLPParam>
+                <MLPParam Name="pm4" Value="10"></MLPParam>
+                <MLPParam Name="pm5" Value="10"></MLPParam>
+                <MLPParam Name="pm6" Value="10"></MLPParam>
+                <MLPParam Name="pm7" Value="10"></MLPParam>
+                <MLPParam Name="pm8" Value="10"></MLPParam>
+                <MLPParam Name="pm9" Value="10"></MLPParam>
+                <MLPParam Name="pml0" Value="100"></MLPParam>
+                <MLPParam Name="pml1" Value="0"></MLPParam>
+            </MLPClassifier>
+        </MLPClassifiers>
+    </MLPClassification>
+</MLPExperiment>

@@ -1,9 +1,19 @@
 import axios from "axios";
 import {createMessage, returnErrors} from "./messages";
-import {tokenConfig} from "./auth";
-import {ADD_FILES, DELETE_FILES, GET_FILES} from "./types";
+import {logout, tokenConfig} from "./auth";
+import {ADD_FILES, CHANGE_FILE_NAME, CREATE_CONFIG_FILE, DELETE_FILES, GET_FILES} from "./types";
 
-// GET EXPERIMENTS
+
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.request.status === 401) {
+            store.dispatch(logout());
+        }
+        return Promise.reject(error);
+    }
+);
+// GET FILES
 export const getFiles = () => (dispatch, getState) => {
     axios.get('api/auth/userFiles', tokenConfig(getState))
         .then(res => {
@@ -14,7 +24,7 @@ export const getFiles = () => (dispatch, getState) => {
         })
         .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
 };
-// DELETE EXPERIMENT
+// DELETE FILES
 export const deleteFiles = name => (dispatch, getState) => {
     //Get token from state
     const token = getState().auth.token;
@@ -33,12 +43,12 @@ export const deleteFiles = name => (dispatch, getState) => {
     if (token) {
         config.headers['Authorization'] = `Token ${token}`;
     }
-    console.log("name " + name);
+    // console.log("name " + name);
     // console.log("config " + config.body.name);
-    console.log("config " + config.headers.toString());
+    // console.log("config " + config.headers.toString());
     axios.delete(`api/auth/userFiles`, config)
         .then(res => {
-            dispatch(createMessage({deleteExperiment: "File Deleted"}));
+            dispatch(createMessage({deleteFiles: "File Deleted"}));
             dispatch({
                 type: DELETE_FILES,
                 payload: name
@@ -47,7 +57,7 @@ export const deleteFiles = name => (dispatch, getState) => {
         .catch(err => console.log(err))
 };
 
-// ADD EXPERIMENT
+// ADD FILES TO EXPERIMENT
 export const addFiles = (file) => (dispatch, getState) => {
     //Get token from state
     const token = getState().auth.token;
@@ -69,9 +79,38 @@ export const addFiles = (file) => (dispatch, getState) => {
     });
     axios.put(`api/auth/userFiles`, formData, config)
         .then(res => {
-            dispatch(createMessage({createExperiment: "File/Files added"}));
+            dispatch(createMessage({addFiles: res.data}));
             dispatch({
                 type: ADD_FILES,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch(createMessage({errorFiles: err.response.data}));
+            dispatch(returnErrors(err.response.data, err.response.status))
+        });
+};
+
+// CREATE NEW CONFIG FILE
+export const createConfigFile = (configFile) => (dispatch, getState) => {
+    axios.post(`/api/files`, configFile, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({createConfigFile: res.data}));
+            dispatch({
+                type: CREATE_CONFIG_FILE,
+                payload: res.data
+            });
+        })
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+// CHANGE FILE NAME
+export const changeFileName = (object) => (dispatch, getState) => {
+    axios.post(`api/auth/userFiles`, object, tokenConfig(getState))
+        .then(res => {
+            dispatch(createMessage({changeName: res.data}));
+            dispatch({
+                type: CHANGE_FILE_NAME,
                 payload: res.data
             });
         })

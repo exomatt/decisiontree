@@ -1,0 +1,30 @@
+.footer {
+    text-align: left;
+    margin-top: 10px !important;
+    /*position: absolute !important;*/
+    bottom: 0 !important;
+    width: 100% !important;
+
+}
+
+.footerText {
+    font-size: x-small !important;
+}
+
+.homeCard {
+    margin-top: 75px !important;
+    margin-bottom: 250px !important;
+}
+
+.application {
+    height: 100%;
+    min-height: 100vh !important;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    justify-content: space-between
+}
+
+.navbar-toggler {
+    border-width: medium;
+}

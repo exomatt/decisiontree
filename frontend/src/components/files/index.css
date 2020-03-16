@@ -1,0 +1,22 @@
+.dropzone {
+    height: 75px;
+    text-align: center;
+    border-style: dotted;
+    border-radius: 8px;
+}
+
+.fileTable {
+    width: auto !important;
+}
+
+.thName {
+    width: 60% !important;
+}
+
+.formConfigCard {
+    width: 60% !important;
+    position: center !important;
+    margin: 0 auto !important;
+    float: none !important;
+    margin-top: 15px !important;
+}

@@ -1,0 +1,83 @@
+\documentclass[oneside,12pt]{wipb}
+
+\katedra{Oprogramowania}
+\typpracy{inżynierska}
+%typpracy{magisterska}
+\temat{Aplikacja internetowa do obsługi systemu GDT w technologii Python/Django.}
+\autor{Mateusz Pernal}
+\promotor{dr inż. Krzysztof Jurczuk}
+\indeks{101420}
+\studia{stacjonarne}
+\rokakademicki{2019/2020}
+\profil{studia I stopnia}
+\kierunekstudiow{informatyka}
+\specjalnosc{Brak}
+\zakres{1. Zapoznanie z systemem GDT \newline 2. Analiza wymagań aplikacji\newline 3. Projekt i implementacja aplikacji \newline 4. Testy oraz wdrożenie aplikacji.}
+
+\hypersetup{
+pdfauthor={Mateusz Pernal},
+pdftitle={Praca inżynierska},
+pdfsubject={Aplikacja internetowa do obsługi systemu GDT w technologii Python/Django},
+pdfkeywords={praca inżynierska słowa klucz },
+pdfpagemode=UseNone,
+linkcolor=black,
+citecolor=black,
+urlcolor=black
+} 
+
+\setlength{\epigraphwidth}{1\textwidth}
+
+\begin{document}
+
+\maketitle
+
+\pagenumbering{gobble}
+\input{summary.tex}
+\pagenumbering{gobble}
+%\biblioteka{}
+
+\pagestyle{plain}
+
+\setcounter{tocdepth}{1}
+%\setcounter{page}{4}
+\tableofcontents
+\pagenumbering{arabic}
+\setcounter{page}{5}
+%\setcounter{tocdepth}{1}
+
+\input{wstep.tex}
+\input{rozdziali.tex}
+\input{rozdzialii.tex}
+\input{rozdzialiii.tex}
+\input{rozdzialiv.tex}
+\input{podsumowanie.tex}
+
+\nocite{*}
+\bibliographystyle{unsrt}
+
+%\bibliographystyle{apa}
+\bibliography{bibliografia}
+
+\addcontentsline{toc}{chapter}{Bibliografia}
+
+% \listoffigures
+{%
+    \let\oldnumberline\numberline%
+    \renewcommand{\numberline}{\tablename~\oldnumberline}%
+    \listoftables
+}
+\addcontentsline{toc}{chapter}{Spis tabel}
+% \listoffigures
+{
+    \let\oldnumberline\numberline%
+    \renewcommand{\numberline}{\figurename~\oldnumberline}%
+    \listoffigures
+}
+\addcontentsline{toc}{chapter}{Spis rysunków}
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Spis listingów}
+\raggedbottom
+%\listofalgorithms
+%\addcontentsline{toc}{chapter}{Spis algorytmów}
+
+\end{document}
